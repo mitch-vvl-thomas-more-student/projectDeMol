@@ -19,8 +19,4 @@ Het project is gebouwd met Angular en Ionic. Om de applicatie uit te voeren, moe
 
 ## Kredieten
 
-Het project is ontwikkeld door [Your Name] en [Your Team Members] als schoolproject voor Thomas More.
-
-## Licentie
-
-Dit project is gelicentieerd onder de MIT-licentie. Zie het bestand [LICENSE](LICENSE) voor details.
+Het project is ontwikkeld door Mitch Van Vlierberghe als schoolproject voor Thomas More.
