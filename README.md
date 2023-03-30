@@ -17,6 +17,6 @@ Het project is gebouwd met Angular en Ionic. Om de applicatie uit te voeren, moe
 - Bekijk en deel hints over de kandidaten
 - Bekijk video's van verschillende kanalen die verband houden met de show
 
-## Kredieten
+## Credits
 
 Het project is ontwikkeld door Mitch Van Vlierberghe als schoolproject voor Thomas More.
