@@ -1,0 +1,23 @@
+<div class="ion-page" id="main-content">
+  <ion-content class="ion-padding">
+    <ion-card *ngFor="let item of youtubeResults?.videos" class="youtubeCard">
+      <iframe title="item.id" width="420" height="315"
+        [src]="sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + item.id.videoId)"></iframe>
+      <ion-card-header>
+        <ion-card-title>{{ item.snippet.title }}</ion-card-title>
+        <ion-card-subtitle>Channel: <a
+            [href]="sanitizer.bypassSecurityTrustResourceUrl('https://youtube.com/channel/' + item.snippet.channelId)">{{
+            item.snippet.channelTitle}}</a></ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        {{ item.snippet.description }}
+      </ion-card-content>
+    </ion-card>
+
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more videos...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ion-content>
+</div>

@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-img slot="start" src="../../../assets/img/demol.jpg" alt="logo de mol" id="logo"></ion-img>
+    <ion-title class="title">Raad jij wie de mol is?</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-page" id="main-content">
+    <ion-router-outlet></ion-router-outlet>
+  </div>
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="home">
+        <ion-icon name="person-circle-outline"></ion-icon>
+        Profiel
+      </ion-tab-button>
+      <ion-tab-button tab="kandidaten">
+        <ion-icon name="people-circle-outline"></ion-icon>
+        Kandidaten
+      </ion-tab-button>
+      <ion-tab-button tab="youtubefeed">
+        <ion-icon name="logo-youtube"></ion-icon>
+        Kijken
+      </ion-tab-button>
+      <ion-tab-button (click)="authService.signOut()">
+        <ion-icon name="log-out-outline"></ion-icon>
+        Uitloggen
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-content>

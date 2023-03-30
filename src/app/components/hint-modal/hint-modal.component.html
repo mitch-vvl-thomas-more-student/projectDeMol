@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Voeg een nieuwe hint toe</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Hint</ion-label>
+      <ion-textarea (ionChange)="onHintChange($event)" 
+      placeholder="Plaats hier je tip over {{ kandidaat?.voornaam }}"
+      required auto-grow autofocus></ion-textarea>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">Annuleren</ion-button>
+      <ion-button (click)="onSubmit()" [disabled]="disable">Toevoegen</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

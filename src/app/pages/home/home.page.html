@@ -1,0 +1,55 @@
+<div class="container">
+    <ion-grid>
+      <ion-row class="dfcenter">
+        <ion-col offsetXs="0" offsetSm="3" offsetMd="4" sizeXs="12" sizeSm="6" sizeMd="4">
+          <ion-thumbnail>
+            <img alt="profielfote" src="{{ authService.currentUser.value?.photoURL }}" />
+          </ion-thumbnail>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <form #form="ngForm">
+            <ion-list *ngIf="gebruiker">
+              <ion-item class="pb1">
+                <ion-label position="stacked">Voornaam</ion-label>
+                <ion-input type="text" name="voornaam" [(ngModel)]="gebruiker.voornaam" required
+                  class="ion-text-end"></ion-input>
+              </ion-item>
+
+              <ion-item class="pb1">
+                <ion-label position="stacked">Achternaam</ion-label>
+                <ion-input type="text" name="achternaam" [(ngModel)]="gebruiker.achternaam" required
+                  class="ion-text-end"></ion-input>
+              </ion-item>
+
+              <ion-item class="pb1">
+                <ion-label position="stacked">Email</ion-label>
+                <ion-input type="email" name="email" [(ngModel)]="gebruiker.email" required
+                  class="ion-text-end"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="stacked">Geboortedatum</ion-label>
+                <ion-input type="text" name="geboortedatum" value="{{ gebruiker.geboortedatum | date: 'dd.MM.yyyy' }}"
+                  id="date" class="ion-text-end"></ion-input>
+                <ion-popover trigger="date" size="cover">
+                  <ng-template>
+                    <ion-datetime name="geboortedatum" presentation="date" [(ngModel)]="gebruiker.geboortedatum"
+                      firstDayOfWeek="1"></ion-datetime>
+                  </ng-template>
+                </ion-popover>
+              </ion-item>
+              <ion-item class="pb1" *ngIf="gebruiker.verdachten.length > 0">
+                <ion-label position="stacked">Verdachten</ion-label>
+                <app-reorder [kandidaten]="gebruiker.verdachten"></app-reorder>
+              </ion-item>
+
+              <div class="end">
+                <ion-button type="submit" [disabled]="!form.valid" (click)="update()">Update</ion-button>
+              </div>
+            </ion-list>
+          </form>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+</div>

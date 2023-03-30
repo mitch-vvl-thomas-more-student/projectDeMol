@@ -1,0 +1,35 @@
+<div class="ion-page" id="main-content">
+<ion-header>
+
+</ion-header>
+<ion-content class="ion-align-items-stretch blue">
+  <div id="container">
+    <ion-grid>
+      <ion-row>
+        <ion-col offsetXs="0" offsetSm="3" offsetMd="4" sizeXs="12" sizeSm="6" sizeMd="4"> 
+          <!-- Add at least 1 extra provider if you want to use this in your project. -->
+          <ion-item class="ion-margin-vertical button" color="light" (click)="authService.signInWithGoogle()">
+            <div slot="start">
+              <ion-icon size="large" name="logo-google"></ion-icon>
+            </div>
+            <ion-label>Login met Google</ion-label>
+          </ion-item>
+          <ion-item class="ion-margin-vertical button" color="light" (click)="authService.signInWithFacebook()">
+            <div slot="start">
+              <ion-icon size="large" name="logo-facebook"></ion-icon>
+            </div>
+            <ion-label>Login met Facebook</ion-label>
+          </ion-item>
+          <ion-item *ngIf="isNative" class="ion-margin-vertical" color="light" (click)="showPhoneVerification()">
+            <div slot="start">
+              <ion-icon size="large" name="chatbox-ellipses"></ion-icon>
+            </div>
+            <ion-label>Login met je GSM nummer</ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+ 
+</ion-content>
+</div>
