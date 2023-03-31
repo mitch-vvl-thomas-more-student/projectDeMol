@@ -40,14 +40,17 @@ export class HintModalComponent {
     newHint.opmerkingen = [];
     this.hint = new Hint(); // Reset the form
     const fireStoreHintId = await this.backEndApiService.addHint(newHint);
-    console.log(fireStoreHintId)
-    this.gebruiker.geplaatsteHints.push(fireStoreHintId);
-    this.kandidaat.hints.push(fireStoreHintId);
-     await this.globalService.setGebruiker(this.gebruiker);
-     await this.backEndApiService.updateGebruiker(this.gebruiker);
-     await this.backEndApiService.updateKandidaat(this.kandidaat);
-
-    // this.modalController.dismiss(newHint);
+    if (fireStoreHintId.length > 0){
+      this.gebruiker.geplaatsteHints.push(fireStoreHintId);
+      this.kandidaat.hints.push(fireStoreHintId);
+      await this.globalService.setGebruiker(this.gebruiker);
+      await this.backEndApiService.updateGebruiker(this.gebruiker);
+      await this.backEndApiService.updateKandidaat(this.kandidaat);
+    }
+    else {
+      alert('Er ging iets mis tijdens het opslaan van u hint... Probeer het nog eens. ')
+    }
+     this.modalController.dismiss(newHint);
   }
 
   onHintChange(event: any) {

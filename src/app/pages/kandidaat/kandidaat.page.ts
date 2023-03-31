@@ -13,39 +13,6 @@ import Gebruiker from 'src/app/types/Gebruiker';
   templateUrl: './kandidaat.page.html',
   styleUrls: ['./kandidaat.page.scss'],
 })
-// export class KandidaatPage implements OnInit {
-
-//   id: string;
-//   kandidaat: Kandidaat;
-//   modal: HTMLIonModalElement;
-//   constructor( private route: ActivatedRoute,
-//     private apiService: BackendApiService,
-//     private modalController: ModalController) { }
-
-//   ngOnInit() {
-//     this.route.params.subscribe(async params => {
-//       this.id = params['id'];
-//       const x = await this.apiService.getKandidaatById(this.id);
-//       if (x) {
-//         this.kandidaat = x;
-//       }
-//     });
-//   }
-
-//   async showModal() {
-//     this.modal = await this.modalController.create({
-//       component: HintModalComponent,
-//       componentProps: {
-//         'kandidaatId': this.id
-//       }
-//     });
-//     await this.modal.present();
-//   }
-
-//   closeModal() {
-//     this.modal.dismiss();
-//   }
-// }
 
 export class KandidaatPage implements OnInit {
   id: string;

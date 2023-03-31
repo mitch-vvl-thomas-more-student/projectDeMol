@@ -48,4 +48,44 @@ export class KandidaatHintComponent implements OnInit {
     const tempBackground = Math.floor(Math.random() * this.colors.length);
     this.background = this.colors[tempBackground];
   }
+
+  async onThumbsUp() {
+    if (!this.hint.gestemdDoor.find(x => x === this.gebruiker.id)) {
+      this.hint.gestemdDoor.push(this.gebruiker.id);
+      this.hint.stemmenOmhoog = Number(this.hint.stemmenOmhoog + 1);
+      this.gebruiker.aantalStemmenOmhoog = Number(this.gebruiker.aantalStemmenOmhoog + 1);
+      this.#update(this.hint, this.gebruiker);
+    }
+    else {
+      this.#showAlert();
+    }
+  }
+
+  async onThumbsDown() {
+    if (!this.hint.gestemdDoor.find(x => x === this.gebruiker.id)) {
+      this.hint.gestemdDoor.push(this.gebruiker.id);
+      this.hint.stemmenOmlaag = Number(this.hint.stemmenOmlaag + 1);
+      this.gebruiker.aantalStemmenOmlaag = Number(this.gebruiker.aantalStemmenOmlaag + 1);
+      this.#update(this.hint, this.gebruiker);
+    }
+    else {
+      this.#showAlert();
+    }
+  }
+
+  #showAlert() {
+    alert('Uw stem werd reeds geregistreerd ... ');
+  }
+
+  async #update(hint?: Hint, gebruiker?: Gebruiker): Promise<void> {
+    if (hint) {
+      this.hint.id = this.hintid;
+      await this.apiService.updateHint(this.hint);
+
+      if (gebruiker) {
+        this.globalService.setGebruiker(this.gebruiker);
+        await this.apiService.updateGebruiker(this.gebruiker)
+      }
+    }
+  }
 }

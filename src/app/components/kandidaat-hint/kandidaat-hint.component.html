@@ -1,26 +1,36 @@
-  <ion-list *ngIf="hint && gebruiker">
-      <ion-item lines="none" clas="pb3">
-        <ion-avatar slot="start">
-          <div class="avatar" [style.background-color]="background">
-            {{gebruiker.voornaam.slice(0,1).toUpperCase()}}{{gebruiker.achternaam.slice(0,1).toUpperCase()}}
-          </div>
-        </ion-avatar>
-        <ion-label>
-          <h2 class="pb1">{{ gebruiker.voornaam }} {{ gebruiker.achternaam}}</h2>
-          <p>{{ hint.hint }}</p>
-          <ion-note class="pb1">{{ hint.datum | date:'dd.MM.yyyy' }}</ion-note>
-        </ion-label>
-      </ion-item>
-      <!-- <ng-container *ngFor="let opmerking of hint.opmerkingen">
-        <ion-item>
-          <ion-avatar slot="start">
-            <img src="{{ opmerking.auteur.avatarUrl }}" alt="{{ opmerking.auteur.naam }}">
-          </ion-avatar>
-          <ion-label>
-            <h3>{{ opmerking.auteur.naam }}</h3>
-            <p>{{ opmerking.tekst }}</p>
-            <ion-note>{{ opmerking.datum | date:'short' }}</ion-note>
-          </ion-label>
-        </ion-item>
-      </ng-container> -->
-  </ion-list>
+<ion-list *ngIf="hint && gebruiker" class="w100">
+  <ion-item lines="none" clas="pb3">
+    <ion-avatar slot="start">
+      <div class="avatar" [style.background-color]="background">
+        {{gebruiker.voornaam.slice(0,1).toUpperCase()}}{{gebruiker.achternaam.slice(0,1).toUpperCase()}}
+      </div>
+    </ion-avatar>
+    <ion-label>
+      <h2 class="pb1">{{ gebruiker.voornaam }} {{ gebruiker.achternaam}}</h2>
+      <p>{{ hint.hint }}</p>
+      <ion-note class="pb1">{{ hint.datum | date:'dd.MM.yyyy' }}</ion-note>
+    </ion-label>
+    <ion-buttons slot="end">
+      <ion-button (click)="onThumbsUp()" class="btn">
+        <ion-icon slot="icon-only" name="thumbs-up"></ion-icon>
+        <ion-badge *ngIf="hint.stemmenOmhoog" color="success" class="vote-badge">{{ hint.stemmenOmhoog }}</ion-badge>
+      </ion-button>
+      <ion-button (click)="onThumbsDown()" class="btn">
+        <ion-icon slot="icon-only" name="thumbs-down"></ion-icon>
+        <ion-badge *ngIf="hint.stemmenOmlaag" color="danger" class="vote-badge">{{ hint.stemmenOmlaag }}</ion-badge>
+      </ion-button>
+    </ion-buttons>    
+  </ion-item>
+  <!-- <ng-container *ngFor="let opmerking of hint.opmerkingen">
+    <ion-item>
+      <ion-avatar slot="start">
+        <img src="{{ opmerking.auteur.avatarUrl }}" alt="{{ opmerking.auteur.naam }}">
+      </ion-avatar>
+      <ion-label>
+        <h3>{{ opmerking.auteur.naam }}</h3>
+        <p>{{ opmerking.tekst }}</p>
+        <ion-note>{{ opmerking.datum | date:'short' }}</ion-note>
+      </ion-label>
+    </ion-item>
+  </ng-container> -->
+</ion-list>

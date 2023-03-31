@@ -13,6 +13,7 @@ export interface IHint {
     stemmenOmhoog: number;
     stemmenOmlaag: number;
     opmerkingen: Opmerking[];
+    gestemdDoor: string[];
 }
 
 export default class Hint implements IHint {
@@ -25,6 +26,8 @@ export default class Hint implements IHint {
     stemmenOmhoog: number;
     stemmenOmlaag: number;
     opmerkingen: Opmerking[];
+    gestemdDoor: string[];
+
 
     // stem(typeStem: TypeStem): void {
     //     if (typeStem === TypeStem.omhoog) {

@@ -143,19 +143,29 @@ export class BackendApiService {
 
   // Hints
   async addHint(hint: Hint): Promise<string> {
-    const fireStoreHint: any = { ...this.#parseHintData(hint) };
-    const docRef = await addDoc<IFireStoreHint>(
-      this.#getCollectionRef<IFireStoreHint>(Collections.hints),
-      fireStoreHint
-    );
-    return docRef.id;
+    try {
+      const fireStoreHint: any = { ...this.#parseHintData(hint) };
+      const docRef = await addDoc<IFireStoreHint>(
+        this.#getCollectionRef<IFireStoreHint>(Collections.hints),
+        fireStoreHint
+      );
+      return docRef.id;
+    } catch (err) {
+      return '';
+    }
+
   }
 
 
   async updateHint(hint: Hint): Promise<void> {
-    const hintDocRef = this.#getDocumentRef<IFireStoreHint>(Collections.hints, hint.id);
-    const hintData = this.#parseHintData(hint);
-    await updateDoc(hintDocRef, hintData);
+    try {
+      const hintDocRef = this.#getDocumentRef<IFireStoreHint>(Collections.hints, hint.id);
+      const hintData = this.#parseHintData(hint);
+      await updateDoc(hintDocRef, hintData);
+    } catch (err) {
+      console.log(err);
+    }
+
   }
 
   retrieveHints(): Observable<Hint[]> {
@@ -267,5 +277,5 @@ export class BackendApiService {
       return undefined;
     }
   }
-  
+
 }

@@ -8,3 +8,20 @@
     border-radius: 100%;
     color: white;
 }
+
+
+:host {             // host targets selector: 'home'
+    display: block;
+    left: 0;
+    width: 100%;    // takes parent width        
+}
+
+.vote-badge {
+    min-width: 20px;
+    font-size: 0.8em;
+  }
+
+.btn {
+    min-width: max-content;
+    max-width: 100%;
+}
