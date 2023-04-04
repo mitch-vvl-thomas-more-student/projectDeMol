@@ -47,9 +47,11 @@ export class BackendApiService {
   }
 
   async updateOpmerking(opmerking: Opmerking): Promise<void> {
-    const opmerkingDocRef = this.#getDocumentRef<IFireStoreOpmerking>(Collections.opmerkingen, opmerking.id);
-    const opmerkingData = this.#parseOpmerkingData(opmerking);
-    await updateDoc(opmerkingDocRef, opmerkingData);
+    if (opmerking.id !== undefined){
+      const opmerkingDocRef = this.#getDocumentRef<IFireStoreOpmerking>(Collections.opmerkingen, opmerking.id);
+      const opmerkingData = this.#parseOpmerkingData(opmerking);
+      await updateDoc(opmerkingDocRef, opmerkingData);
+    }
   }
 
   retrieve(): Observable<Opmerking[]> {

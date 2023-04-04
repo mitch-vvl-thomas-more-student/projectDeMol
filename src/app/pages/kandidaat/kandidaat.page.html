@@ -1,14 +1,15 @@
+<ion-content>
   <ion-grid>
     <ion-row>
       <ion-col>
         <app-kandidaat-card [kandidaat]="kandidaat"></app-kandidaat-card>
       </ion-col>
       <ion-col>
-          <ion-button (click)="showModal()" expand="full" class="pb1">Voeg een nieuwe hint toe</ion-button>
+        <ion-button (click)="showModal()" expand="full" class="pb1">Voeg een nieuwe hint toe</ion-button>
         <ion-item *ngIf="kandidaat?.hints.length === 0" class="pb1">
           <ion-text class="text-center">Er werden geen hints over {{ kandidaat?.voornaam }} gevonden.</ion-text>
         </ion-item>
-        <ion-list *ngIf="kandidaat?.hints.length > 0"  class="pb1">
+        <ion-list *ngIf="kandidaat?.hints.length > 0" class="pb1">
           <ion-item *ngFor="let hint of kandidaat?.hints">
             <app-kandidaat-hint [hintid]="hint"></app-kandidaat-hint>
           </ion-item>
@@ -16,3 +17,4 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+</ion-content>

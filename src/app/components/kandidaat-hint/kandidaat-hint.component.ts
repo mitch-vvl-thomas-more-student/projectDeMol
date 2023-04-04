@@ -4,6 +4,8 @@ import { BackendApiService } from 'src/app/services/backend-api.service';
 import { Component, Input, OnInit } from '@angular/core';
 import Hint from 'src/app/types/Hint';
 import { Collections } from 'src/app/enums/collections';
+import Opmerking from 'src/app/types/Opmerking';
+import Rating from 'src/app/types/Rating';
 
 @Component({
   selector: 'app-kandidaat-hint',
@@ -32,7 +34,12 @@ export class KandidaatHintComponent implements OnInit {
     "#f44336", // bright red
     "#9b59b6"  // bright purple
   ];
-  constructor(private apiService: BackendApiService, private globalService: GlobalsService) { }
+  showCommentInput: boolean = false;
+  newComment: string;
+  rating: Rating;
+
+  constructor(private apiService: BackendApiService, private globalService: GlobalsService) {
+  }
 
   async ngOnInit() {
     const temp = await this.apiService.getDocByRef<Hint>(this.hintid, Collections.hints) as Hint
@@ -47,30 +54,15 @@ export class KandidaatHintComponent implements OnInit {
     this.gebruiker = await this.apiService.getDocByRef<Gebruiker>(this.hint.plaatser, Collections.gebruikers) as Gebruiker
     const tempBackground = Math.floor(Math.random() * this.colors.length);
     this.background = this.colors[tempBackground];
+    this.rating = new Rating(this.hint, this.gebruiker, this.#showAlert.bind(this), this.#update.bind(this));
   }
 
   async onThumbsUp() {
-    if (!this.hint.gestemdDoor.find(x => x === this.gebruiker.id)) {
-      this.hint.gestemdDoor.push(this.gebruiker.id);
-      this.hint.stemmenOmhoog = Number(this.hint.stemmenOmhoog + 1);
-      this.gebruiker.aantalStemmenOmhoog = Number(this.gebruiker.aantalStemmenOmhoog + 1);
-      this.#update(this.hint, this.gebruiker);
-    }
-    else {
-      this.#showAlert();
-    }
+    this.rating.onThumbsUp();
   }
 
   async onThumbsDown() {
-    if (!this.hint.gestemdDoor.find(x => x === this.gebruiker.id)) {
-      this.hint.gestemdDoor.push(this.gebruiker.id);
-      this.hint.stemmenOmlaag = Number(this.hint.stemmenOmlaag + 1);
-      this.gebruiker.aantalStemmenOmlaag = Number(this.gebruiker.aantalStemmenOmlaag + 1);
-      this.#update(this.hint, this.gebruiker);
-    }
-    else {
-      this.#showAlert();
-    }
+    this.rating.onThumbsDown();
   }
 
   #showAlert() {
@@ -88,4 +80,16 @@ export class KandidaatHintComponent implements OnInit {
       }
     }
   }
+
+  onSubmitComment() {
+    const newOpmerking: Opmerking = {
+      plaatser: { ...this.gebruiker },
+      datum: new Date(),
+      tekst: this.newComment
+    }
+    this.hint.opmerkingen.push(newOpmerking);
+    this.newComment = '';
+    this.showCommentInput = false;
+  }
 }
+

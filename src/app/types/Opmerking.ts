@@ -6,30 +6,17 @@ export interface IFireStoreOpmerking {
 }
 
 export interface IOpmerking {
-    id: string; 
-    stemmenOmhoog: number;
-    stemmenOmlaag: number;
+    id?: string; 
     plaatser: Gebruiker;
     datum: Date;
+    tekst: string;
 }
 
 export default class Opmerking implements IOpmerking {
     constructor() { }
-    id: string; 
-    stemmenOmhoog: number;
-    stemmenOmlaag: number;
+    id?: string; 
     plaatser: Gebruiker;
     datum: Date;
-
-    stem(typeStem: TypeStem): void {
-        if (typeStem === TypeStem.omhoog) {
-            this.plaatser.aantalStemmenOmhoog += 1;
-            this.stemmenOmhoog += 1;
-        }
-        else if (typeStem === TypeStem.omlaag) {
-            this.plaatser.aantalStemmenOmlaag += 1;
-            this.stemmenOmlaag += 1;
-        }
-    }
+    tekst: string;
 
 }

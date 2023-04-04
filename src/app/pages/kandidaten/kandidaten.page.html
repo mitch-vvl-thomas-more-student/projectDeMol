@@ -1,3 +1,6 @@
-    <div *ngFor="let kandidaat of kandidaten">
-        <app-kandidaat-card [kandidaat]="kandidaat" class="kandidaatCard" [routerLink]="[kandidaat.id]"></app-kandidaat-card>
-    </div>
+    <ion-content>
+        <div *ngFor="let kandidaat of kandidaten">
+            <app-kandidaat-card [kandidaat]="kandidaat" class="kandidaatCard" [routerLink]="[kandidaat.id]"></app-kandidaat-card>
+        </div>
+    </ion-content>
+ 

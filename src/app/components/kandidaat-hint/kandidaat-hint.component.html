@@ -1,36 +1,56 @@
-<ion-list *ngIf="hint && gebruiker" class="w100">
-  <ion-item lines="none" clas="pb3">
-    <ion-avatar slot="start">
+<ion-grid *ngIf="hint && gebruiker" class="w100">
+  <ion-row>
+    <ion-col>
+      <ion-label class="hint-date">{{ hint.datum | date:'dd.MM.yyyy' }}</ion-label>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col sizeXs="2" sizeLg="1" class="avatarWrap">
       <div class="avatar" [style.background-color]="background">
-        {{gebruiker.voornaam.slice(0,1).toUpperCase()}}{{gebruiker.achternaam.slice(0,1).toUpperCase()}}
+        {{ gebruiker.voornaam.slice(0,1).toUpperCase() }}{{ gebruiker.achternaam.slice(0,1).toUpperCase() }}
       </div>
-    </ion-avatar>
-    <ion-label>
-      <h2 class="pb1">{{ gebruiker.voornaam }} {{ gebruiker.achternaam}}</h2>
-      <p>{{ hint.hint }}</p>
-      <ion-note class="pb1">{{ hint.datum | date:'dd.MM.yyyy' }}</ion-note>
-    </ion-label>
-    <ion-buttons slot="end">
-      <ion-button (click)="onThumbsUp()" class="btn">
+    </ion-col>
+    <ion-col>
+      <div class="hint-text">
+        <h5>{{ gebruiker.voornaam }} {{ gebruiker.achternaam}}</h5>
+        <span class="hint">{{ hint.hint }}</span>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row class="pt3">
+    <ion-col class="comment-container">
+      <ion-text class="comment-link" (click)="showCommentInput=true" *ngIf="!showCommentInput">Voeg een opmerking
+        toe</ion-text>
+    </ion-col>
+    <ion-col class="thumb-container">
+      <ion-button (click)="onThumbsUp()" class="thumb-button">
         <ion-icon slot="icon-only" name="thumbs-up"></ion-icon>
         <ion-badge *ngIf="hint.stemmenOmhoog" color="success" class="vote-badge">{{ hint.stemmenOmhoog }}</ion-badge>
       </ion-button>
-      <ion-button (click)="onThumbsDown()" class="btn">
+      <ion-button (click)="onThumbsDown()" class="thumb-button">
         <ion-icon slot="icon-only" name="thumbs-down"></ion-icon>
         <ion-badge *ngIf="hint.stemmenOmlaag" color="danger" class="vote-badge">{{ hint.stemmenOmlaag }}</ion-badge>
       </ion-button>
-    </ion-buttons>    
-  </ion-item>
-  <!-- <ng-container *ngFor="let opmerking of hint.opmerkingen">
-    <ion-item>
-      <ion-avatar slot="start">
-        <img src="{{ opmerking.auteur.avatarUrl }}" alt="{{ opmerking.auteur.naam }}">
-      </ion-avatar>
-      <ion-label>
-        <h3>{{ opmerking.auteur.naam }}</h3>
-        <p>{{ opmerking.tekst }}</p>
-        <ion-note>{{ opmerking.datum | date:'short' }}</ion-note>
-      </ion-label>
-    </ion-item>
-  </ng-container> -->
-</ion-list>
+    </ion-col>
+  </ion-row>
+<div *ngIf="hint.opmerkingen.length > 0">
+  <ng-container *ngFor="let opmerking of hint.opmerkingen">
+        <h6> {{ opmerking.plaatser?.voornaam?.slice(0,1).toUpperCase() }}{{
+          opmerking.plaatser?.voornaam?.slice(1).toLowerCase() }} {{
+          opmerking.plaatser?.achternaam?.slice(0,1).toUpperCase() }}
+        </h6>
+        <p class="small">{{ opmerking.tekst }}</p>
+        <ion-note class="pb1" class="date-small">{{ opmerking.datum | date:'dd.MM.yyyy' }}</ion-note>
+  </ng-container>
+</div>
+<ion-grid>
+  <ion-row *ngIf="showCommentInput">
+    <ion-col>
+      <ion-item lines="none">
+        <ion-textarea [(ngModel)]="newComment" placeholder="Plaats hier je opmerking" autoGrow="true"></ion-textarea>
+      </ion-item>
+      <ion-button fill="outline" color="danger" (click)="showCommentInput=false">Annuleren</ion-button>
+      <ion-button (click)="onSubmitComment()">Opmerking toevoegen</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-grid>

@@ -18,7 +18,7 @@ export class YoutubeApiService {
       .set('part', 'snippet')
       .set('type', 'video')
       .set('order', 'relevance')
-      .set('maxResults', 9)
+      .set('maxResults', 6)
       .set('publishedAfter', '2023-01-01T00:00:00Z')
       .set('q', searchQuery)
       .set('key', environment.youTubeApiKey);

@@ -11,18 +11,13 @@ import Gebruiker from 'src/app/types/Gebruiker';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  kandidaten: Kandidaat[];
   gebruiker: Gebruiker;
 
   constructor(private dataService: BackendApiService, 
-    private globalsService: GlobalsService, 
-    private authService: AuthService) {
+    private globalsService: GlobalsService, private authService: AuthService) {
   }
   async ngOnInit() {
-
     this.gebruiker = await this.globalsService.getGebruiker();
-   // this.kandidaten = await this.globalsService.getKandidaten();
-    console.log(this.gebruiker);   
   }
 
  async update(){

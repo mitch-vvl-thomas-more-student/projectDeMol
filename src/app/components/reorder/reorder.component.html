@@ -1,12 +1,14 @@
-<ion-list>
-  <!-- The reorder gesture is disabled by default, enable it to drag and drop items -->
-  <!-- Casting $event to $any is a temporary fix for this bug https://github.com/ionic-team/ionic-framework/issues/24245 -->
+<ion-list *ngIf="kandidaten">
+  <ion-text>Vesleep de verdachten om de volgorde te wijzigen.</ion-text>
+  <ion-label position="stacked" class="stacked-label">Verdachten</ion-label>
+
   <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
-    <ion-item *ngFor="let kandidaat of kandidaten">
+    <ion-item *ngFor="let kandidaat of kandidaten; let i = index" [routerLink]="['/tabs/kandidaten', kandidaat?.id]">
       <ion-label>
-        {{ kandidaat?.voornaam}}
+        {{ i + 1 }}. {{ kandidaat?.voornaam }}
       </ion-label>
       <ion-reorder slot="end"></ion-reorder>
+      <ion-icon name="open" slot="end" title="Open het profiel van {{kandidaat?.voornaam}}"></ion-icon>
     </ion-item>
   </ion-reorder-group>
 </ion-list>

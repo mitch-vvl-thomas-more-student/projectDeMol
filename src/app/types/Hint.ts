@@ -28,15 +28,14 @@ export default class Hint implements IHint {
     opmerkingen: Opmerking[];
     gestemdDoor: string[];
 
+    addComment(comment: Opmerking): void {
+        this.opmerkingen.push(comment);
+    }
 
-    // stem(typeStem: TypeStem): void {
-    //     if (typeStem === TypeStem.omhoog) {
-    //         this.plaatser.aantalStemmenOmhoog += 1;
-    //         this.stemmenOmhoog += 1;
-    //     }
-    //     else if (typeStem === TypeStem.omlaag) {
-    //         this.plaatser.aantalStemmenOmlaag += 1;
-    //         this.stemmenOmlaag += 1;
-    //     }
-    // }
+    deleteComment(comment: Opmerking): void {
+        const index = this.opmerkingen.indexOf(comment);
+        if (index !== -1) {
+            this.opmerkingen.splice(index, 1);
+        }
+    }
 }

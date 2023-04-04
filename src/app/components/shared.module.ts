@@ -9,6 +9,7 @@ import { PhoneVerificationComponent } from './phone-verification/phone-verificat
 import { KandidaatCardComponent } from './kandidaat-card/kandidaat-card.component';
 import { HintModalComponent } from './hint-modal/hint-modal.component';
 import { ReorderComponent } from './reorder/reorder.component';
+import { FormsModule } from '@angular/forms';
 // import { KandidaatPage } from '../pages/kandidaat/kandidaat.page';
 
 // @NgModule({
@@ -51,6 +52,7 @@ import { ReorderComponent } from './reorder/reorder.component';
     KandidaatHintComponent
     ],
   imports: [
+    FormsModule,
     CommonModule,
     IonicModule,
     RouterModule.forChild([]) // You can add routes specific to the shared module here

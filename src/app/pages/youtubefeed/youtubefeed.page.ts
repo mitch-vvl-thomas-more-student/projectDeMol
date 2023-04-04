@@ -21,38 +21,7 @@ export class YoutubefeedPage implements OnInit {
     });
 
   }
-
-  // ngOnInit() {
-  //   this.youtubeService.searchVideos('de mol belgie 2023', 'CAoQAA').subscribe((res) => {
-  //     this.youtubeResults = res;
-  //     console.log(res);
-  //   });
-  // }
-
-  // ngOnInit() {
-  //   this.loadVideos();
-  // }
   
-  // loadVideos(pageToken?: string) {
-  //   this.youtubeService.searchVideos('de mol belgie 2023', pageToken).subscribe((res) => {
-  //     if (this.youtubeResults) {
-  //       this.youtubeResults.videos.push(...res.videos); // Append the new videos to the existing ones
-  //     } else {
-  //       this.youtubeResults = res; // Initialize the results if they don't exist yet
-  //     }
-      
-  //     console.log(res);
-      
-  //     if (res.nextPageToken) {
-  //       this.loadVideos(res.nextPageToken); // Load the next page of results
-  //     }
-  //   });
-  // }
-  
-  // setVideoUrl(videoId: string) {
-  //   this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${videoId}`);
-  // }
-
   ngOnInit() {
     this.searchVideos();
   }

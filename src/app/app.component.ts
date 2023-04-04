@@ -5,6 +5,7 @@ import { AuthService } from './services/auth.service';
 import { BackendApiService } from './services/backend-api.service';
 import { GlobalsService } from './services/globals.service';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -13,18 +14,18 @@ import { GlobalsService } from './services/globals.service';
 export class AppComponent {
   constructor(private dataService: BackendApiService,
     private authService: AuthService,
-    private globalService: GlobalsService) { }
+    private globalService: GlobalsService, private service: BackendApiService) { }
 
   ngOnInit() {
     this.authService.currentUser.subscribe(user => {
       if (user?.email)
         this.dataService.retrieveGebruikerByEmail(user?.email)
-          .subscribe((res: Gebruiker[]) => {
-            this.globalService.setGebruiker(res[0]);
-          }).unsubscribe()
+          .subscribe((res: Gebruiker[]) => this.globalService.setGebruiker(res[0]))
+          .unsubscribe()
     });
     this.dataService.retrieveKandidaats()
-      .subscribe((res: Kandidaat[]) => this.globalService.setKandidaten(res));
+      .subscribe((res: Kandidaat[]) => this.globalService.setKandidaten(res))
+      .unsubscribe();
   }
 
 }

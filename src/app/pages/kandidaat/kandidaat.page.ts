@@ -5,7 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Kandidaat from 'src/app/types/Kandidaat';
 import { ModalController } from '@ionic/angular';
 import { HintModalComponent } from 'src/app/components/hint-modal/hint-modal.component';
-import Gebruiker from 'src/app/types/Gebruiker';
 
 
 @Component({
@@ -49,7 +48,6 @@ export class KandidaatPage implements OnInit {
   }
 
   navigate(path: string){
-    console.log(path)
     this.router.navigate([path])
   }
 }

@@ -162,6 +162,8 @@ export class AuthService {
             gebruiker.email = user.email || '';
             gebruiker.voornaam = (user.displayName || '').split(' ')[0] || '';
             gebruiker.achternaam = (user.displayName || '').split(' ', 2)[1] || '';
+            const kandidaten = await this.globalService.getKandidaten();
+            kandidaten.map(kandidaat => gebruiker.verdachten.push(kandidaat.id));
             await this.fireStore.addGebruiker(gebruiker);
             await this.globalService.setGebruiker(gebruiker);
           } else {

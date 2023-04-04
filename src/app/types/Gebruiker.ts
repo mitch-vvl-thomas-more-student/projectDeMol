@@ -1,8 +1,3 @@
-import Groep from "./Groep";
-import Hint from "./Hint";
-import Kandidaat from "./Kandidaat";
-
-
 export interface IFireStoreGebruiker {
     gebruiker: Gebruiker;
 }
@@ -17,7 +12,7 @@ export interface IGebruiker {
     groepen: string[];
     aantalStemmenOmhoog: number;
     aantalStemmenOmlaag: number;
-    verdachten: Kandidaat[];
+    verdachten: string[];
 }
 
 export default class Gebruiker implements IGebruiker {
@@ -31,5 +26,5 @@ export default class Gebruiker implements IGebruiker {
     groepen: string[];
     aantalStemmenOmhoog: number;
     aantalStemmenOmlaag: number;
-    verdachten: Kandidaat[];
+    verdachten: string[];
 }
