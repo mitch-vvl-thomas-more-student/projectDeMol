@@ -6,6 +6,7 @@ import Hint from 'src/app/types/Hint';
 import { Collections } from 'src/app/enums/collections';
 import Opmerking from 'src/app/types/Opmerking';
 import Rating from 'src/app/types/Rating';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-kandidaat-hint',
@@ -13,8 +14,7 @@ import Rating from 'src/app/types/Rating';
   styleUrls: ['./kandidaat-hint.component.scss'],
 })
 export class KandidaatHintComponent implements OnInit {
-  @Input() hintid: any;
-  hint: Hint;
+  @Input() hint: Hint;
   gebruiker: Gebruiker;
   background: string;
   colors: string[] = [
@@ -38,19 +38,12 @@ export class KandidaatHintComponent implements OnInit {
   newComment: string;
   rating: Rating;
 
-  constructor(private apiService: BackendApiService, private globalService: GlobalsService) {
+  constructor(private apiService: BackendApiService, private globalService: GlobalsService, private router: Router,
+  ) {
+
   }
 
   async ngOnInit() {
-    const temp = await this.apiService.getDocByRef<Hint>(this.hintid, Collections.hints) as Hint
-    if (temp) {
-      temp.plaatser = JSON.parse(temp.plaatser)
-      temp.kandidaat = JSON.parse(temp.kandidaat)
-      const x = temp.datum as any;
-      const date = new Date(x.seconds * 1000);
-      temp.datum = date;
-    }
-    this.hint = temp;
     this.gebruiker = await this.apiService.getDocByRef<Gebruiker>(this.hint.plaatser, Collections.gebruikers) as Gebruiker
     const tempBackground = Math.floor(Math.random() * this.colors.length);
     this.background = this.colors[tempBackground];
@@ -58,11 +51,13 @@ export class KandidaatHintComponent implements OnInit {
   }
 
   async onThumbsUp() {
-    this.rating.onThumbsUp();
+    const loggedIn = await this.globalService.getGebruiker();
+    !loggedIn.email ? this.#notLoggedIn() : this.rating.onThumbsUp();
   }
 
   async onThumbsDown() {
-    this.rating.onThumbsDown();
+    const loggedIn = await this.globalService.getGebruiker();
+    !loggedIn.email ? this.#notLoggedIn() : this.rating.onThumbsDown();
   }
 
   #showAlert() {
@@ -71,7 +66,6 @@ export class KandidaatHintComponent implements OnInit {
 
   async #update(hint?: Hint, gebruiker?: Gebruiker): Promise<void> {
     if (hint) {
-      this.hint.id = this.hintid;
       await this.apiService.updateHint(this.hint);
 
       if (gebruiker) {
@@ -90,6 +84,23 @@ export class KandidaatHintComponent implements OnInit {
     this.hint.opmerkingen.push(newOpmerking);
     this.newComment = '';
     this.showCommentInput = false;
+  }
+
+  #navigate(path: string) {
+    this.router.navigate([path])
+  }
+
+  #notLoggedIn() {
+    const ok = confirm('Gelieve in te loggen om een hint toe the voegen');
+    if (ok) {
+      this.#navigate('login')
+    }
+    return;
+  }
+
+  async fnShowCommentInput(){
+    const loggedIn = await this.globalService.getGebruiker();
+    !loggedIn.email ? this.#notLoggedIn() : this.showCommentInput = true;
   }
 }
 

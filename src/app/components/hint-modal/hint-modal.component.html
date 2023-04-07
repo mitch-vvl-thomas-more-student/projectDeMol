@@ -17,6 +17,10 @@
       placeholder="Plaats hier je tip over {{ kandidaat?.voornaam }}"
       required auto-grow autofocus></ion-textarea>
     </ion-item>
+    <ion-item>
+      <ion-label>Deel deze hint publiek</ion-label>
+      <ion-checkbox [(ngModel)]="isPubliek"></ion-checkbox>
+    </ion-item>
   </ion-list>
 </ion-content>
 

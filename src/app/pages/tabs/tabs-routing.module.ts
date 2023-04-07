@@ -19,12 +19,10 @@ const routes: Routes = [
       {
         path: 'kandidaten',
         loadChildren: () => import('./../../pages/kandidaten/kandidaten.module').then(m => m.KandidatenPageModule),
-        ...canActivate(redirectUnauthorizedToLogin)
       },
       {
         path: 'kandidaten/:id',
         loadChildren: () => import('./../../pages/kandidaat/kandidaat.module').then( m => m.KandidaatPageModule),
-        ...canActivate(redirectUnauthorizedToLogin)
       },
       {
         path: 'youtubefeed',

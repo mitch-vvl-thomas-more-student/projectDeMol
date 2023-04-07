@@ -14,6 +14,7 @@ export interface IHint {
     stemmenOmlaag: number;
     opmerkingen: Opmerking[];
     gestemdDoor: string[];
+    isPubliek: boolean;
 }
 
 export default class Hint implements IHint {
@@ -27,6 +28,7 @@ export default class Hint implements IHint {
     stemmenOmlaag: number;
     opmerkingen: Opmerking[];
     gestemdDoor: string[];
+    isPubliek: boolean;
 
     addComment(comment: Opmerking): void {
         this.opmerkingen.push(comment);

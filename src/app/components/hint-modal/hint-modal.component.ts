@@ -20,6 +20,7 @@ export class HintModalComponent {
   hint: Hint = new Hint();
   tip: string = '';
   disable: boolean = true;
+  isPubliek: boolean = true;
   constructor(private modalController: ModalController, 
     private backEndApiService: BackendApiService,
     private globalService: GlobalsService) { }
@@ -38,6 +39,7 @@ export class HintModalComponent {
     newHint.stemmenOmhoog = 0;
     newHint.stemmenOmlaag = 0;
     newHint.opmerkingen = [];
+    newHint.isPubliek = this.isPubliek;
     this.hint = new Hint(); // Reset the form
     const fireStoreHintId = await this.backEndApiService.addHint(newHint);
     if (fireStoreHintId.length > 0){

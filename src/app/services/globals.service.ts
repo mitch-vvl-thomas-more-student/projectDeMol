@@ -2,6 +2,7 @@ import Gebruiker from 'src/app/types/Gebruiker';
 import Kandidaat from 'src/app/types/Kandidaat';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { RouterModule } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -23,18 +24,30 @@ export class GlobalsService {
     });
   }
 
+  // async getGebruiker(): Promise<Gebruiker> {
+  //   return new Promise((resolve) => {
+  //     if (this.#gebruiker) {
+  //       resolve(this.#gebruiker);
+  //     } else {
+  //       const subscription = this.#gebruikerChange.subscribe((gebruiker: Gebruiker) => {
+  //         resolve(gebruiker);
+  //         subscription.unsubscribe();
+  //       });
+  //     }
+  //   });
+  // }
+
   async getGebruiker(): Promise<Gebruiker> {
     return new Promise((resolve) => {
       if (this.#gebruiker) {
         resolve(this.#gebruiker);
       } else {
-        const subscription = this.#gebruikerChange.subscribe((gebruiker: Gebruiker) => {
-          resolve(gebruiker);
-          subscription.unsubscribe();
-        });
+        resolve({} as Gebruiker);
       }
     });
   }
+  
+  
 
   async setKandidaten(kandidaten: Kandidaat[]): Promise<void> {
     return new Promise((resolve) => {

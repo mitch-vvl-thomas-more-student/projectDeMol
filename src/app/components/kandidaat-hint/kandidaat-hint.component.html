@@ -1,7 +1,7 @@
 <ion-grid *ngIf="hint && gebruiker" class="w100">
   <ion-row>
     <ion-col>
-      <ion-label class="hint-date">{{ hint.datum | date:'dd.MM.yyyy' }}</ion-label>
+      <ion-label class="hint-date">{{ hint.datum.toDate() | date:'dd.MM.yyyy' }}</ion-label>
     </ion-col>
   </ion-row>
   <ion-row>
@@ -19,7 +19,7 @@
   </ion-row>
   <ion-row class="pt3">
     <ion-col class="comment-container">
-      <ion-text class="comment-link" (click)="showCommentInput=true" *ngIf="!showCommentInput">Voeg een opmerking
+      <ion-text class="comment-link" (click)="fnShowCommentInput()" *ngIf="!showCommentInput">Voeg een opmerking
         toe</ion-text>
     </ion-col>
     <ion-col class="thumb-container">
@@ -40,7 +40,7 @@
           opmerking.plaatser?.achternaam?.slice(0,1).toUpperCase() }}
         </h6>
         <p class="small">{{ opmerking.tekst }}</p>
-        <ion-note class="pb1" class="date-small">{{ opmerking.datum | date:'dd.MM.yyyy' }}</ion-note>
+        <ion-note class="pb1" class="date-small">{{ opmerking.datum.toDate() | date:'dd.MM.yyyy' }}</ion-note>
   </ng-container>
 </div>
 <ion-grid>

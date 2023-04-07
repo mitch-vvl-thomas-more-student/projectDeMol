@@ -1,4 +1,4 @@
-<ion-content>
+<!-- <ion-content>
   <ion-grid>
     <ion-row>
       <ion-col>
@@ -12,6 +12,42 @@
         <ion-list *ngIf="kandidaat?.hints.length > 0" class="pb1">
           <ion-item *ngFor="let hint of kandidaat?.hints">
             <app-kandidaat-hint [hintid]="hint"></app-kandidaat-hint>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content> -->
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <app-kandidaat-card [kandidaat]="kandidaat"></app-kandidaat-card>
+      </ion-col>
+      <ion-col>
+        <ion-button (click)="showModal()" expand="full" class="pb1">Voeg een nieuwe hint toe</ion-button>
+        <ion-item *ngIf="hints.length === 0" class="pb1">
+          <ion-text class="text-center">Er werden geen hints over {{ kandidaat?.voornaam }} gevonden.</ion-text>
+        </ion-item>
+        <ion-item *ngIf="hints.length > 0 && publiekeHints.length === 0" class="pb1">
+          <ion-text class="text-center">Er werden geen publieke hints over {{ kandidaat?.voornaam }}
+            gevonden.</ion-text>
+        </ion-item>
+        <ion-list *ngIf="publiekeHints.length > 0" class="pb1">
+          <ion-list-header color="warning">
+            <ion-label>Publieke hints</ion-label>
+          </ion-list-header>
+          <ion-item *ngFor="let hint of publiekeHints">
+            <app-kandidaat-hint [hint]="hint"></app-kandidaat-hint>
+          </ion-item>
+        </ion-list>
+        <ion-list *ngIf="privateHints.length > 0">
+          <ion-list-header color="tertiary">
+            <ion-label>Je private hints</ion-label>
+          </ion-list-header>
+          <ion-item *ngFor="let hint of privateHints">
+            <app-kandidaat-hint [hint]="hint"></app-kandidaat-hint>
           </ion-item>
         </ion-list>
       </ion-col>

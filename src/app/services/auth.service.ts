@@ -147,7 +147,7 @@ export class AuthService {
 
     if (isAuthenticated && currentUrl === '/login') {
 
-      await this.router.navigate(['tabs', 'home']);
+      await this.router.navigate(['tabs', 'kandidaten']);
     } else if (!isAuthenticated && currentUrl !== '/login') {
       await this.router.navigate(['login']);
     }

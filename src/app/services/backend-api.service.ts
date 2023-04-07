@@ -182,15 +182,18 @@ export class BackendApiService {
       , { idField: 'id' });
   }
 
+  retrieveHintByKandidaatId(id: string): Observable<Hint[]> {
+    return collectionData<Hint>(
+      query<Hint>(
+        this.#getCollectionRef(Collections.hints), where('kandidaat', '==', id)
+      )
+      , { idField: 'id' });
+  }
+
   #parseHintData(hint: Hint): any {
-    const {
-      plaatser,
-      kandidaat,
-      opmerkingen, ...hintData } = hint;
+    const { opmerkingen, ...hintData } = hint;
     return {
       ...hintData,
-      plaatser: JSON.stringify(plaatser),
-      kandidaat: JSON.stringify(kandidaat),
       opmerkingen: JSON.parse(JSON.stringify(opmerkingen))
     };
   }
