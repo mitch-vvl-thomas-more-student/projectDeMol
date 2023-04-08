@@ -30,6 +30,7 @@
     "@ionic/angular": "^6.1.9",
     "angular-youtube-embed": "^1.3.2",
     "firebase": "^9.18.0",
+    "firebase-tools": "^11.25.3",
     "ionicons": "^7.1.0",
     "rxfire": "^6.0.3",
     "rxjs": "~7.5.0",

@@ -24,30 +24,27 @@ export class GlobalsService {
     });
   }
 
-  // async getGebruiker(): Promise<Gebruiker> {
-  //   return new Promise((resolve) => {
-  //     if (this.#gebruiker) {
-  //       resolve(this.#gebruiker);
-  //     } else {
-  //       const subscription = this.#gebruikerChange.subscribe((gebruiker: Gebruiker) => {
-  //         resolve(gebruiker);
-  //         subscription.unsubscribe();
-  //       });
-  //     }
-  //   });
-  // }
-
   async getGebruiker(): Promise<Gebruiker> {
-    return new Promise((resolve) => {
-      if (this.#gebruiker) {
-        resolve(this.#gebruiker);
-      } else {
+    if (this.#gebruiker) {
+      return Promise.resolve(this.#gebruiker);
+    }
+  
+    return new Promise<Gebruiker>((resolve) => {
+      const subscription = this.#gebruikerChange.subscribe((gebruiker: Gebruiker) => {
+        resolve(gebruiker);
+        subscription.unsubscribe();
+      });
+  
+      const timeout = setTimeout(() => {
+        subscription.unsubscribe();
         resolve({} as Gebruiker);
-      }
+      }, 3000);
     });
   }
   
   
+
+
 
   async setKandidaten(kandidaten: Kandidaat[]): Promise<void> {
     return new Promise((resolve) => {
