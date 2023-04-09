@@ -100,7 +100,6 @@ export class BackendApiService {
   }
 
   #parseGebruikerData(gebruiker: Gebruiker): any {
-    console.log(gebruiker)
     const { geplaatsteHints, groepen, verdachten, ...gebruikerData } = gebruiker;
     return {
       ...gebruikerData,

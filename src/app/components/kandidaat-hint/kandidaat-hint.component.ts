@@ -39,9 +39,7 @@ export class KandidaatHintComponent implements OnInit {
   rating: Rating;
 
   constructor(private apiService: BackendApiService, private globalService: GlobalsService, private router: Router,
-  ) {
-
-  }
+  ) { }
 
   async ngOnInit() {
     this.gebruiker = await this.apiService.getDocByRef<Gebruiker>(this.hint.plaatser, Collections.gebruikers) as Gebruiker
@@ -98,7 +96,7 @@ export class KandidaatHintComponent implements OnInit {
     return;
   }
 
-  async fnShowCommentInput(){
+  async fnShowCommentInput() {
     const loggedIn = await this.globalService.getGebruiker();
     !loggedIn.email ? this.#notLoggedIn() : this.showCommentInput = true;
   }

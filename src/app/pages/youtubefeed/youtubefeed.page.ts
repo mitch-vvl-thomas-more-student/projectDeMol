@@ -33,7 +33,6 @@ export class YoutubefeedPage implements OnInit {
       } else {
         this.youtubeResults = res;
       }
-      console.log(res);
     });
   }
 

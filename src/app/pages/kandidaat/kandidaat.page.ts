@@ -133,7 +133,6 @@ export class KandidaatPage implements OnInit {
     await modal.present();
     const { data } = await modal.onWillDismiss();
     
-    console.log(data)
     if (data && data.hint) {
       this.kandidaat.hints.push(data.hint);
       this.publiekeHints = this.hints.filter((hint : Hint) => hint.isPubliek === true);

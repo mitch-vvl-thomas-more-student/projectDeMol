@@ -19,7 +19,11 @@ export class AuthService {
   #verificationId: string = '';
   #authUnsubscribe: Unsubscribe;
 
-  constructor(private auth: Auth, private router: Router, private fireStore: BackendApiService, private globalService: GlobalsService) {
+  constructor(private auth: Auth,
+    private router: Router,
+    private fireStore: BackendApiService,
+    private globalService: GlobalsService,
+    private apiService: BackendApiService) {
     this.#authUnsubscribe = this.auth.onAuthStateChanged((user: User | null) => {
       if (user !== null) {
         this.setCurrentUser(user);
@@ -117,14 +121,11 @@ export class AuthService {
 
     this.#verificationId = verificationId;
   }
-
-
   async signInWithPhoneNumber(verificationCode: string): Promise<void> {
     const credential =
       PhoneAuthProvider.credential(this.#verificationId, verificationCode);
     await signInWithCredential(this.auth, credential);
   }
-
   async updateDisplayName(displayName: string): Promise<void> {
     if (this.auth.currentUser) {
       await updateProfile(this.auth.currentUser, { displayName });
@@ -155,17 +156,21 @@ export class AuthService {
 
   private async registerCurrentUserAsGebruiker(user: User | null): Promise<void> {
     if (user) {
-      this.fireStore.retrieveGebruikerByEmail(user?.email as string)
+      this.fireStore.retrieveGebruikerByEmail(user.email as string)
         .subscribe(async (res) => {
-          if (res.length === 0) {
+          if (res.length == 0) {
             const gebruiker = new Gebruiker();
             gebruiker.email = user.email || '';
-            gebruiker.voornaam = (user.displayName || '').split(' ')[0] || '';
-            gebruiker.achternaam = (user.displayName || '').split(' ', 2)[1] || '';
-            const kandidaten = await this.globalService.getKandidaten();
-            kandidaten.map(kandidaat => gebruiker.verdachten.push(kandidaat.id));
-            await this.fireStore.addGebruiker(gebruiker);
-            await this.globalService.setGebruiker(gebruiker);
+            const parts = (user.displayName || '').split(' ');
+            gebruiker.voornaam = parts[0] || '';
+            gebruiker.achternaam = parts.slice(1).join(' ');
+            gebruiker.verdachten = [];
+            this.apiService.retrieveKandidaats().subscribe(async (kandidaten) => {
+              console.log(kandidaten, gebruiker)
+              kandidaten.map(kandidaat => gebruiker.verdachten?.push(kandidaat.id));
+              await this.fireStore.addGebruiker(gebruiker);
+              await this.globalService.setGebruiker(gebruiker);
+            });
           } else {
             await this.globalService.setGebruiker(res[0])
           }

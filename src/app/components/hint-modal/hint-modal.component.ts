@@ -40,6 +40,7 @@ export class HintModalComponent {
     newHint.stemmenOmlaag = 0;
     newHint.opmerkingen = [];
     newHint.isPubliek = this.isPubliek;
+    newHint.gestemdDoor = [];
     this.hint = new Hint(); // Reset the form
     const fireStoreHintId = await this.backEndApiService.addHint(newHint);
     if (fireStoreHintId.length > 0){

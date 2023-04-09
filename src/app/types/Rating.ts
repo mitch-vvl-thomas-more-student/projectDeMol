@@ -15,7 +15,6 @@ export default class Rating {
   
     async onThumbsUp() {
       if (!this.hint.gestemdDoor.find(x => x === this.gebruiker.id)) {
-        console.log(this.gebruiker)
         this.hint.gestemdDoor.push(this.gebruiker.id);
         this.hint.stemmenOmhoog = Number(this.hint.stemmenOmhoog + 1);
         this.gebruiker.aantalStemmenOmhoog = Number(this.gebruiker.aantalStemmenOmhoog + 1);
