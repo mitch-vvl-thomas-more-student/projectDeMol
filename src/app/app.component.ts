@@ -4,6 +4,8 @@ import { Component } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { BackendApiService } from './services/backend-api.service';
 import { GlobalsService } from './services/globals.service';
+import { Platform } from '@ionic/angular';
+import { SplashScreen } from '@capacitor/splash-screen';
 
 
 @Component({
@@ -14,7 +16,16 @@ import { GlobalsService } from './services/globals.service';
 export class AppComponent {
   constructor(private dataService: BackendApiService,
     private authService: AuthService,
-    private globalService: GlobalsService, private service: BackendApiService) { }
+    private globalService: GlobalsService, 
+    private platform: Platform
+    ) { 
+
+      SplashScreen.show({
+        showDuration: 2000,
+        autoHide: true,
+      });
+
+    }
 
   ngOnInit() {
     this.authService.currentUser.subscribe(user => {

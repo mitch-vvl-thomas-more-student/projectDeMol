@@ -1,18 +1,10 @@
 export interface YoutubeApiResponse {
-  kind: string
-  etag: string
-  nextPageToken: string
-  regionCode: string
+  videos: Video[]
   pageInfo: PageInfo
-  items: Item[]
+  nextPageToken: string
 }
 
-export interface PageInfo {
-  totalResults: number
-  resultsPerPage: number
-}
-
-export interface Item {
+export interface Video {
   kind: string
   etag: string
   id: Id
@@ -37,12 +29,29 @@ export interface Snippet {
 
 export interface Thumbnails {
   default: Default
-  medium: Default
-  high: Default
+  medium: Medium
+  high: High
 }
 
 export interface Default {
   url: string
   width: number
   height: number
+}
+
+export interface Medium {
+  url: string
+  width: number
+  height: number
+}
+
+export interface High {
+  url: string
+  width: number
+  height: number
+}
+
+export interface PageInfo {
+  totalResults: number
+  resultsPerPage: number
 }

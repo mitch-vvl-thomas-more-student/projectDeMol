@@ -43,6 +43,9 @@ dependencies:
   '@capacitor/keyboard':
     specifier: 4.1.1
     version: 4.1.1(@capacitor/core@4.7.1)
+  '@capacitor/splash-screen':
+    specifier: ^4.2.0
+    version: 4.2.0(@capacitor/core@4.7.1)
   '@capacitor/status-bar':
     specifier: 4.1.1
     version: 4.1.1(@capacitor/core@4.7.1)
@@ -1961,6 +1964,14 @@ packages:
 
   /@capacitor/keyboard@4.1.1(@capacitor/core@4.7.1):
     resolution: {integrity: sha512-fdC7u2TeG4BqwC0LnPnhOdya31C4QKdhk/8pc5lxI9X5jyYAetMCN1kEkKa7KREw4DdzXotJt27B9BXxAza6og==}
+    peerDependencies:
+      '@capacitor/core': ^4.0.0
+    dependencies:
+      '@capacitor/core': 4.7.1
+    dev: false
+
+  /@capacitor/splash-screen@4.2.0(@capacitor/core@4.7.1):
+    resolution: {integrity: sha512-XtGqM7J/yVEl/tKksKa7l1B6IDzhq4JJkadRuT8ohf/N7fD/1z45+id/4twM2Vnsxazh1fur2gq8rma7HaXMEw==}
     peerDependencies:
       '@capacitor/core': ^4.0.0
     dependencies:

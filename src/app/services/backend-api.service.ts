@@ -99,7 +99,7 @@ export class BackendApiService {
       , { idField: 'id' });
   }
 
-  #parseGebruikerData(gebruiker: Gebruiker): any {
+  #parseGebruikerData(gebruiker: Gebruiker) : any {
     const { geplaatsteHints, groepen, verdachten, ...gebruikerData } = gebruiker;
     return {
       ...gebruikerData,

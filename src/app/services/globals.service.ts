@@ -38,7 +38,7 @@ export class GlobalsService {
       const timeout = setTimeout(() => {
         subscription.unsubscribe();
         resolve({} as Gebruiker);
-      }, 3000);
+      }, 500);
     });
   }
   

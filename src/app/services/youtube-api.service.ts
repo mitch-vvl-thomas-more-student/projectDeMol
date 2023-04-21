@@ -1,8 +1,10 @@
+import { Video, YoutubeApiResponse } from './../interfaces/youtubeApiResponse';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { map } from 'rxjs/operators';
+import { catchError, map, retry } from 'rxjs/operators';
+import { PageInfo } from '../interfaces/youtubeApiResponse';
 
 
 @Injectable({
@@ -10,10 +12,9 @@ import { map } from 'rxjs/operators';
 })
 export class YoutubeApiService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-
-  searchVideos(searchQuery: string, nextPageToken?: string): Observable<any> {
+  searchVideos(searchQuery: string, nextPageToken?: string): Observable<YoutubeApiResponse> {
     let params = new HttpParams()
       .set('part', 'snippet')
       .set('type', 'video')
@@ -28,20 +29,27 @@ export class YoutubeApiService {
     }
 
     return this.http
-      .get( `${environment.youTubeBaseUrl}/search`, { params })
+      .get(`${environment.youTubeBaseUrl}/search`, { params })
       .pipe(
-        map((response: { [x: string]: any; }) => {
-          const videos = response['items'];
-          const pageInfo = response['pageInfo'];
-          const nextPageToken = response['nextPageToken'];
+        retry(3),
+        catchError(error => {
+          console.error('An error occurred while searching for videos: ', error);
+          return of(undefined)
+        }),
+        map((response: any) => {
+          console.log(response)
+          const videos: Video[] = response['items'];
+          const pageInfo: PageInfo = response['pageInfo'];
+          const nextPageToken: string = response['nextPageToken'];
 
           return {
             videos: videos,
             pageInfo: pageInfo,
             nextPageToken: nextPageToken
           };
-        })
+        }),
       );
   }
+
 
 }

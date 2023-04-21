@@ -9,17 +9,16 @@ import Kandidaat from 'src/app/types/Kandidaat';
   styleUrls: ['./kandidaten.page.scss'],
 })
 export class KandidatenPage implements OnInit {
-  kandidaten : Kandidaat[];
+  kandidaten: Kandidaat[];
   kandidaat: Kandidaat;
 
-  constructor(private dataService: BackendApiService, private router: Router) {
-  }
+  constructor(private dataService: BackendApiService, private router: Router) { }
 
   async ngOnInit() {
-  this.dataService.retrieveKandidaats().subscribe((res) => this.kandidaten = res)  
+    this.dataService.retrieveKandidaats().subscribe((res) => this.kandidaten = res)
   }
 
   onKandidaatClicked(id: number) {
-    this.router.navigate(['kandidaten', id]);
+    this.router.navigate(['kandidaten', id])
   }
 }

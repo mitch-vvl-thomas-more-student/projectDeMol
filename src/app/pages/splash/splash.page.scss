@@ -1,0 +1,44 @@
+ion-content{
+  --background: #0e1c2a
+}
+
+.container {
+  .logo {
+    width: 100px;
+    margin-top: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+}
+
+.rotate-in-2-fwd-ccw {
+	-webkit-animation: rotate-in-2-fwd-ccw 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: rotate-in-2-fwd-ccw 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+ @-webkit-keyframes rotate-in-2-fwd-ccw {
+    0% {
+      -webkit-transform: translateZ(-200px) rotate(45deg);
+              transform: translateZ(-200px) rotate(45deg);
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: translateZ(0) rotate(0);
+              transform: translateZ(0) rotate(0);
+      opacity: 1;
+    }
+  }
+  @keyframes rotate-in-2-fwd-ccw {
+    0% {
+      -webkit-transform: translateZ(-200px) rotate(45deg);
+              transform: translateZ(-200px) rotate(45deg);
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: translateZ(0) rotate(0);
+              transform: translateZ(0) rotate(0);
+      opacity: 1;
+    }
+  }
+  

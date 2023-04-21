@@ -10,28 +10,6 @@ import { KandidaatCardComponent } from './kandidaat-card/kandidaat-card.componen
 import { HintModalComponent } from './hint-modal/hint-modal.component';
 import { ReorderComponent } from './reorder/reorder.component';
 import { FormsModule } from '@angular/forms';
-// import { KandidaatPage } from '../pages/kandidaat/kandidaat.page';
-
-// @NgModule({
-//   declarations: [
-//     MenuComponent,
-//     PhoneVerificationComponent,
-//     KandidaatCardComponent,
-//     HintModalComponent
-//   ],
-//   exports: [
-//     MenuComponent,
-//     PhoneVerificationComponent,
-//     KandidaatCardComponent,
-//     HintModalComponent
-//   ],
-//   imports: [
-//     CommonModule,
-//     IonicModule,
-//     RouterModule
-//   ]
-// })
-// export class SharedModule { }
 
 
 @NgModule({

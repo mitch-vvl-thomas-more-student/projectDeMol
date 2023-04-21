@@ -18,6 +18,7 @@ export class AuthService {
   public currentUser: BehaviorSubject<null | User> = new BehaviorSubject<null | User>(null);
   #verificationId: string = '';
   #authUnsubscribe: Unsubscribe;
+  called: boolean = false;
 
   constructor(private auth: Auth,
     private router: Router,
@@ -26,34 +27,28 @@ export class AuthService {
     private apiService: BackendApiService) {
     this.#authUnsubscribe = this.auth.onAuthStateChanged((user: User | null) => {
       if (user !== null) {
-        this.setCurrentUser(user);
+        this.setCurrentUser(user, this.called);
+        this.called = true;
       }
     });
   }
-
   isLoggedIn(): boolean {
     return this.currentUser.value !== null && this.currentUser.value !== undefined;
   }
-
   getProfilePic(): string {
     const placeholder = '/assets/Portrait_Placeholder.png';
     return this.isLoggedIn() ? this.currentUser?.value?.photoURL ?? placeholder : placeholder;
   }
-
-
   getDisplayName(): string | null | undefined {
 
     return this.isLoggedIn() ? this.currentUser?.value?.displayName : undefined;
   }
-
   getEmail(): string | null | undefined {
     return this.isLoggedIn() ? this.currentUser?.value?.email : undefined;
   }
-
   getUserUID(): string | null | undefined {
     return this.isLoggedIn() ? this.currentUser?.value?.uid : undefined;
   }
-
   async signOut(): Promise<void> {
     try {
       await this.auth.signOut();
@@ -68,8 +63,6 @@ export class AuthService {
       console.error(error);
     }
   }
-
-
   async signInWithGoogle(): Promise<void> {
     // Sign in on the native layer.
     const result = await FirebaseAuthentication.signInWithGoogle();
@@ -88,8 +81,6 @@ export class AuthService {
       await signInWithCredential(this.auth, authCredential);
     }
   }
-
-
   async signInWithFacebook(): Promise<void> {
     // Sign in on the native layer.
     const result = await FirebaseAuthentication.signInWithFacebook();
@@ -108,8 +99,6 @@ export class AuthService {
       }
     }
   }
-
-
   async sendPhoneVerificationCode(phoneNumber: string): Promise<void> {
     const result = await FirebaseAuthentication.signInWithPhoneNumber({ phoneNumber });
     const verificationId = result.verificationId;
@@ -139,12 +128,13 @@ export class AuthService {
    * @param user The new user.
    * @private
    */
-  private async setCurrentUser(user: User | null): Promise<void> {
+  private async setCurrentUser(user: User | null, called: boolean): Promise<void> {
     this.currentUser.next(user);
     const isAuthenticated = user !== null;
     const currentUrl = this.router.url;
 
-    this.registerCurrentUserAsGebruiker(user)
+    if (!called)
+      this.registerCurrentUserAsGebruiker(user)
 
     if (isAuthenticated && currentUrl === '/login') {
 
@@ -155,18 +145,20 @@ export class AuthService {
   }
 
   private async registerCurrentUserAsGebruiker(user: User | null): Promise<void> {
+    console.log('call!!!!')
     if (user) {
       this.fireStore.retrieveGebruikerByEmail(user.email as string)
         .subscribe(async (res) => {
           if (res.length == 0) {
+            const parts = (user.displayName || '').split(' ');
             const gebruiker = new Gebruiker();
             gebruiker.email = user.email || '';
-            const parts = (user.displayName || '').split(' ');
             gebruiker.voornaam = parts[0] || '';
             gebruiker.achternaam = parts.slice(1).join(' ');
             gebruiker.verdachten = [];
+            gebruiker.aantalStemmenOmhoog = 0;
+            gebruiker.aantalStemmenOmlaag = 0;
             this.apiService.retrieveKandidaats().subscribe(async (kandidaten) => {
-              console.log(kandidaten, gebruiker)
               kandidaten.map(kandidaat => gebruiker.verdachten?.push(kandidaat.id));
               await this.fireStore.addGebruiker(gebruiker);
               await this.globalService.setGebruiker(gebruiker);

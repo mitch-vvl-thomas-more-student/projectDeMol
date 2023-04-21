@@ -1,3 +1,4 @@
+import { YoutubeApiResponse } from './../../interfaces/youtubeApiResponse';
 import { YoutubeApiService } from './../../services/youtube-api.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
@@ -27,7 +28,8 @@ export class YoutubefeedPage implements OnInit {
   }
 
   searchVideos(pageToken?: string) {
-    this.youtubeService.searchVideos('de mol belgie 2023', pageToken).subscribe((res) => {
+    this.youtubeService.searchVideos('de mol belgie 2023', pageToken).subscribe((res : YoutubeApiResponse ) => { 
+      console.log(res)
       if (this.youtubeResults) {
         this.youtubeResults.videos = this.youtubeResults.videos.concat(res.videos);
       } else {
