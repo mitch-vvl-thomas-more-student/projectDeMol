@@ -9,7 +9,12 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "e2e": "ng e2e",
+    "android": "ionic build --prod && pnpm exec cap sync android && pnpm exec cap open android",
+    "android-resources": "capacitor-assets generate --iconBackgroundColor #eeeeee --iconBackgroundColorDark #222222 --splashBackgroundColor #eeeeee --splashBackgroundColorDark #111111 --logoSplashScale 0.5  --android",
+    "ios-resources": "capacitor-assets generate --iconBackgroundColor #eeeeee --iconBackgroundColorDark #222222 --splashBackgroundColor #eeeeee --splashBackgroundColorDark #111111 --logoSplashScale 0.5  --ios",
+    "gen-resources": "pnpm run ios-resources && pnpm run android-resources"
   },
   "private": true,
   "dependencies": {
