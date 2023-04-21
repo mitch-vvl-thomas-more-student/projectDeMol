@@ -6,6 +6,7 @@ import { BackendApiService } from './services/backend-api.service';
 import { GlobalsService } from './services/globals.service';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@capacitor/splash-screen';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -14,6 +15,9 @@ import { SplashScreen } from '@capacitor/splash-screen';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
+  #currentUserSub: Subscription;
+  #kandidaatsSub: Subscription;
+  
   constructor(private dataService: BackendApiService,
     private authService: AuthService,
     private globalService: GlobalsService, 
@@ -28,15 +32,25 @@ export class AppComponent {
     }
 
   ngOnInit() {
-    this.authService.currentUser.subscribe(user => {
-      if (user?.email)
+    this.#currentUserSub = this.authService.currentUser.subscribe(user => {
+      if (user?.email) {
         this.dataService.retrieveGebruikerByEmail(user?.email)
-          .subscribe((res: Gebruiker[]) => this.globalService.setGebruiker(res[0]))
-          .unsubscribe()
+          .subscribe((res: Gebruiker[]) => this.globalService.setGebruiker(res[0]));
+      }
     });
-    this.dataService.retrieveKandidaats()
-      .subscribe((res: Kandidaat[]) => this.globalService.setKandidaten(res))
-      .unsubscribe();
+
+    this.#kandidaatsSub = this.dataService.retrieveKandidaats()
+      .subscribe((res: Kandidaat[]) => this.globalService.setKandidaten(res));
+  }
+
+  ngOnDestroy() {
+    if (this.#currentUserSub) {
+      this.#currentUserSub.unsubscribe();
+    }
+
+    if (this.#kandidaatsSub) {
+      this.#kandidaatsSub.unsubscribe();
+    }
   }
 
 }

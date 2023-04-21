@@ -1,9 +1,9 @@
 import { YoutubeApiResponse } from './../../interfaces/youtubeApiResponse';
 import { YoutubeApiService } from './../../services/youtube-api.service';
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SafeResourceUrl } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-youtubefeed',
@@ -11,25 +11,24 @@ import { SafeResourceUrl } from '@angular/platform-browser';
   styleUrls: ['./youtubefeed.page.scss'],
 })
 export class YoutubefeedPage implements OnInit {
-
+  #youtubeSub: Subscription;
   youtubeResults: any;
   videoUrl: SafeResourceUrl;
 
-  constructor(public authService: AuthService, private youtubeService: YoutubeApiService, private sanitizer: DomSanitizer) {
-
-    this.authService.currentUser.subscribe((user) => {
-      console.log(user);
-    });
-
-  }
+  constructor(private youtubeService: YoutubeApiService, private sanitizer: DomSanitizer) {}
   
   ngOnInit() {
     this.searchVideos();
   }
 
+  ngOnDestroy(){
+   if (this.#youtubeSub){
+    this.#youtubeSub.unsubscribe();
+   }
+  }
+
   searchVideos(pageToken?: string) {
-    this.youtubeService.searchVideos('de mol belgie 2023', pageToken).subscribe((res : YoutubeApiResponse ) => { 
-      console.log(res)
+   this.#youtubeSub = this.youtubeService.searchVideos('de mol belgie 2023', pageToken).subscribe((res : YoutubeApiResponse ) => { 
       if (this.youtubeResults) {
         this.youtubeResults.videos = this.youtubeResults.videos.concat(res.videos);
       } else {

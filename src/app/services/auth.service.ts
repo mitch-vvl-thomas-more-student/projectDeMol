@@ -145,7 +145,6 @@ export class AuthService {
   }
 
   private async registerCurrentUserAsGebruiker(user: User | null): Promise<void> {
-    console.log('call!!!!')
     if (user) {
       this.fireStore.retrieveGebruikerByEmail(user.email as string)
         .subscribe(async (res) => {
