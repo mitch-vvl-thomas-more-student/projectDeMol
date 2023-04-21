@@ -31,6 +31,9 @@ dependencies:
   '@capacitor-firebase/authentication':
     specifier: ^1.4.0
     version: 1.4.0(@capacitor/core@4.7.1)(firebase@9.18.0)
+  '@capacitor/android':
+    specifier: ^4.7.3
+    version: 4.7.3(@capacitor/core@4.7.1)
   '@capacitor/app':
     specifier: 4.1.1
     version: 4.1.1(@capacitor/core@4.7.1)
@@ -40,6 +43,9 @@ dependencies:
   '@capacitor/haptics':
     specifier: 4.1.0
     version: 4.1.0(@capacitor/core@4.7.1)
+  '@capacitor/ios':
+    specifier: ^4.7.3
+    version: 4.7.3(@capacitor/core@4.7.1)
   '@capacitor/keyboard':
     specifier: 4.1.1
     version: 4.1.1(@capacitor/core@4.7.1)
@@ -1914,6 +1920,14 @@ packages:
       firebase: 9.18.0
     dev: false
 
+  /@capacitor/android@4.7.3(@capacitor/core@4.7.1):
+    resolution: {integrity: sha512-TmVg7vbAt6Iw0FWc51dLlW1gRMtSeIQ6qVLFJ1/sl2SYLXpgCHh8v/LfhqQ93NurgM+6SKFxOycGgg1FIBaLGw==}
+    peerDependencies:
+      '@capacitor/core': ^4.7.0
+    dependencies:
+      '@capacitor/core': 4.7.1
+    dev: false
+
   /@capacitor/app@4.1.1(@capacitor/core@4.7.1):
     resolution: {integrity: sha512-SJcJA1rhFQyeH6eLfUEbdKkHzAwzahJNVPNXmU88fdmXpMgM2dJGzZj1vrm6e21aQq+Z4aBVLJ2RCdj92zD7wg==}
     peerDependencies:
@@ -1958,6 +1972,14 @@ packages:
     resolution: {integrity: sha512-gAIFy50e1VZPdokRFLkl8Y+yZYB3e4brd5yu9DRShbWbheruwU34TxtG5C1NANvq4mbXd3tMXzBi59Q5JFyTHA==}
     peerDependencies:
       '@capacitor/core': ^4.0.0
+    dependencies:
+      '@capacitor/core': 4.7.1
+    dev: false
+
+  /@capacitor/ios@4.7.3(@capacitor/core@4.7.1):
+    resolution: {integrity: sha512-CXVvEzg9WWyhGdLSZsWfa69RyNlKH03g4OKpWh9OW0A7uL4aYA8Z7m4jE4mCu/2TTWDEgUPp0BrWEDPaj73eow==}
+    peerDependencies:
+      '@capacitor/core': ^4.7.0
     dependencies:
       '@capacitor/core': 4.7.1
     dev: false
