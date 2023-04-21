@@ -4,4 +4,7 @@
     <string name="title_activity_main">projectDeMol</string>
     <string name="package_name">app.web.projectdemol</string>
     <string name="custom_url_scheme">app.web.projectdemol</string>
+    <string name="facebook_app_id">3458328711111280</string>
+<string name="fb_login_protocol_scheme">fb3458328711111280</string>
+<string name="facebook_client_token">7af3f6b7b3177f459eb349634e40eb40</string>
 </resources>

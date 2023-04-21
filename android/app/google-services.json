@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "940852304453",
+    "project_id": "project-de-mol",
+    "storage_bucket": "project-de-mol.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:940852304453:android:2592d14254b422c457612c",
+        "android_client_info": {
+          "package_name": "app.web.projectdemol"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "940852304453-bml728t3iq2h90a94oauhmicbi006b89.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaEi8w7qTMPUX7DhxbytKCnh9oiD7xh1w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "940852304453-bml728t3iq2h90a94oauhmicbi006b89.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
