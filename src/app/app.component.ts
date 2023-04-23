@@ -17,19 +17,19 @@ import { Subscription } from 'rxjs';
 export class AppComponent {
   #currentUserSub: Subscription;
   #kandidaatsSub: Subscription;
-  
+
   constructor(private dataService: BackendApiService,
     private authService: AuthService,
-    private globalService: GlobalsService, 
+    private globalService: GlobalsService,
     private platform: Platform
-    ) { 
+  ) {
 
-      SplashScreen.show({
-        showDuration: 2000,
-        autoHide: true,
-      });
-
-    }
+    // SplashScreen.show({
+    //   showDuration: 2000,
+    //   autoHide: true,
+    // });
+    SplashScreen.hide();
+  }
 
   ngOnInit() {
     this.#currentUserSub = this.authService.currentUser.subscribe(user => {

@@ -11,9 +11,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "android": "ionic build --prod && pnpm exec cap sync android && pnpm exec cap open android",
-    "android-resources": "capacitor-assets generate --iconBackgroundColor #eeeeee --iconBackgroundColorDark #222222 --splashBackgroundColor #eeeeee --splashBackgroundColorDark #111111 --logoSplashScale 0.5  --android",
-    "ios-resources": "capacitor-assets generate --iconBackgroundColor #eeeeee --iconBackgroundColorDark #222222 --splashBackgroundColor #eeeeee --splashBackgroundColorDark #111111 --logoSplashScale 0.5  --ios",
+    "android": "ionic build && pnpm exec cap sync android && pnpm exec cap open android",
+    "android-resources": "capacitor-assets generate --iconBackgroundColor '#000000' --iconBackgroundColorDark '#000000' --splashBackgroundColor '#000000' --splashBackgroundColorDark '#000000' --logoSplashScale 0.5  --android --assetPath=src/assets",
+    "ios-resources": "capacitor-assets generate --iconBackgroundColor '#000000' --iconBackgroundColorDark '#000000' --splashBackgroundColor '#000000' --splashBackgroundColorDark '#000000' --logoSplashScale 0.5  --ios --assetPath=src/assets",
     "gen-resources": "pnpm run ios-resources && pnpm run android-resources"
   },
   "private": true,
