@@ -10,6 +10,8 @@ import { KandidaatCardComponent } from './kandidaat-card/kandidaat-card.componen
 import { HintModalComponent } from './hint-modal/hint-modal.component';
 import { ReorderComponent } from './reorder/reorder.component';
 import { FormsModule } from '@angular/forms';
+import { ResetPaswoordComponent } from './reset-paswoord/reset-paswoord.component';
+import { RegisterComponent } from './register/register.component';
 
 
 @NgModule({
@@ -19,7 +21,9 @@ import { FormsModule } from '@angular/forms';
     KandidaatCardComponent,
     HintModalComponent,
     ReorderComponent,
-    KandidaatHintComponent
+    KandidaatHintComponent,
+    ResetPaswoordComponent,
+    RegisterComponent,
   ],
   exports: [
     MenuComponent,
@@ -27,7 +31,9 @@ import { FormsModule } from '@angular/forms';
     KandidaatCardComponent,
     HintModalComponent,
     ReorderComponent,
-    KandidaatHintComponent
+    KandidaatHintComponent, 
+    ResetPaswoordComponent,
+    RegisterComponent,
     ],
   imports: [
     FormsModule,

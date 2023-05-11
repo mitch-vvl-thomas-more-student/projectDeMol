@@ -10,7 +10,7 @@
 
 <ion-content>
   <div class="ion-page" id="main-content">
-    <ion-router-outlet></ion-router-outlet>
+    <ion-router-outlet fullscreen></ion-router-outlet>
   </div>
   <ion-tabs>
     <ion-tab-bar slot="bottom">
@@ -45,7 +45,10 @@
           <ion-icon name="log-out-outline" slot="end"></ion-icon>
           Uitloggen
         </ion-item>
-        <ion-item>Option 2</ion-item>
+        <ion-item (click)="router.navigate(['tabs','top10'])">
+          <ion-icon name="podium-outline" slot="end"></ion-icon>
+          Top 10
+        </ion-item>
         <ion-item>Option 3</ion-item>
       </ion-list>
     </ion-content>

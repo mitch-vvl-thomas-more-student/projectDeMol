@@ -22,14 +22,7 @@ export class AppComponent {
     private authService: AuthService,
     private globalService: GlobalsService,
     private platform: Platform
-  ) {
-
-    // SplashScreen.show({
-    //   showDuration: 2000,
-    //   autoHide: true,
-    // });
-    SplashScreen.hide();
-  }
+  ) { SplashScreen.hide(); }
 
   ngOnInit() {
     this.#currentUserSub = this.authService.currentUser.subscribe(user => {

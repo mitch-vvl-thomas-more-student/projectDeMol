@@ -1,4 +1,3 @@
-import { TypeStem } from "../enums/typeStem";
 import Gebruiker from "./Gebruiker";
 
 export interface IFireStoreOpmerking {
@@ -12,11 +11,10 @@ export interface IOpmerking {
     tekst: string;
 }
 
-export default class Opmerking implements IOpmerking {
+export default class Opmerking implements IOpmerking  {
     constructor() { }
     id?: string; 
     plaatser: Gebruiker;
     datum: Date;
     tekst: string;
-
 }

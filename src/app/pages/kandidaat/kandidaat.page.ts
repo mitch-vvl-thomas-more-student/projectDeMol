@@ -49,6 +49,8 @@ export class KandidaatPage implements OnInit {
     });
   }
 
+
+  // destroy all subscriptions and asyncs
   ngOnDestroy() {
     if (this.#kandidaatsSub) {
       this.#kandidaatsSub.unsubscribe();
@@ -58,6 +60,7 @@ export class KandidaatPage implements OnInit {
       this.#routeSub.unsubscribe();
     }
   }
+
 
 
   async showModal() {

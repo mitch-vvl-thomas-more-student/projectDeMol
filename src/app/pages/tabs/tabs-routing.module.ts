@@ -29,6 +29,10 @@ const routes: Routes = [
         loadChildren: () => import('./../../pages/youtubefeed/youtubefeed.module').then(m => m.YoutubefeedPageModule),
         ...canActivate(redirectUnauthorizedToLogin)
       },
+      {
+        path: 'top10',
+        loadChildren: () => import('./../../pages/top10/top10.module').then( m => m.Top10PageModule)
+      },
     ]
   }
 ];

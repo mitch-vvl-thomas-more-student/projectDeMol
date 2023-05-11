@@ -1,3 +1,39 @@
 .card {
     min-height: 560px;
 }
+
+.gold {
+    background-color: #ffd700;
+    /* Goudkleurige badge */
+}
+
+.silver {
+    background-color: #c0c0c0;
+    /* Zilverkleurige badge */
+}
+
+.bronze {
+    background-color: #cd7f32;
+    /* Bronskleurige badge */
+}
+
+.gold-border {
+    box-shadow: 0px 0px 25px 0px rgb(243, 191, 2);
+}
+
+.custom-badge {
+    font-size: xxx-large;
+    color: white;
+    padding: 1rem;
+    width: 100px;
+    position: absolute;
+    z-index: 1;
+    top: 5px;
+    left: 5px;
+}
+
+@media screen and (max-width: 992px) {
+    .custom-badge {
+        width: 60px;
+    }
+}

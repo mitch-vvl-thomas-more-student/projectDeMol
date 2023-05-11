@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Top 10</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+
+  <ion-grid>
+    <ion-row *ngIf="kandidaten">
+      <ng-container *ngIf="isLargeScreen(); else smallScreenTemplate">
+        <ion-col sizeLg="4">
+          <app-kandidaat-card [kandidaat]="kandidaten[1]" [routerLink]="['/tabs/kandidaten', kandidaten[1].id]"
+            [positie]="avgPosition.indexOf(kandidaten[1].id) + 1"></app-kandidaat-card>
+        </ion-col>
+        <ion-col sizeLg="4">
+          <app-kandidaat-card [kandidaat]="kandidaten[0]" [routerLink]="['/tabs/kandidaten', kandidaten[0].id]"
+            [positie]="avgPosition.indexOf(kandidaten[0].id) + 1" class="shadow"></app-kandidaat-card>
+        </ion-col>
+        <ion-col sizeLg="4">
+          <app-kandidaat-card [kandidaat]="kandidaten[2]" [routerLink]="['/tabs/kandidaten', kandidaten[2].id]"
+            [positie]="avgPosition.indexOf(kandidaten[2].id) + 1"></app-kandidaat-card>
+        </ion-col>
+      </ng-container>
+      <ng-template #smallScreenTemplate>
+        <ion-col sizeXs="12">
+          <app-kandidaat-card [kandidaat]="kandidaten[0]" [routerLink]="['/tabs/kandidaten', kandidaten[0].id]"
+            [positie]="avgPosition.indexOf(kandidaten[0].id) + 1"></app-kandidaat-card>
+        </ion-col>
+        <ion-col sizeXs="12">
+          <app-kandidaat-card [kandidaat]="kandidaten[1]" [routerLink]="['/tabs/kandidaten', kandidaten[1].id]"
+            [positie]="avgPosition.indexOf(kandidaten[1].id) + 1"></app-kandidaat-card>
+        </ion-col>
+        <ion-col sizeXs="12">
+          <app-kandidaat-card [kandidaat]="kandidaten[2]" [routerLink]="['/tabs/kandidaten', kandidaten[2].id]"
+            [positie]="avgPosition.indexOf(kandidaten[2].id) + 1"></app-kandidaat-card>
+        </ion-col>
+      </ng-template>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list>
+    <div *ngFor="let kandidaat of kandidaten">
+      <ion-item *ngIf="avgPosition.indexOf(kandidaat.id) > 2" [routerLink]="['/tabs/kandidaten', kandidaat.id]">
+
+        <ion-avatar slot="start">
+          <img alt="kandidaat foto" src="{{kandidaat.profielFoto}}">
+        </ion-avatar>
+        <ion-label>
+          <h2>{{kandidaat.voornaam}} {{kandidaat.achternaam}}</h2>
+          <p>{{kandidaat.leeftijd}} // {{kandidaat.beroep}} // {{kandidaat.woonPlaats}}</p>
+          <p>{{kandidaat.extra}}</p>
+        </ion-label>
+        <ion-badge slot="end" class="custom-badge ">{{avgPosition.indexOf(kandidaat.id) + 1}}</ion-badge>
+
+      </ion-item>
+    </div>
+
+  </ion-list>
+</ion-content>

@@ -1,9 +1,9 @@
 import { GlobalsService } from './globals.service';
 import { BackendApiService } from 'src/app/services/backend-api.service';
 import { Injectable } from '@angular/core';
-import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
+import { FirebaseAuthentication, User as CUser } from '@capacitor-firebase/authentication';
 import { Router } from '@angular/router';
-import { UserCredential, signInWithCredential, signOut, Unsubscribe, Auth } from '@angular/fire/auth';
+import { signInWithCredential, signOut, Unsubscribe, Auth } from '@angular/fire/auth';
 import { updateProfile, GoogleAuthProvider, PhoneAuthProvider, FacebookAuthProvider, User } from 'firebase/auth';
 import { Capacitor } from '@capacitor/core';
 import { BehaviorSubject } from 'rxjs';
@@ -20,7 +20,8 @@ export class AuthService {
   #authUnsubscribe: Unsubscribe;
   called: boolean = false;
 
-  constructor(private auth: Auth,
+  constructor(
+    private auth: Auth,
     private router: Router,
     private fireStore: BackendApiService,
     private globalService: GlobalsService,
@@ -120,8 +121,14 @@ export class AuthService {
       await updateProfile(this.auth.currentUser, { displayName });
     }
   }
-
-
+  // password reset 
+  async sendPasswordResetEmail(email: string): Promise<void> {
+    try {
+      await FirebaseAuthentication.sendPasswordResetEmail({ email });
+    } catch (error) {
+      console.error(error);
+    }
+  }
   /**
    * Save the new user as an instance variable, and perform any necessary reroutes.
    *
@@ -142,9 +149,54 @@ export class AuthService {
     } else if (!isAuthenticated && currentUrl !== '/login') {
       await this.router.navigate(['login']);
     }
-  }
+  } 
 
-  private async registerCurrentUserAsGebruiker(user: User | null): Promise<void> {
+  async registreerGebruikerMetEmail(email: string, password: string): Promise<string | undefined> {
+    if (email) {
+      console.log(email)
+      this.fireStore.retrieveGebruikerByEmail(email)
+          .subscribe(async (res) => {
+            if (res.length == 0) {
+              console.log(res)
+              await this.nieuweGebruikerMetEmail(email, password);
+              console.log('registered')
+
+            } else {
+              console.log('try to login')
+              const existingUser = res[0];
+              const signinResult = await FirebaseAuthentication.signInWithEmailAndPassword({ email, password });
+              if (signinResult) {
+                await this.globalService.setGebruiker(existingUser);
+                console.log('loggedin')
+               
+              } else {
+                console.log('wrongpassword')               
+              }
+            }
+          });
+
+      return new Promise<string | undefined>((resolve) => {
+        ;
+      });
+    }
+    return undefined;
+  }
+  
+  
+  private async nieuweGebruikerMetEmail(email: string, password: string): Promise<void> {
+    try {
+
+      const result = await FirebaseAuthentication.createUserWithEmailAndPassword({ email: email, password: password });
+      const user = result.user;
+      if (user) {
+        await this.registerCurrentUserAsGebruiker(user);
+      } 
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  // subscribe to the gebruiker collection and add the current user if it doesn't exist yet
+  private async registerCurrentUserAsGebruiker(user: User | CUser | null): Promise<void> {
     if (user) {
       this.fireStore.retrieveGebruikerByEmail(user.email as string)
         .subscribe(async (res) => {
@@ -161,11 +213,12 @@ export class AuthService {
               kandidaten.map(kandidaat => gebruiker.verdachten?.push(kandidaat.id));
               await this.fireStore.addGebruiker(gebruiker);
               await this.globalService.setGebruiker(gebruiker);
-            });
+            }).unsubscribe();
           } else {
             await this.globalService.setGebruiker(res[0])
           }
         })
     }
   }
+
 }

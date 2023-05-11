@@ -1,5 +1,6 @@
-<ion-card class="card">
+<ion-card [ngClass]="getClass(positie)">
   <ion-img src="{{ kandidaat?.profielFoto }}" alt="profiel foto van {{ kandidaat?.voornaam }}"></ion-img>
+  <ion-badge [ngClass]="getBadgeClass(positie)" *ngIf="positie">{{positie}}</ion-badge>
   <ion-card-header>
     <ion-item lines="none">
     <ion-card-title>

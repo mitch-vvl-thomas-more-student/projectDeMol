@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Login met e-mail
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">E-mailadres</ion-label>
+    <ion-input [(ngModel)]="email" type="email" (input)="testMail()"></ion-input>
+    <ion-note color="danger" *ngIf="!emailOk">Ongeldig email</ion-note>
+  </ion-item>  
+  <ion-item>
+    <ion-label position="floating">Wachtwoord</ion-label>
+    <ion-input [(ngModel)]="paswoord" type="password" (change)="testPaswoord()"></ion-input>
+    <ion-note color="danger" *ngIf="!paswoordOk">Paswoord voldoet niet! 
+      <br>Minstens 8 karakters, 1 hoofdletter, 1 kleine letter, 1 cijfer en 1 speciaal karakter
+    </ion-note>
+  </ion-item>
+  <div class="ion-text-center ion-margin-top">
+    <ion-button color="primary" (click)="register()" [disabled]="!emailOk || !paswoordOk">Registreren</ion-button>
+    <ion-button (click)="dismiss()">Annuleren</ion-button>
+  </div>  
+</ion-content>

@@ -1,5 +1,4 @@
 import { GlobalsService } from './../../services/globals.service';
-import Gebruiker from 'src/app/types/Gebruiker';
 import { BackendApiService } from 'src/app/services/backend-api.service';
 import { Component, Input, OnInit } from '@angular/core';
 import Hint from 'src/app/types/Hint';
@@ -7,6 +6,11 @@ import { Collections } from 'src/app/enums/collections';
 import Opmerking from 'src/app/types/Opmerking';
 import Rating from 'src/app/types/Rating';
 import { Router } from '@angular/router';
+import Gebruiker from 'src/app/types/Gebruiker';
+import { Observable } from 'rxjs';
+import { AlertController } from '@ionic/angular';
+import { AuthService } from 'src/app/services/auth.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-kandidaat-hint',
@@ -15,6 +19,7 @@ import { Router } from '@angular/router';
 })
 export class KandidaatHintComponent implements OnInit {
   @Input() hint: Hint;
+  profileImageUrl$: Observable<string> | null;
   gebruiker: Gebruiker;
   background: string;
   colors: string[] = [
@@ -38,7 +43,13 @@ export class KandidaatHintComponent implements OnInit {
   newComment: string;
   rating: Rating;
 
-  constructor(private apiService: BackendApiService, private globalService: GlobalsService, private router: Router,
+  constructor(
+    private apiService: BackendApiService, 
+    private globalService: GlobalsService, 
+    private router: Router,
+    private alertController: AlertController,
+    private authService: AuthService,
+    private storageService: StorageService
   ) { }
 
   async ngOnInit() {
@@ -46,6 +57,7 @@ export class KandidaatHintComponent implements OnInit {
     const tempBackground = Math.floor(Math.random() * this.colors.length);
     this.background = this.colors[tempBackground];
     this.rating = new Rating(this.hint, this.gebruiker, this.#showAlert.bind(this), this.#update.bind(this));
+    this.profileImageUrl$ = this.storageService.getProfileImageUrl(this.gebruiker);
   }
 
   async onThumbsUp() {
@@ -58,9 +70,16 @@ export class KandidaatHintComponent implements OnInit {
     !loggedIn.email ? this.#notLoggedIn() : this.rating.onThumbsDown();
   }
 
-  #showAlert() {
-    alert('Uw stem werd reeds geregistreerd ... ');
+  async #showAlert(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Fout',
+      message: 'Uw stem werd reeds geregistreerd ... ',
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
+
 
   async #update(hint?: Hint, gebruiker?: Gebruiker): Promise<void> {
     if (hint) {

@@ -12,7 +12,8 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore, enableMultiTabIndexedDbPersistence } from '@angular/fire/firestore';
-import { YouTubePlayerModule } from '@angular/youtube-player';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 
 
 
@@ -24,7 +25,8 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
     AppRoutingModule,
     HttpClientModule,
     SharedModule,
-    YouTubePlayerModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireStorageModule,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => {
       const firestore = getFirestore();

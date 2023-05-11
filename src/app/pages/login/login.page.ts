@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { ModalController } from '@ionic/angular';
 import { PhoneVerificationComponent } from 'src/app/components/phone-verification/phone-verification.component';
+import { RegisterComponent } from 'src/app/components/register/register.component';
 
 @Component({
   selector: 'app-login',
@@ -25,6 +26,10 @@ export class LoginPage implements OnInit {
   ngOnInit() {
   }
 
-  
-
+  async emailLogin() {
+    const modal = await this.modalController.create({
+      component: RegisterComponent
+    });
+    await modal.present();
+  }
 }

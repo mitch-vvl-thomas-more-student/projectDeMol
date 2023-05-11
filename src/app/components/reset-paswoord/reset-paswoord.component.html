@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Wachtwoord herstellen
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!succes">
+  <ion-item>
+    <ion-label position="floating">E-mailadres</ion-label>
+    <ion-input [(ngModel)]="email" type="email"></ion-input>
+  </ion-item>
+  <div class="ion-text-center ion-margin-top">
+    <ion-button color="primary" (click)="resetPassword()">Versturen</ion-button>
+    <ion-button (click)="dismiss()">Annuleren</ion-button>
+  </div>
+</ion-content>
+
+<ion-content *ngIf="succes">
+  <div class="ion-text-center">
+    <ion-icon name="checkmark-circle-outline" size="large"></ion-icon>
+    <h2>Herstel email is verzonden</h2>
+    <p>Een email met verdere instructies om uw paswoord te herstellen is verzonden.</p>
+    <ion-button color="primary" expand="block" (click)="dismiss()">Close</ion-button>
+  </div>
+</ion-content>

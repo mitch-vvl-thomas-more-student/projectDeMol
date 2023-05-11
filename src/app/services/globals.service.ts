@@ -41,10 +41,6 @@ export class GlobalsService {
       }, 500);
     });
   }
-  
-  
-
-
 
   async setKandidaten(kandidaten: Kandidaat[]): Promise<void> {
     return new Promise((resolve) => {

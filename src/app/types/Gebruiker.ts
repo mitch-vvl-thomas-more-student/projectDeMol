@@ -1,9 +1,12 @@
+import { Observable, of } from "rxjs";
+
 export interface IFireStoreGebruiker {
-    gebruiker: Gebruiker;
+    gebruiker: IGebruiker;
 }
 
 export interface IGebruiker {
-    id: string; 
+    id: string;
+    avatar: string;
     voornaam: string;
     achternaam: string;
     email: string;
@@ -15,9 +18,11 @@ export interface IGebruiker {
     verdachten: string[];
 }
 
+
 export default class Gebruiker implements IGebruiker {
     constructor() { }
-    id: string; 
+    id: string;
+    avatar: string;
     voornaam: string;
     achternaam: string;
     email: string;
@@ -27,4 +32,13 @@ export default class Gebruiker implements IGebruiker {
     aantalStemmenOmhoog: number;
     aantalStemmenOmlaag: number;
     verdachten: string[];
+
+    // getProfileImageUrl(): Observable<string | null> {
+    //     return of(this.avatar);
+    // }
+
+    // getFullName(): string {
+    //     return `${this.voornaam} ${this.achternaam}`;
+    // }
+
 }

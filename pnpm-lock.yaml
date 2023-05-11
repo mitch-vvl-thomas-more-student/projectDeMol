@@ -25,9 +25,6 @@ dependencies:
   '@angular/router':
     specifier: ^15.0.0
     version: 15.2.4(@angular/common@15.2.4)(@angular/core@15.2.5)(@angular/platform-browser@15.2.4)(rxjs@7.5.7)
-  '@angular/youtube-player':
-    specifier: ^15.2.4
-    version: 15.2.4(@angular/common@15.2.4)(@angular/core@15.2.5)(rxjs@7.5.7)
   '@capacitor-firebase/authentication':
     specifier: ^1.4.0
     version: 1.4.0(@capacitor/core@4.7.1)(firebase@9.18.0)
@@ -58,9 +55,6 @@ dependencies:
   '@ionic/angular':
     specifier: ^6.1.9
     version: 6.7.0(@angular/core@15.2.5)(@angular/forms@15.2.4)(@angular/router@15.2.4)(rxjs@7.5.7)(zone.js@0.13.0)
-  angular-youtube-embed:
-    specifier: ^1.3.2
-    version: 1.3.2
   firebase:
     specifier: ^9.18.0
     version: 9.18.0
@@ -634,20 +628,6 @@ packages:
       '@angular/common': 15.2.4(@angular/core@15.2.5)(rxjs@7.5.7)
       '@angular/core': 15.2.5(rxjs@7.5.7)(zone.js@0.13.0)
       '@angular/platform-browser': 15.2.4(@angular/common@15.2.4)(@angular/core@15.2.5)
-      rxjs: 7.5.7
-      tslib: 2.5.0
-    dev: false
-
-  /@angular/youtube-player@15.2.4(@angular/common@15.2.4)(@angular/core@15.2.5)(rxjs@7.5.7):
-    resolution: {integrity: sha512-cEZsYVxSpo90GbAKwl6D/N7OmmhzKIER/S52ptCtv7+o2Sgb04KrXFING4WvmaWr8U806FICRzfJs5zEFvecgA==}
-    peerDependencies:
-      '@angular/common': ^15.0.0 || ^16.0.0
-      '@angular/core': ^15.0.0 || ^16.0.0
-      rxjs: ^6.5.3 || ^7.4.0
-    dependencies:
-      '@angular/common': 15.2.4(@angular/core@15.2.5)(rxjs@7.5.7)
-      '@angular/core': 15.2.5(rxjs@7.5.7)(zone.js@0.13.0)
-      '@types/youtube': 0.0.42
       rxjs: 7.5.7
       tslib: 2.5.0
     dev: false
@@ -3501,10 +3481,6 @@ packages:
       '@types/node': 18.15.10
     dev: true
 
-  /@types/youtube@0.0.42:
-    resolution: {integrity: sha512-Nqo3HMPFPcNyZ7HNFZJjpH+N4yXqpxBItG+41e7nL9zednovMRZMXWj36CctSznbBcbj6ucvkJDo5iZ8SKqLIw==}
-    dev: false
-
   /@typescript-eslint/eslint-plugin@5.3.0(@typescript-eslint/parser@5.3.0)(eslint@8.36.0)(typescript@5.0.2):
     resolution: {integrity: sha512-ARUEJHJrq85aaiCqez7SANeahDsJTD3AEua34EoQN9pHS6S5Bq9emcIaGGySt/4X2zSi+vF5hAH52sEen7IO7g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -3912,17 +3888,6 @@ packages:
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
       uri-js: 4.4.1
-
-  /angular-youtube-embed@1.3.2:
-    resolution: {integrity: sha512-tuFU2IaqCjRxdQWJuBpxBH16ffgXTBahZ8X+rImyzu55ayjIiFu4j92QaSxOKbtr3SqkL834hgcCoLUHaKymtw==}
-    dependencies:
-      angular: 1.8.3
-    dev: false
-
-  /angular@1.8.3:
-    resolution: {integrity: sha512-5qjkWIQQVsHj4Sb5TcEs4WZWpFeVFHXwxEBHUhrny41D8UrBAd6T/6nPPAsLngJCReIOqi95W3mxdveveutpZw==}
-    deprecated: For the actively supported Angular, see https://www.npmjs.com/package/@angular/core. AngularJS support has officially ended. For extended AngularJS support options, see https://goo.gle/angularjs-path-forward.
-    dev: false
 
   /ansi-align@3.0.1:
     resolution: {integrity: sha512-IOfwwBF5iczOjp/WeY4YxyjqAFMQoZufdQWDd19SEExbVLNXqvpzSJ/M7Za4/sCPmQ0+GRquoA7bGcINcxew6w==}
