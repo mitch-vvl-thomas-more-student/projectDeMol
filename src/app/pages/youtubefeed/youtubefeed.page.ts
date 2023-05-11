@@ -15,7 +15,7 @@ export class YoutubefeedPage implements OnInit {
   youtubeResults: any;
   videoUrl: SafeResourceUrl;
 
-  constructor(private youtubeService: YoutubeApiService, private sanitizer: DomSanitizer) {}
+  constructor(private youtubeService: YoutubeApiService, public sanitizer: DomSanitizer) {}
   
   ngOnInit() {
     this.searchVideos();
@@ -41,7 +41,7 @@ export class YoutubefeedPage implements OnInit {
     this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${videoId}`);
   }
 
-  loadData(event: { target: { complete: () => void; disabled: boolean; }; }) {
+  loadData(event: any) {
     if (this.youtubeResults.nextPageToken) {
       this.searchVideos(this.youtubeResults.nextPageToken);
       event.target.complete();

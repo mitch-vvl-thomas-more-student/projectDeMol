@@ -1,26 +1,26 @@
 <ion-card [ngClass]="getClass(positie)">
-  <ion-img src="{{ kandidaat?.profielFoto }}" alt="profiel foto van {{ kandidaat?.voornaam }}"></ion-img>
+  <ion-img src="{{ kandidaat.profielFoto }}" alt="profiel foto van {{ kandidaat.voornaam }}"></ion-img>
   <ion-badge [ngClass]="getBadgeClass(positie)" *ngIf="positie">{{positie}}</ion-badge>
   <ion-card-header>
     <ion-item lines="none">
-    <ion-card-title>
-        {{kandidaat?.voornaam}} {{kandidaat?.achternaam}}
+    <ion-card-title *ngIf="kandidaat">
+        {{kandidaat.voornaam}} {{kandidaat.achternaam}}
     </ion-card-title>
   </ion-item>
   <ion-item lines="none">
     <ion-card-subtitle>
-        <ion-text *ngIf="kandidaat?.leeftijd">{{kandidaat?.leeftijd}} jaar // </ion-text>
-        <ion-text *ngIf="kandidaat?.beroep">{{kandidaat?.beroep}}</ion-text>
+        <ion-text *ngIf="kandidaat?.leeftijd">{{kandidaat.leeftijd}} jaar // </ion-text>
+        <ion-text *ngIf="kandidaat?.beroep">{{kandidaat.beroep}}</ion-text>
     </ion-card-subtitle>
     </ion-item>
   </ion-card-header>
   <ion-card-content>
     <ion-item lines="none">
-        <ion-text>{{ kandidaat?.extra }}</ion-text>
+        <ion-text>{{ kandidaat.extra }}</ion-text>
   </ion-item>
-      <ion-item lines="none" *ngIf="kandidaat?.hints?.length > 0">
-        <strong>Aantal hints: <ion-text>{{kandidaat?.hints?.length}}</ion-text></strong>
-        <ion-text *ngIf="kandidaat?.hints?.length == 0"> 0 </ion-text>
-      </ion-item>
+  <ion-item lines="none" *ngIf="kandidaat && kandidaat.hints?.length != 0">
+    <strong>Aantal hints: <ion-text>{{ kandidaat.hints.length }}</ion-text></strong>
+    <ion-text *ngIf="kandidaat.hints?.length === 0">0</ion-text>
+  </ion-item>
   </ion-card-content>
 </ion-card>

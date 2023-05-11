@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 import { AlertController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { Timestamp } from 'firebase/firestore';
 
 @Component({
   selector: 'app-kandidaat-hint',
@@ -44,15 +45,20 @@ export class KandidaatHintComponent implements OnInit {
   rating: Rating;
 
   constructor(
-    private apiService: BackendApiService, 
-    private globalService: GlobalsService, 
+    private apiService: BackendApiService,
+    private globalService: GlobalsService,
     private router: Router,
     private alertController: AlertController,
-    private authService: AuthService,
+    public authService: AuthService,
     private storageService: StorageService
   ) { }
 
   async ngOnInit() {
+    this.hint.datum = new Date((this.hint.datum as Timestamp).seconds * 1000 + (this.hint.datum as Timestamp).nanoseconds / 1000000).toLocaleDateString('be-NL');
+    this.hint.opmerkingen.forEach(opmerking => {
+      opmerking.datum = new Date((opmerking.datum as Timestamp).seconds * 1000 + (opmerking.datum as Timestamp).nanoseconds / 1000000).toLocaleDateString('be-NL');
+    });
+
     this.gebruiker = await this.apiService.getDocByRef<Gebruiker>(this.hint.plaatser, Collections.gebruikers) as Gebruiker
     const tempBackground = Math.floor(Math.random() * this.colors.length);
     this.background = this.colors[tempBackground];

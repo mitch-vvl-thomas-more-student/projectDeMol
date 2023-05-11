@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./tabs.page.scss'],
 })
 export class TabsPage implements OnInit {
-  constructor(public authService: AuthService, private router: Router) {
+  constructor(public authService: AuthService, public router: Router) {
     
    }
 

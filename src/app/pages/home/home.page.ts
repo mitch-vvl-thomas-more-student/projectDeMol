@@ -24,7 +24,7 @@ export class HomePage {
     private storageService : StorageService,
     private dataService: BackendApiService,
     private globalsService: GlobalsService,
-    private authService: AuthService,
+    public authService: AuthService,
     private alertController: AlertController) {
   }
   async ngOnInit() {

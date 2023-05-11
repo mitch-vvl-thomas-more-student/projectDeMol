@@ -1,10 +1,9 @@
 <ion-list>
   <ion-text>Versleep de verdachten om de volgorde te wijzigen.</ion-text>
   <ion-label position="stacked" class="stacked-label">Verdachten</ion-label>
-
   <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($event)">
     <ng-container *ngFor="let kandidaat of kandidaten; let i = index">
-        <ion-item [routerLink]="['/tabs/kandidaten', kandidaat?.id]" (click)="reorderItem(i)">
+      <ion-item [routerLink]="['/tabs/kandidaten', kandidaat?.id]">
           <ion-avatar slot="start">
             <img alt="kandidaat foto" src="{{ kandidaat?.profielFoto }}">
           </ion-avatar>

@@ -28,10 +28,10 @@
       <ion-col>
         <ion-button (click)="showModal()" expand="full" class="pb1">Voeg een nieuwe hint toe</ion-button>
         <ion-item *ngIf="hints.length === 0" class="pb1">
-          <ion-text class="text-center">Er werden geen hints over {{ kandidaat?.voornaam }} gevonden.</ion-text>
+          <ion-text class="text-center">Er werden geen hints over {{ kandidaat.voornaam }} gevonden.</ion-text>
         </ion-item>
         <ion-item *ngIf="hints.length > 0 && publiekeHints.length === 0" class="pb1">
-          <ion-text class="text-center">Er werden geen publieke hints over {{ kandidaat?.voornaam }}
+          <ion-text class="text-center">Er werden geen publieke hints over {{ kandidaat.voornaam }}
             gevonden.</ion-text>
         </ion-item>
         <ion-list *ngIf="publiekeHints.length > 0" class="pb1">

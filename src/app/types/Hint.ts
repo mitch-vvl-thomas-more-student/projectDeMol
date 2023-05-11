@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import Opmerking from "./Opmerking";
 
 export interface IFireStoreHint {
@@ -8,7 +9,7 @@ export interface IHint {
     id?: string; 
     plaatser?: string;
     kandidaat: string;
-    datum: Date;
+    datum: Timestamp | Date | string;
     hint: string;
     stemmenOmhoog: number;
     stemmenOmlaag: number;
@@ -22,7 +23,7 @@ export default class Hint implements IHint {
     id: string; 
     plaatser: string;
     kandidaat: string;
-    datum: Date;
+    datum: Timestamp | Date | string;
     hint: string;
     stemmenOmhoog: number;
     stemmenOmlaag: number;

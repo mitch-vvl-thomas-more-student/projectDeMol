@@ -7,7 +7,7 @@ export const environment = {
     authDomain: 'project-de-mol.firebaseapp.com',
     messagingSenderId: '940852304453',
   },
-  production: true,
+  production: false,
   youTubeApiKey: 'AIzaSyDcs3jF2Tt5jfeJRd8aErDA_xxBjEK7T2M',
   youTubeBaseUrl: 'https://www.googleapis.com/youtube/v3',
   firebaseConfig: {
