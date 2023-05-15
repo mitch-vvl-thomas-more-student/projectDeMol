@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
+import { ErrorService } from 'src/app/services/error.service';
 
 
 @Component({
@@ -19,7 +20,10 @@ export class RegisterComponent implements OnInit {
   emailRegexp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@[a-zA-Z0-9\-]+(\.[a-zA-Z0-9\-]+)*(\.[a-zA-Z]{2,})$/);
   paswoordRegex = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/);
 
-  constructor(private auth: AuthService, private modalController: ModalController, private alertController: AlertController) { }
+  constructor(
+    private errS: ErrorService,
+    private auth: AuthService,
+    private modalController: ModalController) { }
 
   ngOnInit() { }
 
@@ -34,14 +38,7 @@ export class RegisterComponent implements OnInit {
 
     } else if (loginResult === 'wrongpassword') {
       // Show alert for wrong password
-      console.log('Foutief wachtwoord');
-      const alert = await this.alertController.create({
-        header: 'Foutief wachtwoord',
-        message: 'Het ingevoerde wachtwoord is onjuist.',
-        buttons: ['OK']
-      });
-
-      await alert.present();
+      this.errS.showAlert('Foutief wachtwoord', 'Het ingevoerde wachtwoord is onjuist.')
     }
   }
 

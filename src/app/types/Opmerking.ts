@@ -18,4 +18,5 @@ export default class Opmerking implements IOpmerking  {
     plaatser: Gebruiker;
     datum: Timestamp | Date | string;
     tekst: string;
+    datumString: string;
 }

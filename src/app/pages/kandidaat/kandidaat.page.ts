@@ -32,7 +32,7 @@ export class KandidaatPage implements OnInit {
   ) { }
 
   async ngOnInit() {
-   this.#routeSub = this.route.params.subscribe(async (params) => {
+    this.#routeSub = this.route.params.subscribe(async (params) => {
       const x = await this.apiService.getKandidaatById(params['id']);
       if (x) {
         this.kandidaat = x;
@@ -67,10 +67,7 @@ export class KandidaatPage implements OnInit {
     const gebruiker = await this.globalsService.getGebruiker();
 
     if (!gebruiker.email) {
-      const ok = confirm('Gelieve in te loggen om een hint toe the voegen');
-      if (ok) {
-        this.navigate('login')
-      }
+      this.globalsService.notLoggedIn();
       return;
     }
 
@@ -92,7 +89,4 @@ export class KandidaatPage implements OnInit {
     }
   }
 
-  navigate(path: string) {
-    this.router.navigate([path])
-  }
 }

@@ -1,3 +1,4 @@
+import { ErrorService } from './../../services/error.service';
 import { GlobalsService } from './../../services/globals.service';
 import { BackendApiService } from 'src/app/services/backend-api.service';
 import { Component, Input, OnInit } from '@angular/core';
@@ -5,10 +6,8 @@ import Hint from 'src/app/types/Hint';
 import { Collections } from 'src/app/enums/collections';
 import Opmerking from 'src/app/types/Opmerking';
 import Rating from 'src/app/types/Rating';
-import { Router } from '@angular/router';
 import Gebruiker from 'src/app/types/Gebruiker';
 import { Observable } from 'rxjs';
-import { AlertController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { Timestamp } from 'firebase/firestore';
@@ -45,85 +44,73 @@ export class KandidaatHintComponent implements OnInit {
   rating: Rating;
 
   constructor(
+    private errService: ErrorService,
     private apiService: BackendApiService,
     private globalService: GlobalsService,
-    private router: Router,
-    private alertController: AlertController,
     public authService: AuthService,
     private storageService: StorageService
   ) { }
 
   async ngOnInit() {
-    this.hint.datum = new Date((this.hint.datum as Timestamp).seconds * 1000 + (this.hint.datum as Timestamp).nanoseconds / 1000000).toLocaleDateString('be-NL');
+    console.log(this.hint)
+    this.hint.datumString = new Date((this.hint.datum as Timestamp).seconds * 1000 + (this.hint.datum as Timestamp).nanoseconds / 1000000).toLocaleDateString('be-NL');
     this.hint.opmerkingen.forEach(opmerking => {
-      opmerking.datum = new Date((opmerking.datum as Timestamp).seconds * 1000 + (opmerking.datum as Timestamp).nanoseconds / 1000000).toLocaleDateString('be-NL');
+      opmerking.datumString = new Date((opmerking.datum as Timestamp).seconds * 1000 + (opmerking.datum as Timestamp).nanoseconds / 1000000).toLocaleDateString('be-NL');
     });
 
-    this.gebruiker = await this.apiService.getDocByRef<Gebruiker>(this.hint.plaatser, Collections.gebruikers) as Gebruiker
+
+    this.gebruiker = await this.apiService.getDocByRef<Gebruiker>(this.hint.plaatser, Collections.gebruikers)
+      .catch(err => this.errService.showAlert('Fout', err.message)) as Gebruiker
     const tempBackground = Math.floor(Math.random() * this.colors.length);
     this.background = this.colors[tempBackground];
-    this.rating = new Rating(this.hint, this.gebruiker, this.#showAlert.bind(this), this.#update.bind(this));
+    this.rating = new Rating(await this.globalService.getGebruiker(), this.hint, this.#showAlert.bind(this), this.#update.bind(this));
     this.profileImageUrl$ = this.storageService.getProfileImageUrl(this.gebruiker);
   }
 
   async onThumbsUp() {
     const loggedIn = await this.globalService.getGebruiker();
-    !loggedIn.email ? this.#notLoggedIn() : this.rating.onThumbsUp();
+    !loggedIn.email ? this.globalService.notLoggedIn() : this.rating.onThumbsUp();
   }
 
   async onThumbsDown() {
     const loggedIn = await this.globalService.getGebruiker();
-    !loggedIn.email ? this.#notLoggedIn() : this.rating.onThumbsDown();
+    !loggedIn.email ? this.globalService.notLoggedIn() : this.rating.onThumbsDown();
   }
 
   async #showAlert(): Promise<void> {
-    const alert = await this.alertController.create({
-      header: 'Fout',
-      message: 'Uw stem werd reeds geregistreerd ... ',
-      buttons: ['OK']
-    });
-
-    await alert.present();
+    this.errService.showAlert('Fout', 'Uw stem werd reeds geregistreerd ... ')
   }
-
 
   async #update(hint?: Hint, gebruiker?: Gebruiker): Promise<void> {
     if (hint) {
-      await this.apiService.updateHint(this.hint);
+      await this.apiService.updateHint(this.hint)
+        .catch(err => this.errService.showAlert('Fout', err.message));
 
       if (gebruiker) {
-        this.globalService.setGebruiker(this.gebruiker);
-        await this.apiService.updateGebruiker(this.gebruiker)
+        this.globalService.setGebruiker(gebruiker);
+        await this.apiService.updateGebruiker(gebruiker)
+          .catch(err => this.errService.showAlert('Fout', err.message));
       }
     }
   }
 
-  onSubmitComment() {
+  async onSubmitComment() {
     const newOpmerking: Opmerking = {
       plaatser: { ...this.gebruiker },
-      datum: new Date(),
+      datum:  new Date().getTime() as unknown as Timestamp,
+      datumString: new Date().toLocaleDateString('be-NL'),
       tekst: this.newComment
     }
     this.hint.opmerkingen.push(newOpmerking);
+    await this.apiService.updateHint(this.hint)
+      .catch(err => this.errService.showAlert('Fout', err.message));;
     this.newComment = '';
     this.showCommentInput = false;
   }
 
-  #navigate(path: string) {
-    this.router.navigate([path])
-  }
-
-  #notLoggedIn() {
-    const ok = confirm('Gelieve in te loggen om een hint toe the voegen');
-    if (ok) {
-      this.#navigate('login')
-    }
-    return;
-  }
-
   async fnShowCommentInput() {
     const loggedIn = await this.globalService.getGebruiker();
-    !loggedIn.email ? this.#notLoggedIn() : this.showCommentInput = true;
+    !loggedIn.email ? this.globalService.notLoggedIn() : this.showCommentInput = true;
   }
 }
 

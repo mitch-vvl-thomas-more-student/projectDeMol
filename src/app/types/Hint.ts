@@ -30,6 +30,7 @@ export default class Hint implements IHint {
     opmerkingen: Opmerking[];
     gestemdDoor: string[];
     isPubliek: boolean;
+    datumString: string;
 
     addComment(comment: Opmerking): void {
         this.opmerkingen.push(comment);

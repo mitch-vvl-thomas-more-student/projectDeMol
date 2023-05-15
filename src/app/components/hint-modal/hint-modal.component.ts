@@ -1,3 +1,4 @@
+import { ErrorService } from './../../services/error.service';
 import { GlobalsService } from './../../services/globals.service';
 import { BackendApiService } from 'src/app/services/backend-api.service';
 import { Component, Input } from '@angular/core';
@@ -21,7 +22,9 @@ export class HintModalComponent {
   tip: string = '';
   disable: boolean = true;
   isPubliek: boolean = true;
-  constructor(private modalController: ModalController, 
+  constructor(
+    private errService: ErrorService,
+    private modalController: ModalController,
     private backEndApiService: BackendApiService,
     private globalService: GlobalsService) { }
 
@@ -43,17 +46,19 @@ export class HintModalComponent {
     newHint.gestemdDoor = [];
     this.hint = new Hint(); // Reset the form
     const fireStoreHintId = await this.backEndApiService.addHint(newHint);
-    if (fireStoreHintId.length > 0){
+    if (fireStoreHintId.length > 0) {
       this.gebruiker.geplaatsteHints.push(fireStoreHintId);
       this.kandidaat.hints.push(fireStoreHintId);
       await this.globalService.setGebruiker(this.gebruiker);
-      await this.backEndApiService.updateGebruiker(this.gebruiker);
-      await this.backEndApiService.updateKandidaat(this.kandidaat);
+      await this.backEndApiService.updateGebruiker(this.gebruiker)
+        .catch(err => this.errService.showAlert('Fout', err.message));
+      await this.backEndApiService.updateKandidaat(this.kandidaat)
+        .catch(err => this.errService.showAlert('Fout', err.message));;
     }
     else {
-      alert('Er ging iets mis tijdens het opslaan van u hint... Probeer het nog eens. ')
+      this.errService.showAlert('Fout', 'Er ging iets mis tijdens het opslaan van u hint... Probeer het nog eens. ')
     }
-     this.modalController.dismiss(newHint);
+    this.modalController.dismiss(newHint);
   }
 
   onHintChange(event: any) {

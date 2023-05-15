@@ -1,5 +1,5 @@
+import { GlobalsService } from 'src/app/services/globals.service';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-splash',
@@ -8,11 +8,11 @@ import { Router } from '@angular/router';
 })
 export class SplashPage implements OnInit {
 
-  constructor(private router: Router) {
+  constructor(private globalsService: GlobalsService) {
     setTimeout(() => {
-this.router.navigate(['tabs', 'kandidaten'])
+      this.globalsService.navigate(['tabs', 'kandidaten'])
     }, 2500)
-   }
+  }
 
   ngOnInit() {
   }

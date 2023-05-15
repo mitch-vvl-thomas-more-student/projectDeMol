@@ -6,8 +6,9 @@ import { Router } from '@angular/router';
 import { signInWithCredential, signOut, Unsubscribe, Auth } from '@angular/fire/auth';
 import { updateProfile, GoogleAuthProvider, PhoneAuthProvider, FacebookAuthProvider, User } from 'firebase/auth';
 import { Capacitor } from '@capacitor/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, catchError, switchMap, take } from 'rxjs';
 import Gebruiker, { IFireStoreGebruiker } from '../types/Gebruiker';
+import { ErrorService } from './error.service';
 
 @Injectable({
 
@@ -18,9 +19,9 @@ export class AuthService {
   public currentUser: BehaviorSubject<null | User> = new BehaviorSubject<null | User>(null);
   #verificationId: string = '';
   #authUnsubscribe: Unsubscribe;
-  called: boolean = false;
 
   constructor(
+    private errService: ErrorService,
     private auth: Auth,
     private router: Router,
     private fireStore: BackendApiService,
@@ -28,8 +29,7 @@ export class AuthService {
     private apiService: BackendApiService) {
     this.#authUnsubscribe = this.auth.onAuthStateChanged((user: User | null) => {
       if (user !== null) {
-        this.setCurrentUser(user, this.called);
-        this.called = true;
+        this.setCurrentUser(user);
       }
     });
   }
@@ -57,8 +57,7 @@ export class AuthService {
       if (Capacitor.isNativePlatform()) {
         await signOut(this.auth);
       }
-
-      await this.router.navigate(['login']);
+      await this.globalService.navigate(['login']);
 
     } catch (error) {
       console.error(error);
@@ -66,8 +65,10 @@ export class AuthService {
   }
   async signInWithGoogle(): Promise<void> {
     // Sign in on the native layer.
-    const result = await FirebaseAuthentication.signInWithGoogle();
-    const credential = result.credential;
+    let credential: any = null;
+    const result = await FirebaseAuthentication.signInWithGoogle()
+      .then((result) => credential = result.credential)
+      .catch((error) => this.errorMessages(error));
 
     if (!credential) {
       // Handle the case where the credential is null.
@@ -79,13 +80,16 @@ export class AuthService {
     // Sign in on the web layer.
     if (Capacitor.isNativePlatform()) {
       const authCredential = GoogleAuthProvider.credential(idToken);
-      await signInWithCredential(this.auth, authCredential);
+      await signInWithCredential(this.auth, authCredential)
+        .catch((error) => this.errorMessages(error));
     }
   }
   async signInWithFacebook(): Promise<void> {
     // Sign in on the native layer.
-    const result = await FirebaseAuthentication.signInWithFacebook();
-    const credential = result.credential;
+    let credential: any = null;
+    const result = await FirebaseAuthentication.signInWithFacebook()
+      .then((result) => credential = result.credential)
+      .catch((error) => this.errorMessages(error));
 
     if (!credential) {
       // Handle the case where the credential is null.
@@ -96,7 +100,8 @@ export class AuthService {
     if (Capacitor.isNativePlatform()) {
       if (credential.accessToken) {
         const authCredential = FacebookAuthProvider.credential(credential.accessToken);
-        await signInWithCredential(this.auth, authCredential);
+        await signInWithCredential(this.auth, authCredential)
+          .catch((error) => this.errorMessages(error));
       }
     }
   }
@@ -135,54 +140,40 @@ export class AuthService {
    * @param user The new user.
    * @private
    */
-  private async setCurrentUser(user: User | null, called: boolean): Promise<void> {
+  private async setCurrentUser(user: User | null): Promise<void> {
     this.currentUser.next(user);
     const isAuthenticated = user !== null;
     const currentUrl = this.router.url;
 
-    if (!called)
-      this.registerCurrentUserAsGebruiker(user)
+    this.registerCurrentUserAsGebruiker(user)
 
     if (isAuthenticated && currentUrl === '/login') {
 
-      await this.router.navigate(['tabs', 'kandidaten']);
+      await this.globalService.navigate(['tabs', 'kandidaten']);
     } else if (!isAuthenticated && currentUrl !== '/login') {
-      await this.router.navigate(['login']);
+      await this.globalService.navigate(['login']);
     }
-  } 
-
+  }
   async registreerGebruikerMetEmail(email: string, password: string): Promise<string | undefined> {
     if (email) {
-      console.log(email)
       this.fireStore.retrieveGebruikerByEmail(email)
-          .subscribe(async (res) => {
-            if (res.length == 0) {
-              console.log(res)
-              await this.nieuweGebruikerMetEmail(email, password);
-              console.log('registered')
-
+        .subscribe(async (res) => {
+          if (res.length == 0) {
+            await this.nieuweGebruikerMetEmail(email, password);
+          } else {
+            const existingUser = res[0];
+            const signinResult = await FirebaseAuthentication.signInWithEmailAndPassword({ email, password })
+              .catch((error) => this.errorMessages(error));
+            if (signinResult) {
+              await this.globalService.setGebruiker(existingUser);
             } else {
-              console.log('try to login')
-              const existingUser = res[0];
-              const signinResult = await FirebaseAuthentication.signInWithEmailAndPassword({ email, password });
-              if (signinResult) {
-                await this.globalService.setGebruiker(existingUser);
-                console.log('loggedin')
-               
-              } else {
-                console.log('wrongpassword')               
-              }
+              this.errorMessages('Fout paswoord')
             }
-          });
-
-      return new Promise<string | undefined>((resolve) => {
-        ;
-      });
+          }
+        });
     }
     return undefined;
   }
-  
-  
   private async nieuweGebruikerMetEmail(email: string, password: string): Promise<void> {
     try {
 
@@ -190,35 +181,52 @@ export class AuthService {
       const user = result.user;
       if (user) {
         await this.registerCurrentUserAsGebruiker(user);
-      } 
+      }
     } catch (error) {
       console.error(error);
     }
   }
-  // subscribe to the gebruiker collection and add the current user if it doesn't exist yet
   private async registerCurrentUserAsGebruiker(user: User | CUser | null): Promise<void> {
     if (user) {
       this.fireStore.retrieveGebruikerByEmail(user.email as string)
-        .subscribe(async (res) => {
-          if (res.length == 0) {
-            const parts = (user.displayName || '').split(' ');
-            const gebruiker = new Gebruiker();
-            gebruiker.email = user.email || '';
-            gebruiker.voornaam = parts[0] || '';
-            gebruiker.achternaam = parts.slice(1).join(' ');
-            gebruiker.verdachten = [];
-            gebruiker.aantalStemmenOmhoog = 0;
-            gebruiker.aantalStemmenOmlaag = 0;
-            this.apiService.retrieveKandidaats().subscribe(async (kandidaten) => {
-              kandidaten.map(kandidaat => gebruiker.verdachten?.push(kandidaat.id));
-              await this.fireStore.addGebruiker(gebruiker);
-              await this.globalService.setGebruiker(gebruiker);
-            }).unsubscribe();
-          } else {
-            await this.globalService.setGebruiker(res[0])
-          }
-        })
+        .pipe(
+          take(1),
+          switchMap((res) => {
+            if (res.length == 0) {
+              const parts = (user.displayName || '').split(' ');
+              const gebruiker = new Gebruiker();
+              gebruiker.email = user.email || '';
+              gebruiker.voornaam = parts[0] || '';
+              gebruiker.achternaam = parts.slice(1).join(' ');
+              gebruiker.verdachten = [];
+              gebruiker.aantalStemmenOmhoog = 0;
+              gebruiker.aantalStemmenOmlaag = 0;
+              return this.apiService.retrieveKandidaats().pipe(
+                take(1),
+                switchMap((kandidaten) => {
+                  kandidaten.map(kandidaat => gebruiker.verdachten?.push(kandidaat.id));
+                  return this.fireStore.addGebruiker(gebruiker).then(() => this.globalService.setGebruiker(gebruiker));
+                })
+              );
+            } else {
+              return this.globalService.setGebruiker(res[0]);
+            }
+          }),
+          catchError((error) => {
+            this.errService.showAlert('Fout', error.message)
+            throw error;
+          })
+        )
+        .subscribe();
     }
   }
-
+  private errorMessages(error: any) {
+    if (error === 'Fout paswoord') {
+      this.errService.showAlert('Fout', 'Foutief paswoord!');
+    } else if (error.code === 'auth/account-exists-with-different-credential') {
+      this.errService.showAlert('Fout', 'Dit e-mailadres is al gekoppeld aan een ander account. Probeer in te loggen met dat account.');
+    } else {
+      this.errService.showAlert('Fout', 'Er is een fout opgetreden bij het aanmelden.');
+    }
+  }
 }

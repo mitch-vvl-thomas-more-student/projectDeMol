@@ -2,7 +2,8 @@ import Gebruiker from 'src/app/types/Gebruiker';
 import Kandidaat from 'src/app/types/Kandidaat';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class GlobalsService {
   #gebruikerChange = new Subject<Gebruiker>();
   #kandidatenChange = new Subject<Kandidaat[]>();
 
-  constructor() { }
+  constructor(private alertController: AlertController, private router: Router) { }
 
   async setGebruiker(gebruiker: Gebruiker): Promise<void> {
     return new Promise((resolve) => {
@@ -62,4 +63,38 @@ export class GlobalsService {
       }
     });
   }
+
+  notLoggedIn() {
+    const presentAlert = async () => {
+      const alert = await this.alertController.create({
+        header: 'Hint toevoegen',
+        message: 'Gelieve in te loggen om een hint toe te voegen',
+        buttons: [
+          {
+            text: 'Annuleren',
+            role: 'cancel',
+            handler: () => {
+              console.log('Annuleren gekozen');
+            }
+          },
+          {
+            text: 'Inloggen',
+            handler: async () => {
+              await this.navigate(['login']);
+            }
+          }
+        ]
+      });
+  
+      await alert.present();
+    };
+  
+    presentAlert();
+    return;
+  }
+
+  async navigate(path: string[]): Promise<boolean> {
+    return await this.router.navigate(path)
+  }
+  
 }

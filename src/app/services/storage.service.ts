@@ -1,16 +1,18 @@
-import { AlertController } from '@ionic/angular';
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import Gebruiker from '../types/Gebruiker';
 import { Observable, finalize, from, map } from 'rxjs';
 import { UploadTaskSnapshot } from '@angular/fire/compat/storage/interfaces';
+import { ErrorService } from './error.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StorageService {
 
-  constructor(private storage: AngularFireStorage, private alertController: AlertController) { }
+  constructor(
+    private storage: AngularFireStorage, 
+    private errService: ErrorService) { }
 
   async deleteImage(gebruiker: Gebruiker): Promise<void> {
     try {
@@ -18,7 +20,7 @@ export class StorageService {
       if (imageRef)
         imageRef.delete();
     } catch (error) {
-      this.#showErrorAlert('Oeps, er is iets misgegaan. Probeer het later opnieuw.');
+      this.errService.showAlert('Fout', 'Oeps, er is iets misgegaan. Probeer het later opnieuw.')
       throw error;
     }
   }
@@ -35,8 +37,7 @@ export class StorageService {
             if (downloadURL) {
               return downloadURL;
             } else {
-              this.#showErrorAlert('Oeps, er is iets misgegaan bij het ophalen van de afbeelding. Probeer het later opnieuw.');
-              throw new Error('Failed to retrieve download URL');
+              this.errService.showAlert('Fout', 'Oeps, er is iets misgegaan bij het ophalen van de afbeelding. Probeer het later opnieuw.')
             }
           })
         );
@@ -51,15 +52,5 @@ export class StorageService {
       return firestoreRef.getDownloadURL();
     }
     return null;
-  }
-
-  async #showErrorAlert(errorMessage: string): Promise<void> {
-    const alert = await this.alertController.create({
-      header: 'Fout',
-      message: errorMessage,
-      buttons: ['OK']
-    });
-
-    await alert.present();
   }
 }
