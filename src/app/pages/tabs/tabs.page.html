@@ -26,10 +26,19 @@
         <ion-icon name="logo-youtube"></ion-icon>
         Kijken
       </ion-tab-button>
-      <ion-tab-button (click)="menu.open()" expand="block">
+
+      <ion-tab-button (click)="router.navigate(['login'])" *ngIf="!isLoggedIn">
+        <ion-icon name="log-in-outline"></ion-icon>
+        Inloggen
+      </ion-tab-button>
+      
+      <ion-tab-button (click)="menu.open()" expand="block" *ngIf="isLoggedIn">
         <ion-icon name="menu"></ion-icon>
         Meer
       </ion-tab-button>
+      
+
+      
     </ion-tab-bar>
   </ion-tabs>
 
@@ -41,9 +50,13 @@
     </ion-header>
     <ion-content>
       <ion-list>
-        <ion-item (click)="authService.signOut()">
+        <ion-item (click)="authService.signOut()" *ngIf="isLoggedIn">
           <ion-icon name="log-out-outline" slot="end"></ion-icon>
           Uitloggen
+        </ion-item>
+        <ion-item (click)="router.navigate(['login'])" *ngIf="!isLoggedIn">
+          <ion-icon name="log-in-outline" slot="end"></ion-icon>
+          Login
         </ion-item>
         <ion-item (click)="router.navigate(['tabs','top10'])">
           <ion-icon name="podium-outline" slot="end"></ion-icon>

@@ -2,7 +2,6 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'app.web.projectdemol',
-  // appId: 'io.ionic.starter',
   appName: 'projectDeMol',
   webDir: 'www',
   bundledWebRuntime: false,

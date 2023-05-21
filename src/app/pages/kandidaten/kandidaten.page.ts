@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import Kandidaat from 'src/app/types/Kandidaat';
 import { Subscription } from 'rxjs';
 
+
 @Component({
   selector: 'app-kandidaten',
   templateUrl: './kandidaten.page.html',
@@ -18,7 +19,6 @@ export class KandidatenPage implements OnInit {
   async ngOnInit() {
     this.#kandidatenSub = this.dataService.retrieveKandidaats().subscribe((res) => this.kandidaten = res)
   }
-
   ngOnDestroy() {
     if (this.#kandidatenSub){
       this.#kandidatenSub.unsubscribe();

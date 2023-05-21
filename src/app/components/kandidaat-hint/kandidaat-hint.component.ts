@@ -19,7 +19,7 @@ import { Timestamp } from 'firebase/firestore';
 })
 export class KandidaatHintComponent implements OnInit {
   @Input() hint: Hint;
-  profileImageUrl$: Observable<string> | null;
+  profileImageUrl$: string | null;
   gebruiker: Gebruiker;
   background: string;
   colors: string[] = [
@@ -52,7 +52,6 @@ export class KandidaatHintComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    console.log(this.hint)
     this.hint.datumString = new Date((this.hint.datum as Timestamp).seconds * 1000 + (this.hint.datum as Timestamp).nanoseconds / 1000000).toLocaleDateString('be-NL');
     this.hint.opmerkingen.forEach(opmerking => {
       opmerking.datumString = new Date((opmerking.datum as Timestamp).seconds * 1000 + (opmerking.datum as Timestamp).nanoseconds / 1000000).toLocaleDateString('be-NL');

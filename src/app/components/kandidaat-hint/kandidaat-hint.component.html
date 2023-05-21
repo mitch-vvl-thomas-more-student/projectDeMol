@@ -6,13 +6,13 @@
   </ion-row>
   <ion-row>
     <ion-col sizeXs="2" sizeLg="1" class="avatarWrap">
-      <ng-container *ngIf="profileImageUrl$ | async as imageUrl">
+      <ng-container *ngIf="profileImageUrl$ as imageUrl">
         <img alt="profielfoto" [src]="imageUrl" />
       </ng-container>
-      <ng-container *ngIf="!(profileImageUrl$ | async)">
+      <ng-container *ngIf="!profileImageUrl$">
         <img alt="profielfoto" [src]="authService.currentUser.value?.photoURL" />
       </ng-container>
-      <ng-container *ngIf="!(profileImageUrl$ | async) && !authService.currentUser.value?.photoURL">
+      <ng-container *ngIf="!profileImageUrl$ && !authService.currentUser.value?.photoURL">
         <div class="avatar" [style.background-color]="background">
           {{ gebruiker.voornaam.slice(0,1).toUpperCase() }}{{ gebruiker.achternaam.slice(0,1).toUpperCase() }}
         </div>

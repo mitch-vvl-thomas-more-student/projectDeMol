@@ -33,11 +33,10 @@ export class YoutubeApiService {
       .pipe(
         retry(3),
         catchError(error => {
-          console.error('An error occurred while searching for videos: ', error);
+          console.error('Fout bij het zoekenen naar videos: ', error);
           return of(undefined)
         }),
         map((response: any) => {
-          console.log(response)
           const videos: Video[] = response['items'];
           const pageInfo: PageInfo = response['pageInfo'];
           const nextPageToken: string = response['nextPageToken'];

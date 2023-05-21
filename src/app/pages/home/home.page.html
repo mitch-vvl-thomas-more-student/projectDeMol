@@ -11,18 +11,19 @@
           <ion-row>
             <ion-col sizeXs="12" sizeSm="6" sizeMd="4">
               <ion-icon name="create-outline" class="float-right" (click)="openFilePicker()"></ion-icon>
-              <ng-container *ngIf="profileImageUrl$ | async as imageUrl">
-                <img alt="profielfoto" class="profielfoto" [src]="imageUrl" />
-              </ng-container>
-              <ng-container *ngIf="!(profileImageUrl$ | async)">
+              <ng-container *ngIf="profileImageUrl$ !== null && profileImageUrl$ !== ''">
+                <img alt="profielfoto" class="profielfoto" [src]="profileImageUrl$" />
+              </ng-container>  
+              <ng-container *ngIf="profileImageUrl$ === null && authService?.currentUser?.value?.photoURL !== null && authService?.currentUser?.value?.photoURL !== ''">
                 <img alt="profielfoto" [src]="authService.currentUser.value?.photoURL" />
-              </ng-container>
-              <ng-container *ngIf="!(profileImageUrl$ | async) && !authService.currentUser.value?.photoURL">
-                <div class="avatar">
-                  {{ gebruiker.voornaam.slice(0,1).toUpperCase() }}{{ gebruiker.achternaam.slice(0,1).toUpperCase() }}
-                </div>
-              </ng-container>
-              <input style="display: none;" type="file" accept="image/*" (change)="onFileSelected($event)" id="btn_file">
+              </ng-container>              
+                <ng-container *ngIf="!(profileImageUrl$) && !authService?.currentUser?.value?.photoURL && gebruiker !== null">
+                  <div class="avatar">
+                    {{ gebruiker.voornaam.slice(0,1).toUpperCase() }}{{ gebruiker.achternaam.slice(0,1).toUpperCase() }}
+                  </div>
+                </ng-container>              
+              
+              <input style="display: none;" type="file" accept="image/*" (change)="uploadImageFromWeb($event)" id="btn_file">
             </ion-col>
           </ion-row>
           <ion-row>
@@ -63,6 +64,12 @@
                   </div>
                 </ion-list>
               </form>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="gebruiker">
+            <ion-col>
+              <h2>Controleer je logins.</h2>
+              <app-login-attempts [gebruiker]="gebruiker"></app-login-attempts>
             </ion-col>
           </ion-row>
         </ion-col>

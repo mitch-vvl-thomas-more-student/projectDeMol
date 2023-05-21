@@ -95,6 +95,5 @@ export class GlobalsService {
 
   async navigate(path: string[]): Promise<boolean> {
     return await this.router.navigate(path)
-  }
-  
+  }  
 }

@@ -37,9 +37,18 @@ dependencies:
   '@capacitor/app':
     specifier: 4.1.1
     version: 4.1.1(@capacitor/core@4.7.1)
+  '@capacitor/camera':
+    specifier: ^4.1.5
+    version: 4.1.5(@capacitor/core@4.7.1)
   '@capacitor/core':
     specifier: 4.7.1
     version: 4.7.1
+  '@capacitor/device':
+    specifier: ^5.0.2
+    version: 5.0.2(@capacitor/core@4.7.1)
+  '@capacitor/geolocation':
+    specifier: ^5.0.2
+    version: 5.0.2(@capacitor/core@4.7.1)
   '@capacitor/haptics':
     specifier: 4.1.0
     version: 4.1.0(@capacitor/core@4.7.1)
@@ -58,6 +67,9 @@ dependencies:
   '@ionic/angular':
     specifier: ^6.1.9
     version: 6.7.0(@angular/core@15.2.5)(@angular/forms@15.2.4)(@angular/router@15.2.4)(rxjs@7.5.7)(zone.js@0.13.0)
+  '@ionic/pwa-elements':
+    specifier: ^3.1.1
+    version: 3.1.1
   firebase:
     specifier: ^9.18.0
     version: 9.18.0
@@ -1931,6 +1943,14 @@ packages:
       '@capacitor/core': 4.7.1
     dev: false
 
+  /@capacitor/camera@4.1.5(@capacitor/core@4.7.1):
+    resolution: {integrity: sha512-E00IRsJiIr1kP3EkJa0OWp//TDFXOx3ifDfmLOmIkPxKt1FfuNheE0ipWBo5b44pKsx9pO64Rm9MkfUhgH5Rfg==}
+    peerDependencies:
+      '@capacitor/core': ^4.0.0
+    dependencies:
+      '@capacitor/core': 4.7.1
+    dev: false
+
   /@capacitor/cli@4.7.1:
     resolution: {integrity: sha512-cUEMci4KBb8gwIDXaO9F2Woz1wnugB/vVq2sRVy8+fzOfhmHlxweuH+h9RktDkpceVi+COfxYw/VPjg1wjC1tA==}
     engines: {node: '>=12.4.0'}
@@ -1961,6 +1981,22 @@ packages:
     resolution: {integrity: sha512-NZcsyPNt1avNELnKuD5OsL/O/ejQxlw9UkLUEuiptPPAEwS8WJ1gGabaEBbCb2wNA/nPfrGH+ZC2LGhlpMlLeg==}
     dependencies:
       tslib: 2.5.0
+    dev: false
+
+  /@capacitor/device@5.0.2(@capacitor/core@4.7.1):
+    resolution: {integrity: sha512-RpFNxtxWoqi32Q984UMv8Uca8yirPuUCfJQNhp9zyXYA3x0Ks59xgimyBXsJiQXwAgA75W7PAttTalF5bulJIQ==}
+    peerDependencies:
+      '@capacitor/core': ^5.0.0
+    dependencies:
+      '@capacitor/core': 4.7.1
+    dev: false
+
+  /@capacitor/geolocation@5.0.2(@capacitor/core@4.7.1):
+    resolution: {integrity: sha512-8QUKcOtjj9t8A4ep34IRMryXwsw0bviEDMcChfme4hy1yfPJeq4+UvZhg+OUwwNPd8ADNzJeQ7fWdptd1prrFw==}
+    peerDependencies:
+      '@capacitor/core': ^5.0.0
+    dependencies:
+      '@capacitor/core': 4.7.1
     dev: false
 
   /@capacitor/haptics@4.1.0(@capacitor/core@4.7.1):
@@ -2894,6 +2930,10 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@ionic/pwa-elements@3.1.1:
+    resolution: {integrity: sha512-BoEX1pSrKn5dP4VQwaf8DweAmT4ynmpW+9f6oj/W1xLe54bmuXcUY07ziuZX1DLu50xHSYcO5qJ/dbYC/w6wgA==}
+    dev: false
 
   /@ionic/utils-array@2.1.5:
     resolution: {integrity: sha512-HD72a71IQVBmQckDwmA8RxNVMTbxnaLbgFOl+dO5tbvW9CkkSFCv41h6fUuNsSEVgngfkn0i98HDuZC8mk+lTA==}

@@ -12,6 +12,8 @@ import { ReorderComponent } from './reorder/reorder.component';
 import { FormsModule } from '@angular/forms';
 import { ResetPaswoordComponent } from './reset-paswoord/reset-paswoord.component';
 import { RegisterComponent } from './register/register.component';
+import { LoginAttemptsComponent } from './login-attempts/login-attempts.component';
+import { PopoverContentComponent } from './popover/popover.component';
 
 
 @NgModule({
@@ -24,6 +26,8 @@ import { RegisterComponent } from './register/register.component';
     KandidaatHintComponent,
     ResetPaswoordComponent,
     RegisterComponent,
+    LoginAttemptsComponent,
+    PopoverContentComponent
   ],
   exports: [
     MenuComponent,
@@ -34,6 +38,8 @@ import { RegisterComponent } from './register/register.component';
     KandidaatHintComponent, 
     ResetPaswoordComponent,
     RegisterComponent,
+    LoginAttemptsComponent,
+    PopoverContentComponent
     ],
   imports: [
     FormsModule,

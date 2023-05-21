@@ -1,0 +1,14 @@
+<ion-list>
+  <ion-item lines="none" *ngIf="address !== undefined" (mouseleave)="hideMap()">
+    <ion-icon name="close-circle-outline" slot="end" (click)="hideMap()"></ion-icon>
+        <p>{{ address.address.road }} {{ address.address.house_number}} <br />
+      {{ address.address.postcode}} {{ address.address.town}} ({{address.address.state}}) 
+      <br /> {{address.address.country}}</p>
+  </ion-item>
+</ion-list>
+
+
+
+
+
+

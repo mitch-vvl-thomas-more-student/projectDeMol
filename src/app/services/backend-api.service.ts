@@ -1,3 +1,4 @@
+import { AlertController } from '@ionic/angular';
 import { Collections } from './../enums/collections';
 import { Injectable } from '@angular/core';
 import {
@@ -16,19 +17,21 @@ import {
 import { Observable } from 'rxjs';
 import Gebruiker, { IFireStoreGebruiker } from '../types/Gebruiker';
 import Opmerking, { IFireStoreOpmerking } from '../types/Opmerking';
-import { AuthService } from './auth.service';
 import Groep, { IFireStoreGroep } from '../types/Groep';
 import Hint, { IFireStoreHint } from '../types/Hint';
 import Kandidaat, { IFireStoreKandidaat } from '../types/Kandidaat';
 
-import { doc, getFirestore, DocumentSnapshot, getDoc } from 'firebase/firestore';
+import { doc, DocumentSnapshot, getDoc } from 'firebase/firestore';
+import { ErrorService } from './error.service';
+import { LoginAttempt } from '../types/LoginAttempt';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class BackendApiService {
-  constructor(private fireStore: Firestore) { }
+  constructor(private fireStore: Firestore,
+    private errService: ErrorService) { }
 
   #getCollectionRef<T>(collectionName: string): CollectionReference<T> {
     return collection(this.fireStore, collectionName) as CollectionReference<T>;
@@ -36,28 +39,54 @@ export class BackendApiService {
   #getDocumentRef<T>(collectionName: string, id: string): DocumentReference<T> {
     return doc(this.fireStore, `${collectionName}/${id}`) as DocumentReference<T>;
   }
-
-
   // Opmerkingen
   async addOpmerking(opmerking: Opmerking): Promise<DocumentReference<IFireStoreOpmerking>> {
-    return await addDoc<IFireStoreOpmerking>(
-      this.#getCollectionRef<IFireStoreOpmerking>(Collections.opmerkingen),
-      { opmerking }
-    );
-  }
 
-  async updateOpmerking(opmerking: Opmerking): Promise<void> {
-    if (opmerking.id !== undefined){
-      const opmerkingDocRef = this.#getDocumentRef<IFireStoreOpmerking>(Collections.opmerkingen, opmerking.id);
-      const opmerkingData = this.#parseOpmerkingData(opmerking);
-      await updateDoc(opmerkingDocRef, opmerkingData);
+    try {
+      return await addDoc<IFireStoreOpmerking>(
+        this.#getCollectionRef<IFireStoreOpmerking>(Collections.opmerkingen),
+        { opmerking }
+      );
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        const error = err as Error;
+        this.errService.showAlert('Fout bij het toevoegen van de opmerking', error.message);
+      } else {
+        this.errService.showAlert('Fout bij het toevoegen van de opmerking', 'Onbekende fout');
+      }
+      throw err;
     }
   }
+  async updateOpmerking(opmerking: Opmerking): Promise<void> {
+    if (opmerking.id !== undefined) {
+      try {
+        const opmerkingDocRef = this.#getDocumentRef<IFireStoreOpmerking>(Collections.opmerkingen, opmerking.id);
+        const opmerkingData = this.#parseOpmerkingData(opmerking);
+        await updateDoc(opmerkingDocRef, opmerkingData);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          const error = err as Error;
+          this.errService.showAlert('Fout bij het aanpassen van de opmerking', error.message);
+        } else {
+          this.errService.showAlert('Fout bij het aanpassen van de opmerking', 'Onbekende fout');
+        }
+      }
 
-  retrieve(): Observable<Opmerking[]> {
-    return collectionData<Opmerking>(this.#getCollectionRef(Collections.opmerkingen), { idField: 'id' });
+    }
   }
-
+  retrieve(): Observable<Opmerking[]> {
+    try {
+      return collectionData<Opmerking>(this.#getCollectionRef(Collections.opmerkingen), { idField: 'id' });
+    } catch (err) {
+      if (err instanceof Error) {
+        const error = err as Error;
+        this.errService.showAlert('Fout bij het ophalen opmerkingen', error.message);
+      } else {
+        this.errService.showAlert('Fout bij het ophalen opmerkingen', 'Onbekende fout');
+      }
+      throw err;
+    }
+  }
   #parseOpmerkingData(opmerking: Opmerking): any {
     const { plaatser, ...opmerkingData } = opmerking;
     return {
@@ -71,10 +100,20 @@ export class BackendApiService {
   // Gebruikers
   async addGebruiker(gebruiker: Gebruiker): Promise<DocumentReference<IFireStoreGebruiker>> {
     const fireStoreGebruiker: IFireStoreGebruiker = { ...this.#parseGebruikerData(gebruiker) };
-    return await addDoc<IFireStoreGebruiker>(
-      this.#getCollectionRef<IFireStoreGebruiker>(Collections.gebruikers),
-      fireStoreGebruiker
-    );
+    try {
+      return await addDoc<IFireStoreGebruiker>(
+        this.#getCollectionRef<IFireStoreGebruiker>(Collections.gebruikers),
+        fireStoreGebruiker
+      );
+    } catch (err) {
+      if (err instanceof Error) {
+        const error = err as Error;
+        this.errService.showAlert('Fout bij het toevoegen van de gebruiker', error.message);
+      } else {
+        this.errService.showAlert('Fout bij het toevoegen van de gebruiker', 'Onbekende fout');
+      }
+      throw err;
+    }
   }
 
   async updateGebruiker(gebruiker: Gebruiker): Promise<void> {
@@ -83,23 +122,50 @@ export class BackendApiService {
       const gebruikerData = this.#parseGebruikerData(gebruiker);
       await updateDoc(gebruikerDocRef, gebruikerData);
     } catch (err) {
-      console.log(err)
+      if (err instanceof Error) {
+        const error = err as Error;
+        this.errService.showAlert('Fout bij het aanpassen van de gebruiker', error.message);
+      } else {
+        this.errService.showAlert('Fout bij het aanpassen van de gebruiker', 'Onbekende fout');
+      }
+      throw err;
     }
   }
 
   retrieveGebruikers(): Observable<Gebruiker[]> {
-    return collectionData<Gebruiker>(this.#getCollectionRef(Collections.gebruikers), { idField: 'id' });
+    try {
+      return collectionData<Gebruiker>(this.#getCollectionRef(Collections.gebruikers), { idField: 'id' });
+    } catch (err) {
+      if (err instanceof Error) {
+        const error = err as Error;
+        this.errService.showAlert('Fout bij het ophalen van gebruikers', error.message);
+      } else {
+        this.errService.showAlert('Fout bij het ophalen van gebruiker', 'Onbekende fout');
+      }
+      throw err;
+    }
   }
 
   retrieveGebruikerByEmail(email: string): Observable<Gebruiker[]> {
-    return collectionData<Gebruiker>(
-      query<Gebruiker>(
-        this.#getCollectionRef(Collections.gebruikers), where('email', '==', email)
-      )
-      , { idField: 'id' });
+    try {
+      return collectionData<Gebruiker>(
+        query<Gebruiker>(
+          this.#getCollectionRef(Collections.gebruikers), where('email', '==', email)
+        )
+        , { idField: 'id' });
+    } catch (err) {
+      if (err instanceof Error) {
+        const error = err as Error;
+        this.errService.showAlert('Fout bij het ophalen van de gebruiker', error.message);
+      } else {
+        this.errService.showAlert('Fout bij het ophalen van de gebruiker', 'Onbekende fout');
+      }
+      throw err;
+    }
+
   }
 
-  #parseGebruikerData(gebruiker: Gebruiker) : any {
+  #parseGebruikerData(gebruiker: Gebruiker): any {
     const { geplaatsteHints, groepen, verdachten, ...gebruikerData } = gebruiker;
     return {
       ...gebruikerData,
@@ -109,24 +175,54 @@ export class BackendApiService {
     };
   }
 
-  // Groepen
+  // Groepen - voorbereiding
   async addGroep(groep: Groep): Promise<DocumentReference<IFireStoreGroep>> {
     const fireStoreGroep: any = { ...this.#parseGroepData(groep) };
 
-    return await addDoc<IFireStoreGroep>(
-      this.#getCollectionRef<IFireStoreGroep>(Collections.groepen),
-      fireStoreGroep
-    );
+    try {
+      return await addDoc<IFireStoreGroep>(
+        this.#getCollectionRef<IFireStoreGroep>(Collections.groepen),
+        fireStoreGroep
+      );
+    } catch (err) {
+      if (err instanceof Error) {
+        const error = err as Error;
+        this.errService.showAlert('Fout bij het toevoegen van de groep', error.message);
+      } else {
+        this.errService.showAlert('Fout bij het toevoegen van de groep', 'Onbekende fout');
+      }
+      throw err;
+    }
   }
 
   async updateGroep(groep: Groep): Promise<void> {
-    const groepDocRef = this.#getDocumentRef<IFireStoreGroep>(Collections.groepen, groep.id);
-    const groepData = this.#parseGroepData(groep);
-    await updateDoc(groepDocRef, groepData);
+    try {
+      const groepDocRef = this.#getDocumentRef<IFireStoreGroep>(Collections.groepen, groep.id);
+      const groepData = this.#parseGroepData(groep);
+      await updateDoc(groepDocRef, groepData);
+    } catch (err) {
+      if (err instanceof Error) {
+        const error = err as Error;
+        this.errService.showAlert('Fout bij het aanpassen van de groep', error.message);
+      } else {
+        this.errService.showAlert('Fout bij het aanpassen van de groep', 'Onbekende fout');
+      }
+      throw err;
+    }
   }
 
   retrieveGroeps(): Observable<Groep[]> {
-    return collectionData<Groep>(this.#getCollectionRef(Collections.groepen), { idField: 'id' });
+    try {
+      return collectionData<Groep>(this.#getCollectionRef(Collections.groepen), { idField: 'id' });
+    } catch (err) {
+      if (err instanceof Error) {
+        const error = err as Error;
+        this.errService.showAlert('Fout bij het ophalen van de groepen', error.message);
+      } else {
+        this.errService.showAlert('Fout bij het opahlen van de groepen', 'Onbekende fout');
+      }
+      throw err;
+    }
   }
 
   #parseGroepData(groep: Groep): any {
@@ -152,11 +248,16 @@ export class BackendApiService {
       );
       return docRef.id;
     } catch (err) {
-      return '';
+      if (err instanceof Error) {
+        const error = err as Error;
+        this.errService.showAlert('Fout bij het toevoegen van de hint', error.message);
+      } else {
+        this.errService.showAlert('Fout bij het toevoegen van de hint', 'Onbekende fout');
+      }
+      throw err;
     }
 
   }
-
 
   async updateHint(hint: Hint): Promise<void> {
     try {
@@ -164,29 +265,66 @@ export class BackendApiService {
       const hintData = this.#parseHintData(hint);
       await updateDoc(hintDocRef, hintData);
     } catch (err) {
-      console.log(err);
+      if (err instanceof Error) {
+        const error = err as Error;
+        this.errService.showAlert('Fout bij het aanpassen van de hint', error.message);
+      } else {
+        this.errService.showAlert('Fout bij het aanpassen van de hint', 'Onbekende fout');
+      }
+      throw err;
+    }
+  }
+
+  retrieveHints(): Observable<Hint[]> {
+    try {
+      return collectionData<Hint>(this.#getCollectionRef(Collections.hints), { idField: 'id' });
+    } catch (err) {
+      if (err instanceof Error) {
+        const error = err as Error;
+        this.errService.showAlert('Fout bij het ophalen van de hints', error.message);
+      } else {
+        this.errService.showAlert('Fout bij het ophalen van de hints', 'Onbekende fout');
+      }
+      throw err;
+    }
+  }
+
+  retrieveHintById(id: string): Observable<Hint[]> {
+    try {
+      return collectionData<Hint>(
+        query<Hint>(
+          this.#getCollectionRef(Collections.hints), where('id', '==', id)
+        )
+        , { idField: 'id' });
+    } catch (err) {
+      if (err instanceof Error) {
+        const error = err as Error;
+        this.errService.showAlert('Fout bij het ophalen van de hint', error.message);
+      } else {
+        this.errService.showAlert('Fout bij het ophalen van de hint', 'Onbekende fout');
+      }
+      throw err;
     }
 
   }
 
-  retrieveHints(): Observable<Hint[]> {
-    return collectionData<Hint>(this.#getCollectionRef(Collections.hints), { idField: 'id' });
-  }
-
-  retrieveHintById(id: string): Observable<Hint[]> {
-    return collectionData<Hint>(
-      query<Hint>(
-        this.#getCollectionRef(Collections.hints), where('id', '==', id)
-      )
-      , { idField: 'id' });
-  }
-
   retrieveHintByKandidaatId(id: string): Observable<Hint[]> {
-    return collectionData<Hint>(
-      query<Hint>(
-        this.#getCollectionRef(Collections.hints), where('kandidaat', '==', id)
-      )
-      , { idField: 'id' });
+    try {
+      return collectionData<Hint>(
+        query<Hint>(
+          this.#getCollectionRef(Collections.hints), where('kandidaat', '==', id)
+        )
+        , { idField: 'id' })
+    } catch (err) {
+      if (err instanceof Error) {
+        const error = err as Error;
+        this.errService.showAlert('Fout bij het ophalen van de hints', error.message);
+      } else {
+        this.errService.showAlert('Fout bij het ophalen van de hints', 'Onbekende fout');
+      }
+      throw err;
+    }
+
   }
 
   #parseHintData(hint: Hint): any {
@@ -199,17 +337,37 @@ export class BackendApiService {
 
   // Kandidaten
   async addKandidaat(kandidaat: Kandidaat): Promise<DocumentReference<IFireStoreKandidaat>> {
-    const x = this.#parseKandidaatData(kandidaat)
-    return await addDoc<IFireStoreKandidaat>(
-      this.#getCollectionRef<IFireStoreKandidaat>('kandidaten'),
-      x
-    );
+
+    try {
+      return await addDoc<IFireStoreKandidaat>(
+        this.#getCollectionRef<IFireStoreKandidaat>(Collections.kandidaten),
+        this.#parseKandidaatData(kandidaat)
+      );
+    } catch (err) {
+      if (err instanceof Error) {
+        const error = err as Error;
+        this.errService.showAlert('Fout bij het toevoegen van de kandidaat', error.message);
+      } else {
+        this.errService.showAlert('Fout bij het toevoegen van de kandidaat', 'Onbekende fout');
+      }
+      throw err;
+    }    
   }
 
   async updateKandidaat(kandidaat: Kandidaat): Promise<void> {
-    const kandidaatDocRef = this.#getDocumentRef<IFireStoreKandidaat>(Collections.kandidaten, kandidaat.id);
-    const kandidaatData = this.#parseKandidaatData(kandidaat);
-    await updateDoc(kandidaatDocRef, kandidaatData);
+    try {
+      const kandidaatDocRef = this.#getDocumentRef<IFireStoreKandidaat>(Collections.kandidaten, kandidaat.id);
+      const kandidaatData = this.#parseKandidaatData(kandidaat);
+      await updateDoc(kandidaatDocRef, kandidaatData);
+    } catch (err) {
+      if (err instanceof Error) {
+        const error = err as Error;
+        this.errService.showAlert('Fout bij het aanpassen van de kandidaat', error.message);
+      } else {
+        this.errService.showAlert('Fout bij het aanpassen van de kandidaat', 'Onbekende fout');
+      }
+      throw err;
+    }   
   }
 
   retrieveKandidaats(): Observable<Kandidaat[]> {
@@ -223,13 +381,6 @@ export class BackendApiService {
       )
       , { idField: 'id' });
   }
-
-  // async getKandidaatById(id: string): Promise<DocumentSnapshot<DocumentData>> {
-  //   const kandidaatDoc = doc(this.fireStore, `kandidaten/${id}`);
-  //   const docSnapshot = await getDoc(kandidaatDoc);
-  //   return docSnapshot;
-  // }
-
 
   async getKandidaatById(id: string): Promise<Kandidaat | null> {
     return getDoc(doc(this.fireStore, `kandidaten/${id}`)).then((doc: DocumentSnapshot<DocumentData>) => {
@@ -256,7 +407,6 @@ export class BackendApiService {
     });
   }
 
-
   #parseKandidaatData(kandidaat: Kandidaat): any {
     const {
       hints, ...kandidaatData } = kandidaat;
@@ -280,6 +430,31 @@ export class BackendApiService {
       console.log("No such document!");
       return undefined;
     }
+  }
+
+  // login attemps
+  async addAttemp(attemp: LoginAttempt): Promise<DocumentReference<LoginAttempt>> {
+
+    try {
+      return await addDoc<LoginAttempt>(
+        this.#getCollectionRef<LoginAttempt>(Collections.loginAttempt), attemp);
+    } catch (err) {
+      if (err instanceof Error) {
+        const error = err as Error;
+        this.errService.showAlert('Fout bij het toevoegen van de kandidaat', error.message);
+      } else {
+        this.errService.showAlert('Fout bij het toevoegen van de kandidaat', 'Onbekende fout');
+      }
+      throw err;
+    }    
+  }
+
+  retrieveLoginAttempts(userId: string): Observable<LoginAttempt[]> {
+    return collectionData<LoginAttempt>(
+      query<LoginAttempt>(
+        this.#getCollectionRef(Collections.loginAttempt), where('userId', '==', userId)
+      )
+      , { idField: 'id' });
   }
 
 }

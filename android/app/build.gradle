@@ -1,7 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\Mitch Van Vlierbergh\\Desktop\\demol-angular-def\\projectDeMol\\key.jks')
+            storePassword 'PlainText'
+            keyAlias 'projectDeMol'
+            keyPassword 'PlainText'
+        }
+    }
     namespace 'app.web.projectdemol'
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
@@ -21,7 +28,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+          signingConfig signingConfigs.debug
         }
+      debug {
+        signingConfig signingConfigs.debug
+      }
     }
 }
 
@@ -42,6 +53,8 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
     implementation platform('com.google.firebase:firebase-bom:31.5.0')
+    implementation 'com.google.firebase:firebase-auth'
+implementation 'com.google.android.gms:play-services-auth'
 }
 
 apply from: 'capacitor.build.gradle'

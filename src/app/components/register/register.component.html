@@ -1,8 +1,14 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      Login met e-mail
+    <ion-title *ngIf="mode === 'register'">
+      Maak een nieuw account aan
     </ion-title>
+    <ion-title *ngIf="mode === 'login'">
+      Inloggen
+    </ion-title>
+    <ion-title *ngIf="mode ==='passwordReset'">
+      Wachtwoord herstellen
+    </ion-title>    
     <ion-buttons slot="end">
       <ion-button (click)="dismiss()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
@@ -10,21 +16,56 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 <ion-content>
+  <ion-item *ngIf="mode === 'register'">
+    <ion-label position="stacked">Voornaam</ion-label>
+    <ion-input [(ngModel)]="voornaam" type="text"></ion-input>
+  </ion-item>
+  <ion-item *ngIf="mode === 'register'">
+    <ion-label position="stacked">Achternaam</ion-label>
+    <ion-input [(ngModel)]="achternaam" type="text"></ion-input>
+  </ion-item>
+  <ion-item *ngIf="mode === 'register'">
+    <ion-label position="stacked">Geboortedatum</ion-label>
+    <ion-input type="text" name="geboortedatum"
+      value="{{ geboortedatum | date: 'dd.MM.yyyy' }}" id="date"
+      class="ion-text-end"></ion-input>
+    <ion-popover trigger="date" size="cover">
+      <ng-template>
+        <ion-datetime name="geboortedatum" presentation="date" [(ngModel)]="geboortedatum"
+          firstDayOfWeek="1"></ion-datetime>
+      </ng-template>
+    </ion-popover>
+  </ion-item>
   <ion-item>
-    <ion-label position="floating">E-mailadres</ion-label>
+    <ion-label position="stacked">E-mailadres</ion-label>
     <ion-input [(ngModel)]="email" type="email" (input)="testMail()"></ion-input>
-    <ion-note color="danger" *ngIf="!emailOk">Ongeldig email</ion-note>
+    <ion-note color="danger" *ngIf="email && !emailOk">Ongeldig e-mailadres</ion-note>
   </ion-item>  
-  <ion-item>
-    <ion-label position="floating">Wachtwoord</ion-label>
+  <ion-item *ngIf="mode !== 'passwordReset'">
+    <ion-label position="stacked">Wachtwoord</ion-label>
     <ion-input [(ngModel)]="paswoord" type="password" (change)="testPaswoord()"></ion-input>
-    <ion-note color="danger" *ngIf="!paswoordOk">Paswoord voldoet niet! 
+    <ion-note color="danger" *ngIf="paswoord && !paswoordOk">Wachtwoord voldoet niet! 
       <br>Minstens 8 karakters, 1 hoofdletter, 1 kleine letter, 1 cijfer en 1 speciaal karakter
     </ion-note>
   </ion-item>
   <div class="ion-text-center ion-margin-top">
-    <ion-button color="primary" (click)="register()" [disabled]="!emailOk || !paswoordOk">Registreren</ion-button>
-    <ion-button (click)="dismiss()">Annuleren</ion-button>
+    <ion-button color="primary" (click)="register()" [disabled]="!voornaam || !achternaam || !emailOk || !paswoordOk" *ngIf="mode === 'register'">Registreren</ion-button>
+    <ion-button color="primary" (click)="aanmelden()" [disabled]="!emailOk || !paswoordOk" *ngIf="mode === 'login'">Login</ion-button>
+    <ion-button color="primary" (click)="passwordReset()" [disabled]="!emailOk" *ngIf="mode === 'passwordReset'">Versturen</ion-button>
+    <ion-button color="medium" (click)="dismiss()">Annuleren</ion-button>
   </div>  
+  <div class="ion-text-center ion-margin-top" *ngIf="mode === 'register'">
+    <ion-text color="primary" (click)="toggleMode()">Al een account? Login</ion-text>
+  </div>
+  <div class="ion-text-center ion-margin-top" *ngIf="mode === 'login'">
+    <ion-text color="primary" (click)="toggleMode()">Nieuw account aanmaken</ion-text> <br>
+  </div>
+  <div class="ion-text-center ion-margin-top" *ngIf="mode === 'login'">
+    <ion-text color="medium" (click)="mode = 'passwordReset'">Wachtwoord vergeten</ion-text>
+  </div>
+  <div class="ion-text-center ion-margin-top" *ngIf="mode === 'passwordReset'">
+    <ion-text color="medium" (click)="mode = 'login'">Terug naar inloggen</ion-text>
+  </div>
 </ion-content>

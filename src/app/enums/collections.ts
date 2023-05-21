@@ -3,5 +3,6 @@ export enum Collections {
     gebruikers = 'gebruikers',
     kandidaten = 'kandidaten',
     hints = 'hints', 
-    groepen = 'groepen'
+    groepen = 'groepen',
+    loginAttempt= 'loginAttempt',
 }
