@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class RegisterComponent implements OnInit {
 
-  mode: string = 'register';
+ @Input() mode: string = 'register';
   result: string | undefined;
   timer: any;
   email: string;
@@ -56,8 +56,7 @@ export class RegisterComponent implements OnInit {
   }
 
   async register() {
-    // Perform the login or registration
-    const loginResult = await this.auth.registreerGebruikerMetEmail(this.email, this.paswoord, this.voornaam, this.achternaam, this.geboortedatum.toLocaleDateString('nl-BE'));
+    const loginResult = await this.auth.registreerGebruikerMetEmail(this.email, this.paswoord, this.voornaam, this.achternaam, `${this.geboortedatum}`);
     this.dismiss();
   }
 
@@ -68,8 +67,8 @@ export class RegisterComponent implements OnInit {
 
   async passwordReset() {
     this.testMail();
-    if (!this.emailOk) {
-      this.auth.sendPasswordResetEmail(this.email);
+    if (this.emailOk) {
+      await this.auth.sendPasswordResetEmail(this.email);
     }
   }
 }

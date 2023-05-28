@@ -175,7 +175,7 @@ export class BackendApiService {
     };
   }
 
-  // Groepen - voorbereiding
+  // Groepen - voorbereiding // niet geimplementeerd
   async addGroep(groep: Groep): Promise<DocumentReference<IFireStoreGroep>> {
     const fireStoreGroep: any = { ...this.#parseGroepData(groep) };
 

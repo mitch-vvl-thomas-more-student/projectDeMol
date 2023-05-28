@@ -1,4 +1,10 @@
+
 <ion-content scroll-assist="true">
+  <div *ngIf="!authService.currentUser.value?.emailVerified" class="email-verification-banner">
+    <p>Er is een e-mail verzonden naar {{authService.currentUser.value?.email}} om je account te verifiëren. 
+      <br /> Niet ontvangen? <a (click)="authService.sendEmailVerification()" class="emailLink">Klik hier om opnieuw te verzenden.</a>
+    </p>
+  </div>
   <div class="container">
     <ion-grid>
       <ion-row>
@@ -19,7 +25,7 @@
               </ng-container>              
                 <ng-container *ngIf="!(profileImageUrl$) && !authService?.currentUser?.value?.photoURL && gebruiker !== null">
                   <div class="avatar">
-                    {{ gebruiker.voornaam.slice(0,1).toUpperCase() }}{{ gebruiker.achternaam.slice(0,1).toUpperCase() }}
+                    {{ gebruiker?.voornaam.slice(0,1).toUpperCase() }}{{ gebruiker?.achternaam.slice(0,1).toUpperCase() }}
                   </div>
                 </ng-container>              
               

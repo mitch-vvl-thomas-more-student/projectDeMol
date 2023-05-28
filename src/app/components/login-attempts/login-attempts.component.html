@@ -1,15 +1,14 @@
 <ion-list>
   <ion-item *ngFor="let loginAttempt of loginAttempts.slice().reverse() | slice:0:10">
-    <ion-label>{{ loginAttempt.dateString }}</ion-label>
+    <ion-label>{{ loginAttempt.dateString }} <br /> 
+      <ion-note class="ip">IP-adres: {{ loginAttempt.IPv4 }}</ion-note>
+    </ion-label>
+
     <ion-note slot="end">
       <ion-label>{{ loginAttempt.system.platform }}</ion-label>
       <ion-label>{{ loginAttempt.system.model }}</ion-label>
       <ion-label>{{ loginAttempt.system.osVersion }}</ion-label>
     </ion-note>
-    <ion-icon
-      name="pin-outline"
-      slot="end"
-      (click)="showMap($event, loginAttempt)"
-    ></ion-icon>
+    <ion-icon name="pin-outline" slot="end" (click)="showMap($event, loginAttempt)"></ion-icon>
   </ion-item>
 </ion-list>

@@ -1,5 +1,6 @@
 export interface LoginAttempt {
     userId: string;
+    IPv4: string;
     datetime: Date;
     dateString?: string;
     location: {
@@ -11,5 +12,6 @@ export interface LoginAttempt {
       platform: string;
       osVersion: string;
     }
-    succes: boolean;
+    method: string;
+    success: boolean;
   }

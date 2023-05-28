@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, firstValueFrom } from 'rxjs';
 import { GeoCode } from '../interfaces/geoCode';
+import { IpAdress } from '../interfaces/ipAdress';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class GeoCodeService {
 
   constructor(private http: HttpClient) { }
 
-  async getGeoCode(latitude: number, longitude: number): Promise<GeoCode> {
+  async getGeoCode(latitude: string, longitude: string): Promise<GeoCode> {
     const url = `${this.baseUrl}?lat=${latitude}&lon=${longitude}`;
     
     try {
@@ -28,13 +29,11 @@ export class GeoCodeService {
           await this.delay(retryAfterSeconds * 1000);
           return this.getGeoCode(latitude, longitude);
         } else if (error.status === 403) {
-          // Handle blocked client error
-          // You can customize the error handling logic or throw an error here
+
            throw new Error('Blocked client: Please contact the API provider to resolve the issue.');
         }
       }
       
-      // Handle other errors
       throw error;
     }
   }

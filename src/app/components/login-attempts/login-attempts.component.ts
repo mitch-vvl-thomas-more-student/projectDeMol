@@ -59,8 +59,9 @@ export class LoginAttemptsComponent implements OnInit {
       event,
       animated: true,
       componentProps: {
-        latitude: parseFloat(loginAttempt.location.latitude),
-        longitude: parseFloat(loginAttempt.location.longitude),
+        loginAttempt: loginAttempt,
+        // latitude: parseFloat(loginAttempt.location.latitude),
+        // longitude: parseFloat(loginAttempt.location.longitude),
       },
     });
 

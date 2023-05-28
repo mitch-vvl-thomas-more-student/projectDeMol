@@ -75,6 +75,7 @@ export class GlobalsService {
             role: 'cancel',
             handler: () => {
               console.log('Annuleren gekozen');
+              console.log('alert closed');
             }
           },
           {

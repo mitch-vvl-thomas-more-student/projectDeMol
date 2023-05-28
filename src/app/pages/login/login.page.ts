@@ -28,7 +28,10 @@ export class LoginPage implements OnInit {
 
   async emailLogin() {
     const modal = await this.modalController.create({
-      component: RegisterComponent
+      component: RegisterComponent,
+      componentProps: {
+        mode: 'register'
+      }
     });
     await modal.present();
   }

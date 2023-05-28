@@ -12,7 +12,7 @@ service firebase.storage {
   match /b/{bucket}/o {
     match /{allPaths=**} {
       allow read, write: if
-          request.time < timestamp.date(2023, 6, 10);
+          request.time < timestamp.date(2025, 6, 10);
     }
   }
 }

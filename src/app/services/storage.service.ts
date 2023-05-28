@@ -67,14 +67,15 @@ export class StorageService {
     );
   }
 
-  getProfileImageUrl(gebruiker: Gebruiker): string | null {
+  getProfileImageUrl(gebruiker: Gebruiker): string {
+    console.log(gebruiker)
     if (gebruiker?.avatar) {
       const firestoreImagePath = `images/${gebruiker?.id}/${gebruiker?.avatar}`;
       const firestoreRef = this.storage.ref(firestoreImagePath);
       const downloadURL$ = firestoreRef.getDownloadURL();
       return firstValueFrom(downloadURL$) as unknown as string;
     }
-    return null;
+    return '';
   }
 
   async uploadImageFromWeb(file: File, gebruiker: Gebruiker): Promise<string | null> {
