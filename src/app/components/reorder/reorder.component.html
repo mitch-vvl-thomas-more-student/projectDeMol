@@ -1,9 +1,9 @@
-<ion-list>
+<!-- <ion-list>
   <ion-text>Versleep de verdachten om de volgorde te wijzigen.</ion-text>
   <ion-label position="stacked" class="stacked-label">Verdachten</ion-label>
   <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($event)">
     <ng-container *ngFor="let kandidaat of kandidaten; let i = index">
-      <ion-item [routerLink]="['/tabs/kandidaten', kandidaat?.id]">
+      <ion-item-sliding">
           <ion-avatar slot="start">
             <img alt="kandidaat foto" src="{{ kandidaat?.profielFoto }}">
           </ion-avatar>
@@ -14,7 +14,39 @@
           </ion-label>
           <ion-badge slot="end" class="custom-badge">{{ i + 1 }}</ion-badge>
           <ion-reorder slot="end"></ion-reorder>
-        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option color="danger" [routerLink]="['/tabs/kandidaten', kandidaat?.id]">
+            <ion-icon slot="icon-only" name="open"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+        </ion-item-sliding>
     </ng-container>
+  </ion-reorder-group>
+</ion-list> -->
+
+<ion-list>
+  <ion-item>
+    <ion-label position="stacked" class="stacked-label">Verdachten</ion-label>
+  </ion-item>
+  <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($event)">
+    <ion-item-sliding *ngFor="let kandidaat of kandidaten; let i = index">
+      <ion-item>
+        <ion-avatar slot="start">
+          <img alt="kandidaat foto" [src]="kandidaat?.profielFoto">
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ kandidaat?.voornaam }} {{ kandidaat?.achternaam }}</h2>
+          <p>{{ kandidaat?.leeftijd }} // {{ kandidaat?.beroep }} // {{ kandidaat?.woonPlaats }}</p>
+          <p>{{ kandidaat?.extra }}</p>
+        </ion-label>
+        <ion-badge slot="end" class="custom-badge">{{ i + 1 }}</ion-badge>
+        <ion-reorder slot="end"></ion-reorder>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="tertiary" [routerLink]="['/tabs/kandidaten', kandidaat?.id]">
+          <ion-icon slot="icon-only" name="open"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-reorder-group>
 </ion-list>

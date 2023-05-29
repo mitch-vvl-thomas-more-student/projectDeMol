@@ -9,7 +9,7 @@
       <ng-container *ngIf="profileImageUrl$ as imageUrl">
         <img alt="profielfoto" [src]="imageUrl" />
       </ng-container>
-      <ng-container *ngIf="!profileImageUrl$">
+      <ng-container *ngIf="!profileImageUrl$ && authService.currentUser.value?.photoURL">
         <img alt="profielfoto" [src]="authService.currentUser.value?.photoURL" />
       </ng-container>
       <ng-container *ngIf="!profileImageUrl$ && !authService.currentUser.value?.photoURL">

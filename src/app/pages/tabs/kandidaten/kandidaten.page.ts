@@ -1,4 +1,4 @@
-import { BackendApiService } from './../../services/backend-api.service';
+import { BackendApiService } from './../../../services/backend-api.service';
 import { Component, OnInit } from '@angular/core';
 import Kandidaat from 'src/app/types/Kandidaat';
 import { Subscription } from 'rxjs';

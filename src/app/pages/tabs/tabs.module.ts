@@ -1,5 +1,5 @@
-import { HomePage } from './../home/home.page';
-import { HomePageModule } from './../home/home.module';
+import { HomePage } from './home/home.page';
+import { HomePageModule } from './home/home.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

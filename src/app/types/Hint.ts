@@ -35,11 +35,18 @@ export default class Hint implements IHint {
     addComment(comment: Opmerking): void {
         this.opmerkingen.push(comment);
     }
-
     deleteComment(comment: Opmerking): void {
         const index = this.opmerkingen.indexOf(comment);
         if (index !== -1) {
             this.opmerkingen.splice(index, 1);
         }
+    }
+    addStemOmhoog(userId: string): void {
+        this.stemmenOmhoog++;
+        this.gestemdDoor.push(userId);
+    }
+    addStemOmlaag(userId: string): void {
+        this.stemmenOmlaag++;
+        this.gestemdDoor.push(userId);
     }
 }

@@ -1,5 +1,5 @@
-import { YoutubeApiResponse } from './../../interfaces/youtubeApiResponse';
-import { YoutubeApiService } from './../../services/youtube-api.service';
+import { YoutubeApiResponse } from '../../../interfaces/youtubeApiResponse';
+import { YoutubeApiService } from '../../../services/youtube-api.service';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SafeResourceUrl } from '@angular/platform-browser';

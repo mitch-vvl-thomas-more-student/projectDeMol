@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="dark">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -8,61 +8,59 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content>
   <div class="ion-page" id="main-content">
-    <ion-router-outlet fullscreen></ion-router-outlet>
+    <ion-router-outlet></ion-router-outlet>
   </div>
   <ion-tabs>
     <ion-tab-bar slot="bottom">
-      <ion-tab-button tab="home">
+      <!-- <ion-tab-button tab="home">
         <ion-icon name="person-circle-outline"></ion-icon>
         Profiel
-      </ion-tab-button>
-      <ion-tab-button tab="kandidaten">
+      </ion-tab-button> -->
+      <ion-tab-button tab="kandidaten" routerLink="/tabs/kandidaten">
         <ion-icon name="people-circle-outline"></ion-icon>
         Kandidaten
       </ion-tab-button>
-      <ion-tab-button tab="youtubefeed">
+      <!-- <ion-tab-button tab="youtubefeed">
         <ion-icon name="logo-youtube"></ion-icon>
         Kijken
+      </ion-tab-button> -->
+      <ion-tab-button tab="top10" routerLink="/tabs/top10">
+        <ion-icon name="podium-outline"></ion-icon>
+        Top10
       </ion-tab-button>
-
       <ion-tab-button (click)="router.navigate(['login'])" *ngIf="!isLoggedIn">
         <ion-icon name="log-in-outline"></ion-icon>
         Inloggen
       </ion-tab-button>
-      
       <ion-tab-button (click)="menu.open()" expand="block" *ngIf="isLoggedIn">
         <ion-icon name="menu"></ion-icon>
-        Meer
+        Persoonlijk
       </ion-tab-button>
-      
-
-      
     </ion-tab-bar>
   </ion-tabs>
 
   <ion-menu #menu>
     <ion-header [translucent]="true">
-      <ion-toolbar>
+      <ion-toolbar color="tertiary">
         <ion-title>Menu</ion-title>
       </ion-toolbar>
     </ion-header>
-    <ion-content [fullscreen]="true">
+    <ion-content>
       <ion-list>
-        <ion-item (click)="authService.signOut()" *ngIf="isLoggedIn">
+        <ion-item [ngClass]="{'active-menu-button': isMenuButtonActive('home')}" (click)="router.navigate(['tabs','home'])">
+          <ion-icon name="person-circle-outline" slot="end"></ion-icon>
+          Mijn profiel
+        </ion-item>
+        <ion-item (click)="router.navigate(['tabs', 'youtubefeed'])">
+          <ion-icon name="logo-youtube" slot="end"></ion-icon>
+          Kijken op Youtube
+        </ion-item>
+        <ion-item (click)="authService.signOut()">
           <ion-icon name="log-out-outline" slot="end"></ion-icon>
           Uitloggen
         </ion-item>
-        <ion-item (click)="router.navigate(['login'])" *ngIf="!isLoggedIn">
-          <ion-icon name="log-in-outline" slot="end"></ion-icon>
-          Login
-        </ion-item>
-        <ion-item (click)="router.navigate(['tabs','top10'])">
-          <ion-icon name="podium-outline" slot="end"></ion-icon>
-          Top 10
-        </ion-item>
-        <ion-item>Option 3</ion-item>
       </ion-list>
     </ion-content>
   </ion-menu>

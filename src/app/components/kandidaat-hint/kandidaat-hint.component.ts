@@ -7,7 +7,6 @@ import { Collections } from 'src/app/enums/collections';
 import Opmerking from 'src/app/types/Opmerking';
 import Rating from 'src/app/types/Rating';
 import Gebruiker from 'src/app/types/Gebruiker';
-import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { Timestamp } from 'firebase/firestore';
@@ -44,51 +43,61 @@ export class KandidaatHintComponent implements OnInit {
   rating: Rating;
 
   constructor(
-    private errService: ErrorService,
-    private apiService: BackendApiService,
-    private globalService: GlobalsService,
+    private errorService: ErrorService,
+    private backendApiService: BackendApiService,
+    private globalsService: GlobalsService,
     public authService: AuthService,
     private storageService: StorageService
   ) { }
 
   async ngOnInit() {
-    this.hint.datumString = new Date((this.hint.datum as Timestamp).seconds * 1000 + (this.hint.datum as Timestamp).nanoseconds / 1000000).toLocaleDateString('be-NL');
-    this.hint.opmerkingen.forEach(opmerking => {
-      opmerking.datumString = new Date((opmerking.datum as Timestamp).seconds * 1000 + (opmerking.datum as Timestamp).nanoseconds / 1000000).toLocaleDateString('be-NL');
-    });
-
-
-    this.gebruiker = await this.apiService.getDocByRef<Gebruiker>(this.hint.plaatser, Collections.gebruikers)
-      .catch(err => this.errService.showAlert('Fout', err.message)) as Gebruiker
-    const tempBackground = Math.floor(Math.random() * this.colors.length);
-    this.background = this.colors[tempBackground];
-    this.rating = new Rating(await this.globalService.getGebruiker(), this.hint, this.#showAlert.bind(this), this.#update.bind(this));
+    this.#formatHintDate();
+    this.#formatOpmerkingDates();
+    this.gebruiker = await this.backendApiService.getDocByRef<Gebruiker>(this.hint.plaatser, Collections.gebruikers)
+      .catch(err => this.errorService.showAlert('Fout', err.message)) as Gebruiker
+    this.#selectRandomBackground();
+    this.rating = new Rating(await this.globalsService.getGebruiker(), this.hint, this.#showAlert.bind(this), this.#update.bind(this));
     this.profileImageUrl$ = this.storageService.getProfileImageUrl(this.gebruiker);
   }
 
+  #formatHintDate() {
+    this.hint.datumString = new Date((this.hint.datum as Timestamp).seconds * 1000 + (this.hint.datum as Timestamp).nanoseconds / 1000000).toLocaleDateString('be-NL');
+  }
+
+  #formatOpmerkingDates() {
+    this.hint.opmerkingen.forEach(opmerking => {
+      opmerking.datumString = new Date((opmerking.datum as Timestamp).seconds * 1000 + (opmerking.datum as Timestamp).nanoseconds / 1000000).toLocaleDateString('be-NL');
+    });
+  }
+
+  #selectRandomBackground() {
+    const tempBackground = Math.floor(Math.random() * this.colors.length);
+    this.background = this.colors[tempBackground];
+  }
+
   async onThumbsUp() {
-    const loggedIn = await this.globalService.getGebruiker();
-    !loggedIn.email ? this.globalService.notLoggedIn() : this.rating.onThumbsUp();
+    const loggedIn = await this.globalsService.getGebruiker();
+    !loggedIn.email ? this.globalsService.notLoggedIn() : this.rating.onThumbsUp();
   }
 
   async onThumbsDown() {
-    const loggedIn = await this.globalService.getGebruiker();
-    !loggedIn.email ? this.globalService.notLoggedIn() : this.rating.onThumbsDown();
+    const loggedIn = await this.globalsService.getGebruiker();
+    !loggedIn.email ? this.globalsService.notLoggedIn() : this.rating.onThumbsDown();
   }
 
   async #showAlert(): Promise<void> {
-    this.errService.showAlert('Fout', 'Uw stem werd reeds geregistreerd ... ')
+    this.errorService.showAlert('Fout', 'Uw stem werd reeds geregistreerd ... ')
   }
 
   async #update(hint?: Hint, gebruiker?: Gebruiker): Promise<void> {
     if (hint) {
-      await this.apiService.updateHint(this.hint)
-        .catch(err => this.errService.showAlert('Fout', err.message));
+      await this.backendApiService.updateHint(this.hint)
+        .catch(err => this.errorService.showAlert('Fout', err.message));
 
       if (gebruiker) {
-        this.globalService.setGebruiker(gebruiker);
-        await this.apiService.updateGebruiker(gebruiker)
-          .catch(err => this.errService.showAlert('Fout', err.message));
+        this.globalsService.setGebruiker(gebruiker);
+        await this.backendApiService.updateGebruiker(gebruiker)
+          .catch(err => this.errorService.showAlert('Fout', err.message));
       }
     }
   }
@@ -101,15 +110,15 @@ export class KandidaatHintComponent implements OnInit {
       tekst: this.newComment
     }
     this.hint.opmerkingen.push(newOpmerking);
-    await this.apiService.updateHint(this.hint)
-      .catch(err => this.errService.showAlert('Fout', err.message));;
+    await this.backendApiService.updateHint(this.hint)
+      .catch(err => this.errorService.showAlert('Fout', err.message));;
     this.newComment = '';
     this.showCommentInput = false;
   }
 
   async fnShowCommentInput() {
-    const loggedIn = await this.globalService.getGebruiker();
-    !loggedIn.email ? this.globalService.notLoggedIn() : this.showCommentInput = true;
+    const loggedIn = await this.globalsService.getGebruiker();
+    !loggedIn.email ? this.globalsService.notLoggedIn() : this.showCommentInput = true;
   }
 }
 

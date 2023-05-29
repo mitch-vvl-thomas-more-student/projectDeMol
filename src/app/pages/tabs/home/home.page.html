@@ -1,5 +1,5 @@
 
-<ion-content scroll-assist="true">
+<ion-content class="ion-padding">
   <div *ngIf="!authService.currentUser.value?.emailVerified" class="email-verification-banner">
     <p>Er is een e-mail verzonden naar {{authService.currentUser.value?.email}} om je account te verifiëren. 
       <br /> Niet ontvangen? <a (click)="authService.sendEmailVerification()" class="emailLink">Klik hier om opnieuw te verzenden.</a>
@@ -16,19 +16,18 @@
           </ion-row>
           <ion-row>
             <ion-col sizeXs="12" sizeSm="6" sizeMd="4">
-              <ion-icon name="create-outline" class="float-right" (click)="openFilePicker()"></ion-icon>
+              <ion-icon name="camera-outline" class="float-right" (click)="openFilePicker()"></ion-icon>
               <ng-container *ngIf="profileImageUrl$ !== null && profileImageUrl$ !== ''">
                 <img alt="profielfoto" class="profielfoto" [src]="profileImageUrl$" />
               </ng-container>  
               <ng-container *ngIf="profileImageUrl$ === null && authService?.currentUser?.value?.photoURL !== null && authService?.currentUser?.value?.photoURL !== ''">
                 <img alt="profielfoto" [src]="authService.currentUser.value?.photoURL" />
               </ng-container>              
-                <ng-container *ngIf="!(profileImageUrl$) && !authService?.currentUser?.value?.photoURL && gebruiker !== null">
+                <ng-container *ngIf="!(profileImageUrl$) && !authService?.currentUser?.value?.photoURL && gebruiker">
                   <div class="avatar">
-                    {{ gebruiker?.voornaam.slice(0,1).toUpperCase() }}{{ gebruiker?.achternaam.slice(0,1).toUpperCase() }}
+                    {{ gebruiker.voornaam.slice(0,1).toUpperCase() }}{{ gebruiker.achternaam.slice(0,1).toUpperCase() }}
                   </div>
                 </ng-container>              
-              
               <input style="display: none;" type="file" accept="image/*" (change)="uploadImageFromWeb($event)" id="btn_file">
             </ion-col>
           </ion-row>

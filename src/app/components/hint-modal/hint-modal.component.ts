@@ -3,8 +3,7 @@ import { GlobalsService } from './../../services/globals.service';
 import { BackendApiService } from 'src/app/services/backend-api.service';
 import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import Hint, { IHint } from 'src/app/types/Hint';
-import { Auth } from '@angular/fire/auth';
+import Hint from 'src/app/types/Hint';
 import Kandidaat from 'src/app/types/Kandidaat';
 import Gebruiker from 'src/app/types/Gebruiker';
 
@@ -29,7 +28,11 @@ export class HintModalComponent {
     private globalService: GlobalsService) { }
 
   async closeModal() {
-    await this.modalController.dismiss(this.hint);
+    try {
+      await this.modalController.dismiss(this.hint);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async onSubmit() {
@@ -45,19 +48,23 @@ export class HintModalComponent {
     newHint.isPubliek = this.isPubliek;
     newHint.gestemdDoor = [];
     this.hint = new Hint(); // Reset the form
-    const fireStoreHintId = await this.backEndApiService.addHint(newHint);
-    if (fireStoreHintId.length > 0) {
-      this.gebruiker.geplaatsteHints.push(fireStoreHintId);
-      this.kandidaat.hints.push(fireStoreHintId);
-      await this.globalService.setGebruiker(this.gebruiker);
-      await this.backEndApiService.updateGebruiker(this.gebruiker)
-        .catch(err => this.errService.showAlert('Fout', err.message));
-      await this.backEndApiService.updateKandidaat(this.kandidaat)
-        .catch(err => this.errService.showAlert('Fout', err.message));;
+
+    try {
+      const fireStoreHintId = await this.backEndApiService.addHint(newHint);
+      if (fireStoreHintId.length > 0) {
+        this.gebruiker.geplaatsteHints.push(fireStoreHintId);
+        this.kandidaat.hints.push(fireStoreHintId);
+        await this.globalService.setGebruiker(this.gebruiker);
+        await this.backEndApiService.updateGebruiker(this.gebruiker);
+        await this.backEndApiService.updateKandidaat(this.kandidaat);
+      }
+      else {
+        this.errService.showAlert('Fout', 'Er ging iets mis tijdens het opslaan van u hint... Probeer het nog eens. ')
+      }
+    } catch (error) {
+      console.log(error);
     }
-    else {
-      this.errService.showAlert('Fout', 'Er ging iets mis tijdens het opslaan van u hint... Probeer het nog eens. ')
-    }
+
     this.modalController.dismiss(newHint);
   }
 
@@ -68,8 +75,3 @@ export class HintModalComponent {
     }
   }
 }
-
-
-
-
-

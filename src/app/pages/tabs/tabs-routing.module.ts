@@ -13,25 +13,25 @@ const routes: Routes = [
     children: [
       {
         path: 'home',
-        loadChildren: () => import('./../../pages/home/home.module').then(m => m.HomePageModule),
+        loadChildren: () => import('./home/home.module').then(m => m.HomePageModule),
         ...canActivate(redirectUnauthorizedToLogin)
       },
       {
         path: 'kandidaten',
-        loadChildren: () => import('./../../pages/kandidaten/kandidaten.module').then(m => m.KandidatenPageModule),
+        loadChildren: () => import('./kandidaten/kandidaten.module').then(m => m.KandidatenPageModule),
       },
       {
         path: 'kandidaten/:id',
-        loadChildren: () => import('./../../pages/kandidaat/kandidaat.module').then( m => m.KandidaatPageModule),
+        loadChildren: () => import('./kandidaten/kandidaat/kandidaat.module').then( m => m.KandidaatPageModule),
       },
       {
         path: 'youtubefeed',
-        loadChildren: () => import('./../../pages/youtubefeed/youtubefeed.module').then(m => m.YoutubefeedPageModule),
+        loadChildren: () => import('./youtubefeed/youtubefeed.module').then(m => m.YoutubefeedPageModule),
         ...canActivate(redirectUnauthorizedToLogin)
       },
       {
         path: 'top10',
-        loadChildren: () => import('./../../pages/top10/top10.module').then( m => m.Top10PageModule)
+        loadChildren: () => import('./top10/top10.module').then( m => m.Top10PageModule)
       },
     ]
   }

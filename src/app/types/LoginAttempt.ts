@@ -11,6 +11,7 @@ export interface LoginAttempt {
       model: string;
       platform: string;
       osVersion: string;
+      isNative: boolean;
     }
     method: string;
     success: boolean;

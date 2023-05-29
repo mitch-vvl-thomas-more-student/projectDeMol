@@ -1,12 +1,15 @@
-<ion-list>
-  <ion-item lines="none">
-    <ion-icon name="close-circle-outline" slot="end" (click)="hideMap()"></ion-icon>
-    <p>{{ address?.address.road }} {{ address?.address.house_number}} <br />
-      {{ address?.address.postcode}} {{ address?.address.town}} ({{address?.address.state}}) 
-      <br /> {{address?.address.country}}</p>
-  </ion-item>
-  <ion-item lines="none" *ngIf="passwordRecoveryUrl !== ''">
-    <!-- <a *ngIf="passwordRecoveryUrl !== 'eigen website'" href="{{passwordRecoveryUrl}}">{{recoveryMethod}}</a> -->
-    <a (click)="passwordRecovery()">{{recoveryMethod}}</a>
-  </ion-item>
-</ion-list>
+<ion-content>
+  <ion-list>
+    <ion-item lines="none" *ngIf="address">
+      <ion-icon name="close-circle-outline" slot="end" (click)="hideMap()"></ion-icon>
+      <p>{{ address.address.road }} {{ address.address.house_number}} <br />
+        {{ address.address.postcode}} {{ address.address.town}} ({{address.address.state}}) 
+        <br /> {{address.address.country}}</p>
+    </ion-item>
+    <ion-item lines="none" *ngIf="passwordRecoveryUrl !== ''">
+      <!-- <a *ngIf="passwordRecoveryUrl !== 'eigen website'" href="{{passwordRecoveryUrl}}">{{recoveryMethod}}</a> -->
+      <a (click)="passwordRecovery()">{{recoveryMethod}}</a>
+    </ion-item>
+  </ion-list>
+</ion-content>
+

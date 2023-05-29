@@ -1,14 +1,21 @@
 <ion-list>
-  <ion-item *ngFor="let loginAttempt of loginAttempts.slice().reverse() | slice:0:10">
-    <ion-label>{{ loginAttempt.dateString }} <br /> 
-      <ion-note class="ip">IP-adres: {{ loginAttempt.IPv4 }}</ion-note>
-    </ion-label>
-
-    <ion-note slot="end">
-      <ion-label>{{ loginAttempt.system.platform }}</ion-label>
-      <ion-label>{{ loginAttempt.system.model }}</ion-label>
-      <ion-label>{{ loginAttempt.system.osVersion }}</ion-label>
-    </ion-note>
-    <ion-icon name="pin-outline" slot="end" (click)="showMap($event, loginAttempt)"></ion-icon>
+  <ion-item-sliding *ngFor="let loginAttempt of loginAttempts.slice() | slice:0:10" class="ion-text-wrap">
+  <ion-item>
+      <ion-icon *ngIf="loginAttempt.system.isNative" color="dark" name="phone-portrait-outline" slot="start"></ion-icon>
+      <ion-icon *ngIf="!loginAttempt.system.isNative" color="dark" name="laptop-outline" slot="start"></ion-icon>
+      <ion-label>
+        {{ loginAttempt.dateString }} <br /> 
+        <ion-note class="ip">IP-adres: {{ loginAttempt.IPv4 }}</ion-note>
+      </ion-label>
   </ion-item>
+  <ion-item-options side="end">
+    <ion-item-option (click)="showMap($event, loginAttempt)" color="warning">
+      <ion-icon slot="icon-only" name="location-outline"></ion-icon>
+    </ion-item-option>
+    <ion-item-option (click)="showSystemInfo($event, loginAttempt)">
+      <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
+    </ion-item-option>
+  </ion-item-options>
+</ion-item-sliding>
 </ion-list>
+

@@ -1,3 +1,11 @@
+/*
+ * 
+ * Phone verification component isn't used in the app.
+ * left for reference. 
+ * 
+ */
+
+
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { CallingCode } from 'src/app/interfaces/callingCode';

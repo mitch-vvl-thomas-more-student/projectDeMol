@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { GeoCode } from '../interfaces/geoCode';
-import { IpAdress } from '../interfaces/ipAdress';
 
 @Injectable({
   providedIn: 'root'

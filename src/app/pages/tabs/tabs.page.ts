@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -14,7 +14,8 @@ export class TabsPage implements OnInit {
   isLoggedIn: boolean = false;
   constructor(
     public authService: AuthService, 
-    public router: Router) { 
+    public router: Router, 
+    private route: ActivatedRoute) { 
    }
 
   ngOnInit() {
@@ -25,4 +26,7 @@ export class TabsPage implements OnInit {
     this.loginSub.unsubscribe();
   }
 
+  isMenuButtonActive(routePath: string): boolean {
+    return this.router.isActive('/tabs/' + routePath, false);
+  }
 }

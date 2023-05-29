@@ -68,7 +68,6 @@ export class StorageService {
   }
 
   getProfileImageUrl(gebruiker: Gebruiker): string {
-    console.log(gebruiker)
     if (gebruiker?.avatar) {
       const firestoreImagePath = `images/${gebruiker?.id}/${gebruiker?.avatar}`;
       const firestoreRef = this.storage.ref(firestoreImagePath);
@@ -133,5 +132,4 @@ export class StorageService {
     }
     return null;
   }
-
 }

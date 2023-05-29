@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 
-import { MenuComponent } from './menu/menu.component';
 import { PhoneVerificationComponent } from './phone-verification/phone-verification.component';
 import { KandidaatCardComponent } from './kandidaat-card/kandidaat-card.component';
 import { HintModalComponent } from './hint-modal/hint-modal.component';
@@ -18,7 +17,6 @@ import { PopoverContentComponent } from './popover/popover.component';
 
 @NgModule({
   declarations: [
-    MenuComponent,
     PhoneVerificationComponent,
     KandidaatCardComponent,
     HintModalComponent,
@@ -30,7 +28,6 @@ import { PopoverContentComponent } from './popover/popover.component';
     PopoverContentComponent
   ],
   exports: [
-    MenuComponent,
     PhoneVerificationComponent,
     KandidaatCardComponent,
     HintModalComponent,

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { BackendApiService } from 'src/app/services/backend-api.service';
 import { GlobalsService } from 'src/app/services/globals.service';
-import { HintModalComponent } from '../../components/hint-modal/hint-modal.component';
+import { HintModalComponent } from '../../../../components/hint-modal/hint-modal.component';
 import Kandidaat from 'src/app/types/Kandidaat';
 import Hint from 'src/app/types/Hint';
 import { Subscription } from 'rxjs';
@@ -27,7 +27,6 @@ export class KandidaatPage implements OnInit {
     private route: ActivatedRoute,
     private apiService: BackendApiService,
     private modalController: ModalController,
-    private router: Router,
     private globalsService: GlobalsService
   ) { }
 
@@ -37,7 +36,6 @@ export class KandidaatPage implements OnInit {
       if (x) {
         this.kandidaat = x;
         this.#kandidaatsSub = this.apiService.retrieveHintByKandidaatId(this.kandidaat.id).subscribe(async res => {
-          // Store the retrieved hints in the component's state
           this.hints = res;
           this.publiekeHints = this.hints.filter((hint: Hint) => hint.isPubliek === true);
           const gebruiker = await this.globalsService.getGebruiker();
@@ -49,8 +47,6 @@ export class KandidaatPage implements OnInit {
     });
   }
 
-
-  // destroy all subscriptions and asyncs
   ngOnDestroy() {
     if (this.#kandidaatsSub) {
       this.#kandidaatsSub.unsubscribe();
@@ -60,8 +56,6 @@ export class KandidaatPage implements OnInit {
       this.#routeSub.unsubscribe();
     }
   }
-
-
 
   async showModal() {
     const gebruiker = await this.globalsService.getGebruiker();

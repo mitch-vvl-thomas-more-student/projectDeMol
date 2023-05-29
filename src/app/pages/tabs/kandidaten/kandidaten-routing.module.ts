@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { KandidaatPage } from '../kandidaat/kandidaat.page';
+import { KandidaatPage } from './kandidaat/kandidaat.page';
 
 import { KandidatenPage } from './kandidaten.page';
 

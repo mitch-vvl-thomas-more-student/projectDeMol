@@ -1,9 +1,11 @@
+import { ErrorService } from 'src/app/services/error.service';
 import { Component, Input } from '@angular/core';
 import { PopoverController, ModalController } from '@ionic/angular';
 import { GeoCode } from 'src/app/interfaces/geoCode';
 import { GeoCodeService } from 'src/app/services/geocode.service';
 import { LoginAttempt } from 'src/app/types/LoginAttempt';
 import { RegisterComponent } from '../register/register.component';
+import { AuthProviders } from 'src/app/enums/authProviders';
 
 @Component({
   selector: 'app-popover-content',
@@ -11,11 +13,12 @@ import { RegisterComponent } from '../register/register.component';
 })
 export class PopoverContentComponent {
   @Input() loginAttempt: LoginAttempt;
+  @Input() mode: string;
   address: GeoCode;
   passwordRecoveryUrl: string = '';
   recoveryMethod: string = 'Wijzig je wachtwoord';
 
-  constructor(private geoCodeService: GeoCodeService, private popoverController: PopoverController,private modalController: ModalController) { }
+  constructor(private geoCodeService: GeoCodeService, private popoverController: PopoverController, private modalController: ModalController) { }
 
   ngOnInit() {
     const { method } = this.loginAttempt;
@@ -27,6 +30,7 @@ export class PopoverContentComponent {
 
     if (latitude && longitude)
       this.getAddress(latitude, longitude);
+
   }
 
   async getAddress(latitude: string, longitude: string) {
@@ -39,14 +43,14 @@ export class PopoverContentComponent {
 
   setPasswordRecoveryUrl(method: string) {
     switch (method.toLowerCase()) {
-      case 'email/wachtwoord':
+      case AuthProviders.Email:
         this.passwordRecoveryUrl = `eigen website`;
         break;
-      case 'facebook':
+      case AuthProviders.Facebook:
         this.passwordRecoveryUrl = `https://nl-nl.facebook.com/help/messenger-app/148759965285982`;
         this.recoveryMethod = 'Wijzig je wachtwoord via Facebook';
         break;
-      case 'google':
+      case AuthProviders.Google:
         this.passwordRecoveryUrl = `https://support.google.com/accounts/answer/41078`;
         this.recoveryMethod = 'Wijzig je wachtwoord via Google';
         break;

@@ -1,10 +1,8 @@
-import { GlobalsService } from 'src/app/services/globals.service';
 import { Subscription } from 'rxjs';
 import { BackendApiService } from 'src/app/services/backend-api.service';
 import { Component, Input, OnInit } from '@angular/core';
-import { GeoCodeService } from 'src/app/services/geocode.service';
 import { LoginAttempt } from 'src/app/types/LoginAttempt';
-import { PopoverController } from '@ionic/angular';
+import { PopoverController, AlertController } from '@ionic/angular';
 import { PopoverContentComponent } from '../popover/popover.component';
 import { Timestamp } from 'firebase/firestore';
 import Gebruiker from 'src/app/types/Gebruiker';
@@ -21,22 +19,34 @@ export class LoginAttemptsComponent implements OnInit {
   selectedLoginAttempt: LoginAttempt | null = null;
   @Input() gebruiker: Gebruiker;
 
-  constructor(private geoCodeService: GeoCodeService,
-    private backService: BackendApiService,
+  constructor(
+    private alertController: AlertController,
+    private backendApiService: BackendApiService,
     private popoverController: PopoverController) {
   }
 
   ngOnInit() {
-    this.loginAttemptsSubsriber = this.backService.retrieveLoginAttempts(this.gebruiker?.id).subscribe(
+    this.loginAttemptsSubsriber = this.backendApiService.retrieveLoginAttempts(this.gebruiker?.id).subscribe(
       (res) => {
         this.loginAttempts = res;
-        this.loginAttempts.forEach((loginAttempt) => {
+        this.loginAttempts.sort((a, b) => {
+          const dateA = new Date(
+            (a.datetime as unknown as Timestamp).seconds * 1000 +
+            (a.datetime as unknown as Timestamp).nanoseconds / 1000000
+          );
+          const dateB = new Date(
+            (b.datetime as unknown as Timestamp).seconds * 1000 +
+            (b.datetime as unknown as Timestamp).nanoseconds / 1000000
+          );
+          return dateB.getTime() - dateA.getTime();
+        });
+        this.loginAttempts.forEach(async (loginAttempt) => {
           const date = new Date(
             (loginAttempt.datetime as unknown as Timestamp).seconds * 1000 +
             (loginAttempt.datetime as unknown as Timestamp).nanoseconds / 1000000
           );
-          
-          const dateString = date.toLocaleDateString('nl-NL', {
+
+          const dateString = await date.toLocaleDateString('nl-NL', {
             day: 'numeric',
             month: 'long',
             year: 'numeric',
@@ -60,14 +70,25 @@ export class LoginAttemptsComponent implements OnInit {
       animated: true,
       componentProps: {
         loginAttempt: loginAttempt,
-        // latitude: parseFloat(loginAttempt.location.latitude),
-        // longitude: parseFloat(loginAttempt.location.longitude),
+        mode: 'address'
       },
     });
 
     this.selectedLoginAttempt = loginAttempt;
     this.isPopoverOpen = true;
     await popover.present();
+  }
+
+  async showSystemInfo(event: MouseEvent, loginAttempt: LoginAttempt) {
+    const alert = await this.alertController.create({
+      header: 'Systeem informatie',
+      message: `platform: ${loginAttempt.system.platform}<br />
+          model: ${loginAttempt.system.model}<br />
+          osVersion: ${loginAttempt.system.osVersion}`,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
   hideMap() {

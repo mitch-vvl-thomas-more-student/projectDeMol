@@ -1,7 +1,7 @@
-import Gebruiker, { IFireStoreGebruiker } from 'src/app/types/Gebruiker';
+import Gebruiker from 'src/app/types/Gebruiker';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription, firstValueFrom } from 'rxjs';
-import { switchMap, take, catchError } from 'rxjs/operators';
+import { BehaviorSubject, Observable, firstValueFrom } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { Capacitor } from '@capacitor/core';
 import { Auth, User, signInWithCredential, signOut, updateProfile } from '@angular/fire/auth';
 import {
@@ -23,6 +23,7 @@ import { Device } from '@capacitor/device';
 import { Geolocation } from '@capacitor/geolocation';
 import { IpAdress } from '../interfaces/ipAdress';
 import { HttpClient } from '@angular/common/http';
+import { platform } from 'os';
 
 const actionCodeSettings = {
   url: 'https://www.example.com/?email=user@example.com',
@@ -354,20 +355,14 @@ export class AuthService {
         system: {
           model: '',
           platform: '',
-          osVersion: ''
+          osVersion: '',
+          isNative: false,
         },
         method,
         success
       }
 
-      try {
-        const position = await Geolocation.getCurrentPosition();
-        const { latitude, longitude } = position.coords;
-        attempt.location.latitude = latitude.toString();
-        attempt.location.longitude = longitude.toString();
-      } catch (error) {
-        console.error('Error getting geolocation:', error);
-      }
+
 
       try {
         attempt.IPv4 = await this.getIpAdress();
@@ -378,25 +373,42 @@ export class AuthService {
 
       try {
         const info = await Device.getInfo();
+
         const systemInfo = {
           model: info.model,
           platform: info.platform,
-          osVersion: info.osVersion
+          osVersion: info.osVersion,
+          isNative: (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
         };
         attempt.system = systemInfo;
       } catch (error) {
         console.error('Error getting device info:', error);
       }
 
+      try {
+        let position = undefined;
+        let permissionResult = undefined;
+
+        permissionResult = await Geolocation.checkPermissions();
+        attempt.system.platform !== 'web' || permissionResult.location !== 'granted' ? permissionResult = await Geolocation.requestPermissions() :permissionResult = { location: 'granted' };
+
+        if (permissionResult.location === 'granted') {
+          position = await Geolocation.getCurrentPosition();
+          const { latitude, longitude } = position.coords;
+          attempt.location.latitude = latitude.toString();
+          attempt.location.longitude = longitude.toString();
+        }
+      } catch (error) {
+        console.error('Error getting geolocation:', error);
+      }
+
       await this.fireStore.addAttemp(attempt);
     }
   }
+
   async getIpAdress(): Promise<string> {
     const url = "https://geolocation-db.com/json/";
     const response = await firstValueFrom(this.http.get<IpAdress>(url));
-    console.log(response.IPv4)
     return response.IPv4;
   }
-
-
 }

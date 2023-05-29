@@ -1,4 +1,4 @@
-import { Id } from './../../interfaces/youtubeApiResponse';
+import { Id } from '../../../interfaces/youtubeApiResponse';
 import { Component, OnInit } from '@angular/core';
 import { Subscription, forkJoin } from 'rxjs';
 import { BackendApiService } from 'src/app/services/backend-api.service';
