@@ -26,6 +26,7 @@ const config: CapacitorConfig = {
       layoutName: "launch_screen",
       useDialog: true,
     },
+    OpenStreetMap: {}
   }};
   
   export default config;

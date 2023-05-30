@@ -28,3 +28,6 @@ project(':capacitor-splash-screen').projectDir = new File('../node_modules/.pnpm
 
 include ':capacitor-status-bar'
 project(':capacitor-status-bar').projectDir = new File('../node_modules/.pnpm/@capacitor+status-bar@4.1.1_@capacitor+core@4.7.1/node_modules/@capacitor/status-bar/android')
+
+include ':capacitor-openstreetmap'
+project(':capacitor-openstreetmap').projectDir = new File('../node_modules/.pnpm/capacitor-openstreetmap@0.1.0_@capacitor+core@4.7.1/node_modules/capacitor-openstreetmap/android')

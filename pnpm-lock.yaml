@@ -70,6 +70,12 @@ dependencies:
   '@ionic/pwa-elements':
     specifier: ^3.1.1
     version: 3.1.1
+  '@types/leaflet':
+    specifier: ^1.9.3
+    version: 1.9.3
+  capacitor-openstreetmap:
+    specifier: ^0.1.0
+    version: 0.1.0(@capacitor/core@4.7.1)
   firebase:
     specifier: ^9.18.0
     version: 9.18.0
@@ -79,6 +85,15 @@ dependencies:
   ionicons:
     specifier: ^7.1.0
     version: 7.1.0
+  leaflet:
+    specifier: ^1.9.4
+    version: 1.9.4
+  leaflet-ant-path:
+    specifier: ^1.3.0
+    version: 1.3.0
+  ng-leaflet-universal:
+    specifier: ^15.2.6
+    version: 15.2.6(@angular/common@15.2.4)(@angular/core@15.2.5)(@types/leaflet@1.9.3)(leaflet@1.9.4)
   rxfire:
     specifier: ^6.0.3
     version: 6.0.3(firebase@9.18.0)(rxjs@7.5.7)
@@ -3419,6 +3434,10 @@ packages:
       '@types/node': 12.20.55
     dev: true
 
+  /@types/geojson@7946.0.10:
+    resolution: {integrity: sha512-Nmh0K3iWQJzniTuPRcJn5hxXkfB1T1pgB89SBig5PlJQU5yocazeu4jATJlaA0GYFKWMqDdvYemoSnF2pXgLVA==}
+    dev: false
+
   /@types/glob@8.1.0:
     resolution: {integrity: sha512-IO+MJPVhoqz+28h1qLAcBEH2+xHMK6MTyHJc7MTnnYb6wsoLR29POVGJ7LycmVXIqyy/4/2ShP5sUwTXuOwb/w==}
     dependencies:
@@ -3442,6 +3461,12 @@ packages:
   /@types/json5@0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
     dev: true
+
+  /@types/leaflet@1.9.3:
+    resolution: {integrity: sha512-Caa1lYOgKVqDkDZVWkto2Z5JtVo09spEaUt2S69LiugbBpoqQu92HYFMGUbYezZbnBkyOxMNPXHSgRrRY5UyIA==}
+    dependencies:
+      '@types/geojson': 7946.0.10
+    dev: false
 
   /@types/linkify-it@3.0.2:
     resolution: {integrity: sha512-HZQYqbiFVWufzCwexrvh694SOim8z2d+xJl5UNamcvQFejLY/2YUtzXHYi3cHdI7PMlS8ejH2slRAOJQ32aNbA==}
@@ -4557,6 +4582,15 @@ packages:
 
   /caniuse-lite@1.0.30001469:
     resolution: {integrity: sha512-Rcp7221ScNqQPP3W+lVOYDyjdR6dC+neEQCttoNr5bAyz54AboB4iwpnWgyi8P4YUsPybVzT4LgWiBbI3drL4g==}
+
+  /capacitor-openstreetmap@0.1.0(@capacitor/core@4.7.1):
+    resolution: {integrity: sha512-IZlUBjdUl8Yrui7SRZV3tl5/0DjtuPXcllKo58CaWME3wkeWwgouBHVdR/Ixapd+/rNVEL8eltnN8p+7fqjyTA==}
+    peerDependencies:
+      '@capacitor/core': ^4.0.0
+    dependencies:
+      '@capacitor/core': 4.7.1
+      '@types/leaflet': 1.9.3
+    dev: false
 
   /cardinal@2.1.1:
     resolution: {integrity: sha512-JSr5eOgoEymtYHBjNWyjrMqet9Am2miJhlfKNdqLp6zoeAh0KN5dRAcxlecj5mAJrmQomgiOBj35xHLrFjqBpw==}
@@ -7828,6 +7862,14 @@ packages:
       readable-stream: 2.3.8
     dev: false
 
+  /leaflet-ant-path@1.3.0:
+    resolution: {integrity: sha512-wgWWcAD4w8QVguRsHh89NGj5eqwLOP6e/HazunW0fQaytqZqEh3WePWYIrmbUeMcOf2cX/+GecHkFfI5tirS1Q==}
+    dev: false
+
+  /leaflet@1.9.4:
+    resolution: {integrity: sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==}
+    dev: false
+
   /less-loader@11.1.0(less@4.1.3)(webpack@5.76.1):
     resolution: {integrity: sha512-C+uDBV7kS7W5fJlUjq5mPBeBVhYpTIm5gB09APT9o3n/ILeaXVsiSFTbZpTJCJwQ/Crczfn3DmfQFwxYusWFug==}
     engines: {node: '>= 14.15.0'}
@@ -8468,6 +8510,21 @@ packages:
   /netmask@2.0.2:
     resolution: {integrity: sha512-dBpDMdxv9Irdq66304OLfEmQ9tbNRFnFTuZiLo+bD+r332bBmMJ8GBLXklIXXgxd3+v9+KUnZaUR5PJMa75Gsg==}
     engines: {node: '>= 0.4.0'}
+    dev: false
+
+  /ng-leaflet-universal@15.2.6(@angular/common@15.2.4)(@angular/core@15.2.5)(@types/leaflet@1.9.3)(leaflet@1.9.4):
+    resolution: {integrity: sha512-M8XAxsi9I4gby8RGV+RmW2uRA1XnhbJ/yJTnVbcinyogU0epI/oA3ft5uncmRpzAKgDp+/DwFde2f5UQ6ZHbuA==}
+    peerDependencies:
+      '@angular/common': '>=12.2.0'
+      '@angular/core': '>=12.2.0'
+      '@types/leaflet': ^1.9.3
+      leaflet: ^1.9.3
+    dependencies:
+      '@angular/common': 15.2.4(@angular/core@15.2.5)(rxjs@7.5.7)
+      '@angular/core': 15.2.5(rxjs@7.5.7)(zone.js@0.13.0)
+      '@types/leaflet': 1.9.3
+      leaflet: 1.9.4
+      tslib: 2.5.0
     dev: false
 
   /nice-napi@1.0.2:

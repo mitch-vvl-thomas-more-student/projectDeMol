@@ -2,10 +2,12 @@ import { Subscription } from 'rxjs';
 import { BackendApiService } from 'src/app/services/backend-api.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { LoginAttempt } from 'src/app/types/LoginAttempt';
-import { PopoverController, AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { PopoverContentComponent } from '../popover/popover.component';
 import { Timestamp } from 'firebase/firestore';
 import Gebruiker from 'src/app/types/Gebruiker';
+import { AuthProviders } from 'src/app/enums/authProviders';
+import { RegisterComponent } from '../register/register.component';
 
 @Component({
   selector: 'app-login-attempts',
@@ -13,16 +15,18 @@ import Gebruiker from 'src/app/types/Gebruiker';
   styleUrls: ['./login-attempts.component.scss'],
 })
 export class LoginAttemptsComponent implements OnInit {
+  @Input() gebruiker: Gebruiker;
+
   loginAttempts: LoginAttempt[] = [];
   loginAttemptsSubsriber: Subscription;
   isPopoverOpen = false;
   selectedLoginAttempt: LoginAttempt | null = null;
-  @Input() gebruiker: Gebruiker;
-
+  passwordRecoveryUrl: string = '';
+  recoveryMethod: string = 'Wijzig je wachtwoord';
   constructor(
     private alertController: AlertController,
     private backendApiService: BackendApiService,
-    private popoverController: PopoverController) {
+    private modalController: ModalController) {
   }
 
   ngOnInit() {
@@ -53,6 +57,7 @@ export class LoginAttemptsComponent implements OnInit {
             hour: 'numeric',
             minute: 'numeric'
           });
+          
           loginAttempt.dateString = `${dateString}u`;
         });
       })
@@ -63,10 +68,8 @@ export class LoginAttemptsComponent implements OnInit {
   }
 
   async showMap(event: MouseEvent, loginAttempt: LoginAttempt) {
-    const popover = await this.popoverController.create({
+    const popover = await this.modalController.create({
       component: PopoverContentComponent,
-      translucent: true,
-      event,
       animated: true,
       componentProps: {
         loginAttempt: loginAttempt,
@@ -93,6 +96,44 @@ export class LoginAttemptsComponent implements OnInit {
 
   hideMap() {
     this.isPopoverOpen = false;
-    this.popoverController.dismiss();
+    this.modalController.dismiss();
+  }
+
+  setPasswordRecoveryUrl(method: string) {
+   switch (method.toLowerCase()) {
+      case AuthProviders.Email:
+        this.passwordRecoveryUrl = `eigen website`;
+        break;
+      case AuthProviders.Facebook:
+        this.passwordRecoveryUrl = `https://nl-nl.facebook.com/help/messenger-app/148759965285982`;
+        this.recoveryMethod = 'Wijzig je wachtwoord via Facebook';
+        break;
+      case AuthProviders.Google:
+        this.passwordRecoveryUrl = `https://support.google.com/accounts/answer/41078`;
+        this.recoveryMethod = 'Wijzig je wachtwoord via Google';
+        break;
+      default:
+        break;
+    }
+
+    this.passwordRecovery();
+  }
+  
+  passwordRecovery() {
+    if (this.passwordRecoveryUrl === 'eigen website') {
+      this.resetPassword();
+    } else {
+      window.open(this.passwordRecoveryUrl, '_blank');
+    }
+  }
+
+  async resetPassword() {
+    const modal = await this.modalController.create({
+      component: RegisterComponent,
+      componentProps: {
+        mode: 'passwordReset'
+      }
+    });
+    await modal.present();
   }
 }

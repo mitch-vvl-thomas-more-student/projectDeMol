@@ -50,15 +50,15 @@
     <ion-content>
       <ion-list>
         <ion-item [ngClass]="{'active-menu-button': isMenuButtonActive('home')}" (click)="router.navigate(['tabs','home'])">
-          <ion-icon name="person-circle-outline" slot="end"></ion-icon>
+          <ion-icon name="person-circle-outline" slot="end" color="tertiary"></ion-icon>
           Mijn profiel
         </ion-item>
         <ion-item (click)="router.navigate(['tabs', 'youtubefeed'])">
-          <ion-icon name="logo-youtube" slot="end"></ion-icon>
+          <ion-icon name="logo-youtube" slot="end" color="danger"></ion-icon>
           Kijken op Youtube
         </ion-item>
         <ion-item (click)="authService.signOut()">
-          <ion-icon name="log-out-outline" slot="end"></ion-icon>
+          <ion-icon name="log-out-outline" slot="end" color="medium"></ion-icon>
           Uitloggen
         </ion-item>
       </ion-list>

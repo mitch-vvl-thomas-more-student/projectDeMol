@@ -20,6 +20,7 @@ def capacitor_pods
   pod 'CapacitorKeyboard', :path => '../../node_modules/.pnpm/@capacitor+keyboard@4.1.1_@capacitor+core@4.7.1/node_modules/@capacitor/keyboard'
   pod 'CapacitorSplashScreen', :path => '../../node_modules/.pnpm/@capacitor+splash-screen@4.2.0_@capacitor+core@4.7.1/node_modules/@capacitor/splash-screen'
   pod 'CapacitorStatusBar', :path => '../../node_modules/.pnpm/@capacitor+status-bar@4.1.1_@capacitor+core@4.7.1/node_modules/@capacitor/status-bar'
+  pod 'CapacitorOpenstreetmap', :path => '../../node_modules/.pnpm/capacitor-openstreetmap@0.1.0_@capacitor+core@4.7.1/node_modules/capacitor-openstreetmap'
 end
 
 target 'App' do

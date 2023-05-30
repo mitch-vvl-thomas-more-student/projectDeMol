@@ -9,11 +9,14 @@
       </ion-label>
   </ion-item>
   <ion-item-options side="end">
-    <ion-item-option (click)="showMap($event, loginAttempt)" color="warning">
+    <ion-item-option *ngIf="loginAttempt.location.latitude !== '' && loginAttempt.location.lontitude !== ''" (click)="showMap($event, loginAttempt)" color="warning">
       <ion-icon slot="icon-only" name="location-outline"></ion-icon>
     </ion-item-option>
-    <ion-item-option (click)="showSystemInfo($event, loginAttempt)">
+    <ion-item-option (click)="showSystemInfo($event, loginAttempt)" color="primary">
       <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
+    </ion-item-option>
+    <ion-item-option (click)="setPasswordRecoveryUrl(loginAttempt.method)" color="success">
+      <ion-icon slot="icon-only" name="lock-open-outline"></ion-icon>
     </ion-item-option>
   </ion-item-options>
 </ion-item-sliding>

@@ -1,15 +1,19 @@
-<ion-content>
-  <ion-list>
-    <ion-item lines="none" *ngIf="address">
-      <ion-icon name="close-circle-outline" slot="end" (click)="hideMap()"></ion-icon>
+<ion-content class="popover-content">
+      <ion-toolbar color="tertiary" class="ion-padding">
+        <ion-label>Locatie gegevens</ion-label>
+        <ion-icon name="close-circle-outline" slot="end" (click)="hideMap()"></ion-icon>
+      </ion-toolbar>
+    <div *ngIf="loginAttempt?.location">      
+      <app-map [lat]="loginAttempt.location.latitude" [lng]="loginAttempt.location.longitude"></app-map>
+    </div>
+    <div class="text-center ion-padding" *ngIf="address">
       <p>{{ address.address.road }} {{ address.address.house_number}} <br />
         {{ address.address.postcode}} {{ address.address.town}} ({{address.address.state}}) 
         <br /> {{address.address.country}}</p>
-    </ion-item>
-    <ion-item lines="none" *ngIf="passwordRecoveryUrl !== ''">
-      <!-- <a *ngIf="passwordRecoveryUrl !== 'eigen website'" href="{{passwordRecoveryUrl}}">{{recoveryMethod}}</a> -->
+      </div>
+    <div class="text-center" *ngIf="passwordRecoveryUrl !== ''">
       <a (click)="passwordRecovery()">{{recoveryMethod}}</a>
-    </ion-item>
-  </ion-list>
+    </div>
+
 </ion-content>
 

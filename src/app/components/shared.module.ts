@@ -13,7 +13,7 @@ import { ResetPaswoordComponent } from './reset-paswoord/reset-paswoord.componen
 import { RegisterComponent } from './register/register.component';
 import { LoginAttemptsComponent } from './login-attempts/login-attempts.component';
 import { PopoverContentComponent } from './popover/popover.component';
-
+import { MapComponent } from './map/map.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,8 @@ import { PopoverContentComponent } from './popover/popover.component';
     ResetPaswoordComponent,
     RegisterComponent,
     LoginAttemptsComponent,
-    PopoverContentComponent
+    PopoverContentComponent,
+    MapComponent,
   ],
   exports: [
     PhoneVerificationComponent,
@@ -36,7 +37,8 @@ import { PopoverContentComponent } from './popover/popover.component';
     ResetPaswoordComponent,
     RegisterComponent,
     LoginAttemptsComponent,
-    PopoverContentComponent
+    PopoverContentComponent, 
+    MapComponent,
     ],
   imports: [
     FormsModule,
