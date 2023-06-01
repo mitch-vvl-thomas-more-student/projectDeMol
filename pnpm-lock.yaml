@@ -88,12 +88,6 @@ dependencies:
   leaflet:
     specifier: ^1.9.4
     version: 1.9.4
-  leaflet-ant-path:
-    specifier: ^1.3.0
-    version: 1.3.0
-  ng-leaflet-universal:
-    specifier: ^15.2.6
-    version: 15.2.6(@angular/common@15.2.4)(@angular/core@15.2.5)(@types/leaflet@1.9.3)(leaflet@1.9.4)
   rxfire:
     specifier: ^6.0.3
     version: 6.0.3(firebase@9.18.0)(rxjs@7.5.7)
@@ -7862,10 +7856,6 @@ packages:
       readable-stream: 2.3.8
     dev: false
 
-  /leaflet-ant-path@1.3.0:
-    resolution: {integrity: sha512-wgWWcAD4w8QVguRsHh89NGj5eqwLOP6e/HazunW0fQaytqZqEh3WePWYIrmbUeMcOf2cX/+GecHkFfI5tirS1Q==}
-    dev: false
-
   /leaflet@1.9.4:
     resolution: {integrity: sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==}
     dev: false
@@ -8510,21 +8500,6 @@ packages:
   /netmask@2.0.2:
     resolution: {integrity: sha512-dBpDMdxv9Irdq66304OLfEmQ9tbNRFnFTuZiLo+bD+r332bBmMJ8GBLXklIXXgxd3+v9+KUnZaUR5PJMa75Gsg==}
     engines: {node: '>= 0.4.0'}
-    dev: false
-
-  /ng-leaflet-universal@15.2.6(@angular/common@15.2.4)(@angular/core@15.2.5)(@types/leaflet@1.9.3)(leaflet@1.9.4):
-    resolution: {integrity: sha512-M8XAxsi9I4gby8RGV+RmW2uRA1XnhbJ/yJTnVbcinyogU0epI/oA3ft5uncmRpzAKgDp+/DwFde2f5UQ6ZHbuA==}
-    peerDependencies:
-      '@angular/common': '>=12.2.0'
-      '@angular/core': '>=12.2.0'
-      '@types/leaflet': ^1.9.3
-      leaflet: ^1.9.3
-    dependencies:
-      '@angular/common': 15.2.4(@angular/core@15.2.5)(rxjs@7.5.7)
-      '@angular/core': 15.2.5(rxjs@7.5.7)(zone.js@0.13.0)
-      '@types/leaflet': 1.9.3
-      leaflet: 1.9.4
-      tslib: 2.5.0
     dev: false
 
   /nice-napi@1.0.2:

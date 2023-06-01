@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { GeoCode } from 'src/app/interfaces/geoCode';
 import { GeoCodeService } from 'src/app/services/geocode.service';
-import { LoginAttempt } from 'src/app/types/LoginAttempt';
+import { LoginAttempt } from 'src/app/interfaces/LoginAttempt';
 
 
 @Component({
@@ -23,7 +23,7 @@ export class PopoverContentComponent {
     const { latitude, longitude } = this.loginAttempt.location;
     if (latitude && longitude)
       this.getAddress(latitude, longitude);
-  }
+  };
 
   async getAddress(latitude: string, longitude: string) {
     try {
@@ -31,10 +31,10 @@ export class PopoverContentComponent {
     } catch (error) {
       console.error('Error retrieving address:', error);
     }
-  }
+  };
 
   hideMap() {
     this.modalController.dismiss();
-  }
+  };
 }
 

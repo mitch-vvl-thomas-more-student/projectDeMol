@@ -8,7 +8,6 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./reset-paswoord.component.scss'],
 })
 export class ResetPaswoordComponent implements OnInit {
-
   email: string;
   succes: boolean = false;
 
@@ -16,6 +15,7 @@ export class ResetPaswoordComponent implements OnInit {
     private authService: AuthService) { }
 
   ngOnInit() { }
+
   async resetPassword() {
     try {
       await this.authService.sendPasswordResetEmail(this.email);
@@ -23,10 +23,10 @@ export class ResetPaswoordComponent implements OnInit {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   async dismiss() {
     await this.modalController.dismiss();
-  }
+  };
 
 }

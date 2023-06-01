@@ -17,7 +17,7 @@
           <ion-list-header color="warning">
             <ion-label>Publieke hints</ion-label>
           </ion-list-header>
-          <ion-item *ngFor="let hint of publiekeHints">
+          <ion-item *ngFor="let hint of publiekeHints" lines="none">
             <app-kandidaat-hint [hint]="hint"></app-kandidaat-hint>
           </ion-item>
         </ion-list>
@@ -25,7 +25,7 @@
           <ion-list-header color="tertiary">
             <ion-label>Je private hints</ion-label>
           </ion-list-header>
-          <ion-item *ngFor="let hint of privateHints">
+          <ion-item *ngFor="let hint of privateHints" lines="none">
             <app-kandidaat-hint [hint]="hint"></app-kandidaat-hint>
           </ion-item>
         </ion-list>

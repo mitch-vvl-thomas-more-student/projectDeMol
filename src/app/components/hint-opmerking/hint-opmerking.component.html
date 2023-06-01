@@ -1,0 +1,14 @@
+<div class="opmerking" *ngIf="opmerking">
+  <div class="opmerking-header opmerking-padding">
+    <h6>{{ opmerking?.plaatser?.voornaam?.slice(0,1)?.toUpperCase() }}{{
+      opmerking?.plaatser?.voornaam?.slice(1)?.toLowerCase() }} {{
+      opmerking?.plaatser?.achternaam?.slice(0,1)?.toUpperCase() }}
+    </h6>
+  </div>
+  <div class="opmerking-padding">
+    <p class="small">{{ opmerking?.tekst }}</p>
+  </div>
+  <div class="opmerking-footer opmerking-padding">
+    <ion-note class="pb1" class="date-small">{{ opmerking.datumString }}</ion-note>
+  </div>
+</div>

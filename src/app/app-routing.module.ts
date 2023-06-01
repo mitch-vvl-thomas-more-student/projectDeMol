@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
-import { redirectUnauthorizedTo, redirectLoggedInTo, canActivate } from '@angular/fire/auth-guard';
+import { redirectLoggedInTo, canActivate } from '@angular/fire/auth-guard';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
-const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['']);
 const redirectLoggedInToHome = () => redirectLoggedInTo(['tabs', 'home']);
 
 
 const routes: Routes = [
- 
   {
     path: '',
     redirectTo: 'splash',

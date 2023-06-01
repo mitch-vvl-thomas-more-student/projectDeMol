@@ -1,4 +1,3 @@
-import { AlertController } from '@ionic/angular';
 import { Collections } from './../enums/collections';
 import { Injectable } from '@angular/core';
 import {
@@ -17,13 +16,11 @@ import {
 import { Observable } from 'rxjs';
 import Gebruiker, { IFireStoreGebruiker } from '../types/Gebruiker';
 import Opmerking, { IFireStoreOpmerking } from '../types/Opmerking';
-import Groep, { IFireStoreGroep } from '../types/Groep';
 import Hint, { IFireStoreHint } from '../types/Hint';
 import Kandidaat, { IFireStoreKandidaat } from '../types/Kandidaat';
-
 import { doc, DocumentSnapshot, getDoc } from 'firebase/firestore';
 import { ErrorService } from './error.service';
-import { LoginAttempt } from '../types/LoginAttempt';
+import { LoginAttempt } from '../interfaces/LoginAttempt';
 
 
 @Injectable({
@@ -35,10 +32,12 @@ export class BackendApiService {
 
   #getCollectionRef<T>(collectionName: string): CollectionReference<T> {
     return collection(this.fireStore, collectionName) as CollectionReference<T>;
-  }
+  };
+
   #getDocumentRef<T>(collectionName: string, id: string): DocumentReference<T> {
     return doc(this.fireStore, `${collectionName}/${id}`) as DocumentReference<T>;
-  }
+  };
+  
   // Opmerkingen
   async addOpmerking(opmerking: Opmerking): Promise<DocumentReference<IFireStoreOpmerking>> {
 
@@ -56,7 +55,8 @@ export class BackendApiService {
       }
       throw err;
     }
-  }
+  };
+
   async updateOpmerking(opmerking: Opmerking): Promise<void> {
     if (opmerking.id !== undefined) {
       try {
@@ -73,7 +73,8 @@ export class BackendApiService {
       }
 
     }
-  }
+  };
+
   retrieve(): Observable<Opmerking[]> {
     try {
       return collectionData<Opmerking>(this.#getCollectionRef(Collections.opmerkingen), { idField: 'id' });
@@ -86,7 +87,8 @@ export class BackendApiService {
       }
       throw err;
     }
-  }
+  };
+
   #parseOpmerkingData(opmerking: Opmerking): any {
     const { plaatser, ...opmerkingData } = opmerking;
     return {
@@ -94,7 +96,7 @@ export class BackendApiService {
       plaatser: { ...plaatser },
       datum: new Date(),
     };
-  }
+  };
 
 
   // Gebruikers
@@ -114,7 +116,7 @@ export class BackendApiService {
       }
       throw err;
     }
-  }
+  };
 
   async updateGebruiker(gebruiker: Gebruiker): Promise<void> {
     try {
@@ -130,7 +132,7 @@ export class BackendApiService {
       }
       throw err;
     }
-  }
+  };
 
   retrieveGebruikers(): Observable<Gebruiker[]> {
     try {
@@ -144,7 +146,7 @@ export class BackendApiService {
       }
       throw err;
     }
-  }
+  };
 
   retrieveGebruikerByEmail(email: string): Observable<Gebruiker[]> {
     try {
@@ -163,7 +165,7 @@ export class BackendApiService {
       throw err;
     }
 
-  }
+  };
 
   #parseGebruikerData(gebruiker: Gebruiker): any {
     const { geplaatsteHints, groepen, verdachten, ...gebruikerData } = gebruiker;
@@ -173,70 +175,7 @@ export class BackendApiService {
       groepen: groepen ? JSON.parse(JSON.stringify(groepen)) : JSON.parse(JSON.stringify([])),
       verdachten: verdachten ? JSON.parse(JSON.stringify(verdachten)) : JSON.parse(JSON.stringify([])),
     };
-  }
-
-  // Groepen - voorbereiding // niet geimplementeerd
-  async addGroep(groep: Groep): Promise<DocumentReference<IFireStoreGroep>> {
-    const fireStoreGroep: any = { ...this.#parseGroepData(groep) };
-
-    try {
-      return await addDoc<IFireStoreGroep>(
-        this.#getCollectionRef<IFireStoreGroep>(Collections.groepen),
-        fireStoreGroep
-      );
-    } catch (err) {
-      if (err instanceof Error) {
-        const error = err as Error;
-        this.errService.showAlert('Fout bij het toevoegen van de groep', error.message);
-      } else {
-        this.errService.showAlert('Fout bij het toevoegen van de groep', 'Onbekende fout');
-      }
-      throw err;
-    }
-  }
-
-  async updateGroep(groep: Groep): Promise<void> {
-    try {
-      const groepDocRef = this.#getDocumentRef<IFireStoreGroep>(Collections.groepen, groep.id);
-      const groepData = this.#parseGroepData(groep);
-      await updateDoc(groepDocRef, groepData);
-    } catch (err) {
-      if (err instanceof Error) {
-        const error = err as Error;
-        this.errService.showAlert('Fout bij het aanpassen van de groep', error.message);
-      } else {
-        this.errService.showAlert('Fout bij het aanpassen van de groep', 'Onbekende fout');
-      }
-      throw err;
-    }
-  }
-
-  retrieveGroeps(): Observable<Groep[]> {
-    try {
-      return collectionData<Groep>(this.#getCollectionRef(Collections.groepen), { idField: 'id' });
-    } catch (err) {
-      if (err instanceof Error) {
-        const error = err as Error;
-        this.errService.showAlert('Fout bij het ophalen van de groepen', error.message);
-      } else {
-        this.errService.showAlert('Fout bij het opahlen van de groepen', 'Onbekende fout');
-      }
-      throw err;
-    }
-  }
-
-  #parseGroepData(groep: Groep): any {
-    const {
-      eigenaar,
-      leden,
-      hints, ...groepData } = groep;
-    return {
-      ...groepData,
-      eigenaar: JSON.parse(JSON.stringify(eigenaar)),
-      leden: JSON.parse(JSON.stringify(leden)),
-      hints: JSON.parse(JSON.stringify(hints)),
-    };
-  }
+  };
 
   // Hints
   async addHint(hint: Hint): Promise<string> {
@@ -257,7 +196,7 @@ export class BackendApiService {
       throw err;
     }
 
-  }
+  };
 
   async updateHint(hint: Hint): Promise<void> {
     try {
@@ -273,7 +212,7 @@ export class BackendApiService {
       }
       throw err;
     }
-  }
+  };
 
   retrieveHints(): Observable<Hint[]> {
     try {
@@ -287,7 +226,7 @@ export class BackendApiService {
       }
       throw err;
     }
-  }
+  };
 
   retrieveHintById(id: string): Observable<Hint[]> {
     try {
@@ -306,7 +245,7 @@ export class BackendApiService {
       throw err;
     }
 
-  }
+  };
 
   retrieveHintByKandidaatId(id: string): Observable<Hint[]> {
     try {
@@ -325,7 +264,7 @@ export class BackendApiService {
       throw err;
     }
 
-  }
+  };
 
   #parseHintData(hint: Hint): any {
     const { opmerkingen, ...hintData } = hint;
@@ -333,7 +272,7 @@ export class BackendApiService {
       ...hintData,
       opmerkingen: JSON.parse(JSON.stringify(opmerkingen))
     };
-  }
+  };
 
   // Kandidaten
   async addKandidaat(kandidaat: Kandidaat): Promise<DocumentReference<IFireStoreKandidaat>> {
@@ -352,7 +291,7 @@ export class BackendApiService {
       }
       throw err;
     }    
-  }
+  };
 
   async updateKandidaat(kandidaat: Kandidaat): Promise<void> {
     try {
@@ -368,11 +307,11 @@ export class BackendApiService {
       }
       throw err;
     }   
-  }
+  };
 
   retrieveKandidaats(): Observable<Kandidaat[]> {
     return collectionData<Kandidaat>(this.#getCollectionRef(Collections.kandidaten), { idField: 'id' });
-  }
+  };
 
   retrieveKandidaatById(id: string): Observable<Kandidaat[]> {
     return collectionData<Kandidaat>(
@@ -380,7 +319,7 @@ export class BackendApiService {
         this.#getCollectionRef(Collections.kandidaten), where('id', '==', id)
       )
       , { idField: 'id' });
-  }
+  };
 
   async getKandidaatById(id: string): Promise<Kandidaat | null> {
     return getDoc(doc(this.fireStore, `kandidaten/${id}`)).then((doc: DocumentSnapshot<DocumentData>) => {
@@ -405,7 +344,7 @@ export class BackendApiService {
       console.log('Error getting document:', error);
       throw error;
     });
-  }
+  };
 
   #parseKandidaatData(kandidaat: Kandidaat): any {
     const {
@@ -414,12 +353,12 @@ export class BackendApiService {
       ...kandidaatData,
       hints: JSON.parse(JSON.stringify(hints))
     };
-  }
+  };
 
   async delete(id: string, collection: Collections): Promise<void> {
     const docRef = this.#getDocumentRef(collection, id);
     await deleteDoc(docRef);
-  }
+  };
 
   async getDocByRef<T>(ref: string, collection: Collections): Promise<T | undefined> {
     const docRef = doc(this.fireStore, collection, ref);
@@ -430,7 +369,7 @@ export class BackendApiService {
       console.log("No such document!");
       return undefined;
     }
-  }
+  };
 
   // login attemps
   async addAttemp(attemp: LoginAttempt): Promise<DocumentReference<LoginAttempt>> {
@@ -447,7 +386,7 @@ export class BackendApiService {
       }
       throw err;
     }    
-  }
+  };
 
   retrieveLoginAttempts(userId: string): Observable<LoginAttempt[]> {
     return collectionData<LoginAttempt>(
@@ -455,6 +394,6 @@ export class BackendApiService {
         this.#getCollectionRef(Collections.loginAttempt), where('userId', '==', userId)
       )
       , { idField: 'id' });
-  }
+  };
 
 }

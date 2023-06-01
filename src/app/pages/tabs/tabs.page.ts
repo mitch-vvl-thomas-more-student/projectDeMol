@@ -13,20 +13,20 @@ export class TabsPage implements OnInit {
   loginSub: Subscription;
   isLoggedIn: boolean = false;
   constructor(
-    public authService: AuthService, 
-    public router: Router, 
-    private route: ActivatedRoute) { 
-   }
-
-  ngOnInit() {
-    this.loginSub = this.authService.isLoggedIn().subscribe((res) => {this.isLoggedIn = res});
+    public authService: AuthService,
+    public router: Router,
+    public activatedRoute: ActivatedRoute) {
   }
+
+  async ngOnInit() {
+    this.loginSub = this.authService.isLoggedIn().subscribe((isLoggedIn) => { this.isLoggedIn = isLoggedIn });
+  };
 
   ngOnDestroy() {
     this.loginSub.unsubscribe();
-  }
+  };
 
   isMenuButtonActive(routePath: string): boolean {
-    return this.router.isActive('/tabs/' + routePath, false);
-  }
+    return this.activatedRoute.snapshot.url.join('/') === 'tabs/' + routePath;
+  };
 }

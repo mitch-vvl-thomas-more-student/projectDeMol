@@ -2,7 +2,7 @@ import Gebruiker from 'src/app/types/Gebruiker';
 import Kandidaat from 'src/app/types/Kandidaat';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 
 @Injectable({
@@ -23,7 +23,7 @@ export class GlobalsService {
       this.#gebruikerChange.next(gebruiker);
       resolve();
     });
-  }
+  };
 
   async getGebruiker(): Promise<Gebruiker> {
     if (this.#gebruiker) {
@@ -41,7 +41,7 @@ export class GlobalsService {
         resolve({} as Gebruiker);
       }, 500);
     });
-  }
+  };
 
   async setKandidaten(kandidaten: Kandidaat[]): Promise<void> {
     return new Promise((resolve) => {
@@ -49,7 +49,7 @@ export class GlobalsService {
       this.#kandidatenChange.next(kandidaten);
       resolve();
     });
-  }
+  };
 
   async getKandidaten(): Promise<Kandidaat[]> {
     return new Promise((resolve) => {
@@ -62,7 +62,7 @@ export class GlobalsService {
         });
       }
     });
-  }
+  };
 
   notLoggedIn() {
     const presentAlert = async () => {
@@ -92,9 +92,9 @@ export class GlobalsService {
   
     presentAlert();
     return;
-  }
+  };
 
   async navigate(path: string[]): Promise<boolean> {
     return await this.router.navigate(path)
-  }  
+  };
 }

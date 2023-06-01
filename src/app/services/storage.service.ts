@@ -27,26 +27,8 @@ export class StorageService {
       this.errService.showAlert('Fout', 'Oeps, er is iets misgegaan. Probeer het later opnieuw.')
       throw error;
     }
-  }
-  // uploadImage(file: File, gebruiker: Gebruiker): Observable<UploadTaskSnapshot | undefined> {
-  //   const filePath = `images/${gebruiker.id}/${file.name}`;
-  //   const fileRef = this.storage.ref(filePath);
-  //   const uploadTask = this.storage.upload(filePath, file);
+  };
 
-  //   return uploadTask.snapshotChanges().pipe(
-  //     finalize(() => {
-  //       return from(fileRef.getDownloadURL()).pipe(
-  //         map(downloadURL => {
-  //           if (downloadURL) {
-  //             return downloadURL;
-  //           } else {
-  //             this.errService.showAlert('Fout', 'Oeps, er is iets misgegaan bij het ophalen van de afbeelding. Probeer het later opnieuw.')
-  //           }
-  //         })
-  //       );
-  //     })
-  //   );
-  // }
   uploadImage(file: File, gebruiker: Gebruiker): Promise<UploadTaskSnapshot | undefined> {
     const filePath = `images/${gebruiker.id}/${file.name}`;
     const fileRef = this.storage.ref(filePath);
@@ -65,17 +47,17 @@ export class StorageService {
         })
       )
     );
-  }
+  };
 
-  getProfileImageUrl(gebruiker: Gebruiker): string {
+  getProfileImageUrl(gebruiker: Gebruiker): Promise<string> | string {
     if (gebruiker?.avatar) {
       const firestoreImagePath = `images/${gebruiker?.id}/${gebruiker?.avatar}`;
       const firestoreRef = this.storage.ref(firestoreImagePath);
       const downloadURL$ = firestoreRef.getDownloadURL();
-      return firstValueFrom(downloadURL$) as unknown as string;
+      return firstValueFrom(downloadURL$) as unknown as Promise<string>;
     }
     return '';
-  }
+  };
 
   async uploadImageFromWeb(file: File, gebruiker: Gebruiker): Promise<string | null> {
     if (file) {
@@ -86,9 +68,9 @@ export class StorageService {
             const downloadURL = await this.uploadImage(file, gebruiker);
             if (downloadURL) {
               gebruiker.avatar = downloadURL.ref.name;
-              this.globalsService.setGebruiker(gebruiker);
+              await this.globalsService.setGebruiker(gebruiker);
               await this.dataService.updateGebruiker(gebruiker);
-              return this.getProfileImageUrl(gebruiker);
+              return await this.getProfileImageUrl(gebruiker);
             }
           } catch (error) {
             this.errService.showAlert('Fout', 'Er is een fout opgetreden tijdens het uploaden van de afbeelding.')
@@ -106,10 +88,11 @@ export class StorageService {
       return null;
     }
     return null;
-  }
+  };
 
   async uploadImageFromMobile(imageUrl: string, gebruiker: Gebruiker): Promise<string | null> {
-    const blob = await fetch(imageUrl).then(response => response.blob()); // convert image url to blob
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
     const file = new File([blob], 'image.jpg', { type: 'image/jpeg' }); // convert blob to file
 
     if (file.size <= 3.5 * 1024 * 1024) {
@@ -118,9 +101,9 @@ export class StorageService {
         const downloadURL = await this.uploadImage(file, gebruiker) // upload new image
         if (downloadURL) {
           gebruiker.avatar = downloadURL.ref.name; // set new image name
-          this.globalsService.setGebruiker(gebruiker); // update global gebruiker
+          await this.globalsService.setGebruiker(gebruiker); // update global gebruiker
           await this.dataService.updateGebruiker(gebruiker);  // update gebruiker in database
-          return this.getProfileImageUrl(gebruiker); // update profile image url
+          return await this.getProfileImageUrl(gebruiker); // update profile image url
         }
       } catch (error) {
         this.errService.showAlert('Fout', 'Er is een fout opgetreden tijdens het uploaden van de afbeelding.');
@@ -131,5 +114,5 @@ export class StorageService {
       return null;
     }
     return null;
-  }
+  };
 }

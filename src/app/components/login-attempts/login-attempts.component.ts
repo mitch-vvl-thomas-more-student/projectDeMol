@@ -1,20 +1,20 @@
 import { Subscription } from 'rxjs';
 import { BackendApiService } from 'src/app/services/backend-api.service';
-import { Component, Input, OnInit } from '@angular/core';
-import { LoginAttempt } from 'src/app/types/LoginAttempt';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { LoginAttempt } from 'src/app/interfaces/LoginAttempt';
 import { AlertController, ModalController } from '@ionic/angular';
 import { PopoverContentComponent } from '../popover/popover.component';
 import { Timestamp } from 'firebase/firestore';
 import Gebruiker from 'src/app/types/Gebruiker';
-import { AuthProviders } from 'src/app/enums/authProviders';
 import { RegisterComponent } from '../register/register.component';
+import { AuthProviders } from 'src/app/enums/authProviders';
 
 @Component({
   selector: 'app-login-attempts',
   templateUrl: './login-attempts.component.html',
   styleUrls: ['./login-attempts.component.scss'],
 })
-export class LoginAttemptsComponent implements OnInit {
+export class LoginAttemptsComponent implements OnInit, OnDestroy {
   @Input() gebruiker: Gebruiker;
 
   loginAttempts: LoginAttempt[] = [];
@@ -23,6 +23,7 @@ export class LoginAttemptsComponent implements OnInit {
   selectedLoginAttempt: LoginAttempt | null = null;
   passwordRecoveryUrl: string = '';
   recoveryMethod: string = 'Wijzig je wachtwoord';
+
   constructor(
     private alertController: AlertController,
     private backendApiService: BackendApiService,
@@ -61,11 +62,11 @@ export class LoginAttemptsComponent implements OnInit {
           loginAttempt.dateString = `${dateString}u`;
         });
       })
-  }
+  };
 
   ngOnDestroy() {
     this.loginAttemptsSubsriber.unsubscribe();
-  }
+  };
 
   async showMap(event: MouseEvent, loginAttempt: LoginAttempt) {
     const popover = await this.modalController.create({
@@ -80,7 +81,7 @@ export class LoginAttemptsComponent implements OnInit {
     this.selectedLoginAttempt = loginAttempt;
     this.isPopoverOpen = true;
     await popover.present();
-  }
+  };
 
   async showSystemInfo(event: MouseEvent, loginAttempt: LoginAttempt) {
     const alert = await this.alertController.create({
@@ -92,23 +93,23 @@ export class LoginAttemptsComponent implements OnInit {
     });
 
     await alert.present();
-  }
+  };
 
   hideMap() {
     this.isPopoverOpen = false;
     this.modalController.dismiss();
-  }
+  };
 
   setPasswordRecoveryUrl(method: string) {
    switch (method.toLowerCase()) {
-      case AuthProviders.Email:
+      case AuthProviders.email:
         this.passwordRecoveryUrl = `eigen website`;
         break;
-      case AuthProviders.Facebook:
+      case AuthProviders.facebook:
         this.passwordRecoveryUrl = `https://nl-nl.facebook.com/help/messenger-app/148759965285982`;
         this.recoveryMethod = 'Wijzig je wachtwoord via Facebook';
         break;
-      case AuthProviders.Google:
+      case AuthProviders.google:
         this.passwordRecoveryUrl = `https://support.google.com/accounts/answer/41078`;
         this.recoveryMethod = 'Wijzig je wachtwoord via Google';
         break;
@@ -116,16 +117,16 @@ export class LoginAttemptsComponent implements OnInit {
         break;
     }
 
-    this.passwordRecovery();
-  }
+    this.#passwordRecovery();
+  };
   
-  passwordRecovery() {
+  #passwordRecovery() {
     if (this.passwordRecoveryUrl === 'eigen website') {
       this.resetPassword();
     } else {
       window.open(this.passwordRecoveryUrl, '_blank');
     }
-  }
+  };
 
   async resetPassword() {
     const modal = await this.modalController.create({
@@ -135,5 +136,5 @@ export class LoginAttemptsComponent implements OnInit {
       }
     });
     await modal.present();
-  }
+  };
 }

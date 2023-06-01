@@ -11,9 +11,5 @@
         {{ address.address.postcode}} {{ address.address.town}} ({{address.address.state}}) 
         <br /> {{address.address.country}}</p>
       </div>
-    <div class="text-center" *ngIf="passwordRecoveryUrl !== ''">
-      <a (click)="passwordRecovery()">{{recoveryMethod}}</a>
-    </div>
-
 </ion-content>
 

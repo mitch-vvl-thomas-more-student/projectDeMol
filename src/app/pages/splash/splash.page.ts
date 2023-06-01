@@ -9,12 +9,9 @@ import { Component, OnInit } from '@angular/core';
 export class SplashPage implements OnInit {
 
   constructor(private globalsService: GlobalsService) {
-    setTimeout(() => {
-      this.globalsService.navigate(['tabs', 'kandidaten'])
-    }, 2500)
+    setTimeout(() => { this.globalsService.navigate(['tabs', 'kandidaten']) }, 2500)
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
 }

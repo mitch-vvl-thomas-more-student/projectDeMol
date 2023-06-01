@@ -1,4 +1,4 @@
-<ion-grid *ngIf="hint && gebruiker" class="w100">
+<ion-grid *ngIf="hint && author" class="w100 hint-border">
   <ion-row>
     <ion-col>
       <ion-label class="hint-date">{{ hint.datumString }}</ion-label>
@@ -9,18 +9,15 @@
       <ng-container *ngIf="profileImageUrl$ as imageUrl">
         <img alt="profielfoto" [src]="imageUrl" />
       </ng-container>
-      <ng-container *ngIf="!profileImageUrl$ && authService.currentUser.value?.photoURL">
-        <img alt="profielfoto" [src]="authService.currentUser.value?.photoURL" />
-      </ng-container>
-      <ng-container *ngIf="!profileImageUrl$ && !authService.currentUser.value?.photoURL">
+      <ng-container *ngIf="!profileImageUrl$">
         <div class="avatar" [style.background-color]="background">
-          {{ gebruiker.voornaam.slice(0,1).toUpperCase() }}{{ gebruiker.achternaam.slice(0,1).toUpperCase() }}
+          {{ author.voornaam.slice(0,1).toUpperCase() }}{{ author.achternaam.slice(0,1).toUpperCase() }}
         </div>
       </ng-container>
     </ion-col>
     <ion-col>
       <div class="hint-text">
-        <h5>{{ gebruiker.voornaam }} {{ gebruiker.achternaam}}</h5>
+        <h5>{{ author.voornaam }} {{ author.achternaam}}</h5>
         <span class="hint">{{ hint.hint }}</span>
       </div>
     </ion-col>
@@ -41,24 +38,19 @@
       </ion-button>
     </ion-col>
   </ion-row>
-<div *ngIf="hint.opmerkingen.length > 0">
-  <ng-container *ngFor="let opmerking of hint.opmerkingen">
-    <h6>{{ opmerking?.plaatser?.voornaam?.slice(0,1)?.toUpperCase() }}{{
-      opmerking?.plaatser?.voornaam?.slice(1)?.toLowerCase() }} {{
-      opmerking?.plaatser?.achternaam?.slice(0,1)?.toUpperCase() }}
-    </h6>
-        <p class="small">{{ opmerking?.tekst }}</p>
-        <ion-note class="pb1" class="date-small">{{ opmerking.datumString }}</ion-note>
-  </ng-container>
-</div>
-<ion-grid>
-  <ion-row *ngIf="showCommentInput">
-    <ion-col>
-      <ion-item lines="none">
-        <ion-textarea [(ngModel)]="newComment" placeholder="Plaats hier je opmerking" autoGrow="true"></ion-textarea>
-      </ion-item>
-      <ion-button fill="outline" color="danger" (click)="showCommentInput=false">Annuleren</ion-button>
-      <ion-button (click)="onSubmitComment()">Opmerking toevoegen</ion-button>
-    </ion-col>
-  </ion-row>
-</ion-grid>
+  <div *ngIf="hint.opmerkingen.length > 0">
+    <ng-container *ngFor="let opmerking of hint.opmerkingen">
+      <app-hint-opmerking [opmerking]="opmerking"></app-hint-opmerking>
+    </ng-container>
+  </div>
+  <ion-grid>
+    <ion-row *ngIf="showCommentInput">
+      <ion-col>
+        <ion-item lines="none">
+          <ion-textarea [(ngModel)]="newComment" placeholder="Plaats hier je opmerking" autoGrow="true"></ion-textarea>
+        </ion-item>
+        <ion-button fill="outline" color="danger" (click)="showCommentInput=false">Annuleren</ion-button>
+        <ion-button (click)="onSubmitComment()">Opmerking toevoegen</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>

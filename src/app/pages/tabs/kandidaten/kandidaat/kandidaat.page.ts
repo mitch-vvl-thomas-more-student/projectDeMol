@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { BackendApiService } from 'src/app/services/backend-api.service';
 import { GlobalsService } from 'src/app/services/globals.service';
@@ -35,8 +35,8 @@ export class KandidaatPage implements OnInit {
       const x = await this.apiService.getKandidaatById(params['id']);
       if (x) {
         this.kandidaat = x;
-        this.#kandidaatsSub = this.apiService.retrieveHintByKandidaatId(this.kandidaat.id).subscribe(async res => {
-          this.hints = res;
+        this.#kandidaatsSub = this.apiService.retrieveHintByKandidaatId(this.kandidaat.id).subscribe(async hints => {
+          this.hints = hints;
           this.publiekeHints = this.hints.filter((hint: Hint) => hint.isPubliek === true);
           const gebruiker = await this.globalsService.getGebruiker();
           if (gebruiker.email) {
@@ -45,7 +45,7 @@ export class KandidaatPage implements OnInit {
         });
       }
     });
-  }
+  };
 
   ngOnDestroy() {
     if (this.#kandidaatsSub) {
@@ -55,7 +55,7 @@ export class KandidaatPage implements OnInit {
     if (this.#routeSub) {
       this.#routeSub.unsubscribe();
     }
-  }
+  };
 
   async showModal() {
     const gebruiker = await this.globalsService.getGebruiker();
@@ -81,6 +81,5 @@ export class KandidaatPage implements OnInit {
         this.privateHints = this.hints.filter((hint: Hint) => hint.isPubliek === false && hint.plaatser === gebruiker.id);
       }
     }
-  }
-
+  };
 }

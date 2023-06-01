@@ -5,11 +5,13 @@
       <ion-icon *ngIf="!loginAttempt.system.isNative" color="dark" name="laptop-outline" slot="start"></ion-icon>
       <ion-label>
         {{ loginAttempt.dateString }} <br /> 
-        <ion-note class="ip">IP-adres: {{ loginAttempt.IPv4 }}</ion-note>
+        <div *ngIf="loginAttempt.IPv4">
+          <ion-note class="ip" *ngIf="loginAttempt.IPv4.length > 0">IP-adres: {{ loginAttempt.IPv4 }}</ion-note>
+        </div>
       </ion-label>
   </ion-item>
   <ion-item-options side="end">
-    <ion-item-option *ngIf="loginAttempt.location.latitude !== '' && loginAttempt.location.lontitude !== ''" (click)="showMap($event, loginAttempt)" color="warning">
+    <ion-item-option *ngIf="loginAttempt.location?.latitude !== '' && loginAttempt.location?.longitude !== ''" (click)="showMap($event, loginAttempt)" color="warning">
       <ion-icon slot="icon-only" name="location-outline"></ion-icon>
     </ion-item-option>
     <ion-item-option (click)="showSystemInfo($event, loginAttempt)" color="primary">

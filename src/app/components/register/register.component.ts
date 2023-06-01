@@ -12,7 +12,7 @@ export class RegisterComponent implements OnInit {
 
  @Input() mode: string = 'register';
   result: string | undefined;
-  timer: any;
+  timer: NodeJS.Timeout;
   email: string;
   emailOk: boolean = false;
   paswoordOk: boolean = false;
@@ -31,21 +31,21 @@ export class RegisterComponent implements OnInit {
 
   async dismiss() {
     await this.modalController.dismiss();
-  }
+  };
 
   testMail() {
     clearTimeout(this.timer);
     this.timer = setTimeout(() => {
       this.emailOk = this.emailRegexp.test(this.email);
     }, 200);
-  }
+  };
 
   testPaswoord() {
     clearTimeout(this.timer);
     this.timer = setTimeout(() => {
       this.paswoordOk = this.paswoordRegex.test(this.paswoord);
     }, 200);
-  }
+  };
 
   toggleMode() {
     if (this.mode === 'login') {
@@ -53,22 +53,22 @@ export class RegisterComponent implements OnInit {
     } else {
       this.mode = 'login';
     }
-  }
+  };
 
   async register() {
     const loginResult = await this.auth.registreerGebruikerMetEmail(this.email, this.paswoord, this.voornaam, this.achternaam, `${this.geboortedatum}`);
     this.dismiss();
-  }
+  };
 
   async aanmelden() {
     const loginResult = await this.auth.aanmeldenMetEmail(this.email, this.paswoord);
     this.dismiss();
-  }
+  };
 
   async passwordReset() {
     this.testMail();
     if (this.emailOk) {
       await this.auth.sendPasswordResetEmail(this.email);
     }
-  }
+  };
 }

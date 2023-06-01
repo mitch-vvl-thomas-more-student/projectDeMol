@@ -1,6 +1,6 @@
 {
   "name": "Project de mol",
-  "short_name": "De mol app",
+  "short_name": "Project de mol",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
@@ -8,21 +8,45 @@
   "start_url": "./",
   "icons": [
     {
+      "src": "assets/icons/manifest-icon-192.maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/manifest-icon-192.maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/icons/manifest-icon-512.maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/manifest-icon-512.maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
       "src": "assets/icons/icon-72x72.webp",
       "sizes": "72x72",
-      "type": "image/webp",
+      "type": "image/png",
       "purpose": "maskable any"
     },
     {
       "src": "assets/icons/icon-96x96.webp",
       "sizes": "96x96",
-      "type": "image/webp",
+      "type": "image/png",
       "purpose": "maskable any"
     },
     {
       "src": "assets/icons/icon-128x128.webp",
       "sizes": "128x128",
-      "type": "image/webp",
+      "type": "image/png",
       "purpose": "maskable any"
     },
     {
@@ -38,21 +62,9 @@
       "purpose": "maskable any"
     },
     {
-      "src": "assets/icons/icon-192x192.webp",
-      "sizes": "192x192",
-      "type": "image/webp",
-      "purpose": "maskable any"
-    },
-    {
       "src": "assets/icons/icon-384x384.png",
       "sizes": "384x384",
       "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "assets/icons/icon-512x512.webp",
-      "sizes": "512x512",
-      "type": "image/webp",
       "purpose": "maskable any"
     }
   ]

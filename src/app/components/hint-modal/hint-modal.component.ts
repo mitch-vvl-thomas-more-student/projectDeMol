@@ -17,6 +17,7 @@ export class HintModalComponent {
   @Input() kandidaat: Kandidaat;
   @Input() gebruiker: Gebruiker;
 
+  typed: boolean = false;
   hint: Hint = new Hint();
   tip: string = '';
   disable: boolean = true;
@@ -33,14 +34,18 @@ export class HintModalComponent {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   async onSubmit() {
-    // Create a new hint object and emit it to the parent component
+    const currentDate = new Date();
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const year = String(currentDate.getFullYear());
     const newHint = new Hint();
     newHint.kandidaat = this.kandidaat.id;
     newHint.plaatser = this.gebruiker.id;
-    newHint.datum = new Date();
+    newHint.datum = currentDate;
+    newHint.datumString = `${day}-${month}-${year}`;
     newHint.hint = this.tip;
     newHint.stemmenOmhoog = 0;
     newHint.stemmenOmlaag = 0;
@@ -66,12 +71,11 @@ export class HintModalComponent {
     }
 
     this.modalController.dismiss(newHint);
-  }
+  };
 
   onHintChange(event: any) {
-    this.tip = event.target.value;
-    if (this.tip.length > 25) {
-      this.disable = false;
-    }
-  }
+    this.typed = true;
+    this.tip = event.target.value as string;
+    this.tip.length > 25 ? this.disable = false : this.disable = true;
+  };
 }

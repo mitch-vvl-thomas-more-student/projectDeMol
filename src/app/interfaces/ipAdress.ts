@@ -1,11 +1,11 @@
 export interface IpAdress {
     country_code: string
     country_name: string
-    city: any
-    postal: any
+    city: string
+    postal: string
     latitude: number
     longitude: number
     IPv4: string
-    state: any
+    state: string
   }
   

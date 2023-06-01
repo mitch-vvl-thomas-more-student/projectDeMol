@@ -1,5 +1,5 @@
 import Gebruiker from 'src/app/types/Gebruiker';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, firstValueFrom } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Capacitor } from '@capacitor/core';
@@ -7,7 +7,6 @@ import { Auth, User, signInWithCredential, signOut, updateProfile } from '@angul
 import {
   GoogleAuthProvider,
   FacebookAuthProvider,
-  PhoneAuthProvider,
   UserCredential,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -18,35 +17,21 @@ import { Router } from '@angular/router';
 import { BackendApiService } from 'src/app/services/backend-api.service';
 import { ErrorService } from './error.service';
 import { GlobalsService } from './globals.service';
-import { LoginAttempt } from '../types/LoginAttempt';
+import { LoginAttempt } from '../interfaces/LoginAttempt';
 import { Device } from '@capacitor/device';
 import { Geolocation } from '@capacitor/geolocation';
 import { IpAdress } from '../interfaces/ipAdress';
 import { HttpClient } from '@angular/common/http';
-import { platform } from 'os';
-
-const actionCodeSettings = {
-  url: 'https://www.example.com/?email=user@example.com',
-  iOS: {
-    bundleId: 'com.example.ios'
-  },
-  android: {
-    packageName: 'com.example.android',
-    installApp: true,
-    minimumVersion: '12'
-  },
-  handleCodeInApp: true
-};
+import { AuthProviders } from '../enums/authProviders';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
-  private verificationId: string = '';
+export class AuthService implements OnDestroy {
   private isLoggedInSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private authStateChangeSubscription: Unsubscribe | undefined;
   currentUser: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
-
 
   constructor(
     private errorService: ErrorService,
@@ -69,42 +54,30 @@ export class AuthService {
     if (this.authStateChangeSubscription) {
       this.authStateChangeSubscription();
     }
-  }
+  };
 
   isLoggedIn(): Observable<boolean> {
     return this.isLoggedInSubject.asObservable();
-  }
+  };
 
-  // Update the logged-in state whenever necessary
-  // For example, after a successful login or logout
   updateLoggedInState(isLoggedIn: boolean): void {
     this.isLoggedInSubject.next(isLoggedIn);
-  }
-
-  getProfilePic(): string {
-    const placeholder = '/assets/Portrait_Placeholder.png';
-    return this.isLoggedIn() ? this.currentUser?.value?.photoURL ?? placeholder : placeholder;
-  }
+  };
 
   getDisplayName(): string | null | undefined {
-
     return this.isLoggedIn() ? this.currentUser?.value?.displayName : undefined;
-  }
+  };
 
   getEmail(): string | null | undefined {
     return this.isLoggedIn() ? this.currentUser?.value?.email : undefined;
-  }
-
-  getUserUID(): string | null | undefined {
-    return this.isLoggedIn() ? this.currentUser?.value?.uid : undefined;
-  }
+  };
 
   async updateDisplayName(displayName: string): Promise<void> {
     const currentUser = this.auth.currentUser;
     if (currentUser) {
       await updateProfile(currentUser, { displayName });
     }
-  }
+  };
 
   async signOut(): Promise<void> {
     try {
@@ -118,13 +91,13 @@ export class AuthService {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   async signInWithGoogle(): Promise<void> {
     // Sign in on the native layer.
     const { credential } = await FirebaseAuthentication.signInWithGoogle();
 
-    await this.logLoginAttempt(this.getEmail() || '', credential?.idToken != undefined, 'google'); // Log the login attempt with the 'google' method
+    await this.logLoginAttempt(this.getEmail() || '', credential?.idToken != undefined, AuthProviders.google); // Log the login attempt with the 'google' method
 
     if (!credential) {
       return
@@ -136,13 +109,13 @@ export class AuthService {
       const newCredential = GoogleAuthProvider.credential(credential?.idToken);
       await signInWithCredential(this.auth, newCredential);
     }
-  }
+  };
 
   async signInWithFacebook(): Promise<void> {
     const result = await FirebaseAuthentication.signInWithFacebook()
     const { credential } = result;
 
-    await this.logLoginAttempt(this.getEmail() || '', credential != undefined, 'Facebook'); // Log the login attempt with the 'google' method
+    await this.logLoginAttempt(this.getEmail() || '', credential != undefined, AuthProviders.facebook); // Log the login attempt with the 'google' method
 
     if (!credential) {
       return;
@@ -155,23 +128,7 @@ export class AuthService {
         await signInWithCredential(this.auth, authCredential);
       }
     }
-  }
-
-  async signInWithPhoneNumber(verificationCode: string): Promise<void> {
-    const credential = PhoneAuthProvider.credential(this.verificationId, verificationCode);
-    await signInWithCredential(this.auth, credential);
-  }
-
-  async sendPhoneVerificationCode(phoneNumber: string): Promise<void> {
-    const result = await FirebaseAuthentication.signInWithPhoneNumber({ phoneNumber });
-    const verificationId = result.verificationId;
-
-    if (typeof verificationId === 'undefined') {
-      return;
-    }
-
-    this.verificationId = verificationId;
-  }
+  };
 
   async sendPasswordResetEmail(email: string): Promise<void> {
     try {
@@ -183,7 +140,7 @@ export class AuthService {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   async sendEmailVerification(): Promise<void> {
     try {
@@ -192,7 +149,7 @@ export class AuthService {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   async registreerGebruikerMetEmail(email: string, password: string, voornaam: string, achternaam: string, geboortedatum?: string): Promise<void> {
     if (email && voornaam && achternaam) {
@@ -226,7 +183,7 @@ export class AuthService {
         }
       }
     }
-  }
+  };
 
   async aanmeldenMetEmail(email: string, password: string) {
     if (email && password) {
@@ -251,7 +208,7 @@ export class AuthService {
         }
       }
     }
-  }
+  };
 
   private async updateUserProfile(displayName: string, geboortedatum?: string): Promise<void> {
     const user = this.auth.currentUser;
@@ -267,7 +224,7 @@ export class AuthService {
         console.log(error);
       }
     }
-  }
+  };
 
   private async setCurrentUser(user: User | null): Promise<void> {
     this.currentUser.next(user);
@@ -287,7 +244,7 @@ export class AuthService {
     } else if (!isAuthenticated && currentUrl !== '/login') {
       await this.globalService.navigate(['login']);
     }
-  }
+  };
 
   private async registerCurrentUserAsGebruiker(user: User | null): Promise<void> {
     if (user) {
@@ -322,13 +279,13 @@ export class AuthService {
             await this.globalService.setGebruiker(res[0]);
           }
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         if (user.email)
-          this.errorService.showAlert('Fout', error.message);
+          this.errorService.showAlert('Fout', (error as Error).message);
         throw error;
       }
     }
-  }
+  };
 
   private errorMessages(err: unknown) {
     if (err instanceof Error) {
@@ -337,10 +294,9 @@ export class AuthService {
     } else {
       this.errorService.showAlert('Fout', 'Onbekende fout');
     }
-  }
+  };
 
-  // log user login attemps to firestore, keep the users geolocation with capacitor & the users device info with capacitor
-  async logLoginAttempt(email: string, success: boolean = false, method: string = 'email/wachtwoord') {
+  async logLoginAttempt(email: string, success: boolean = false, method: string = AuthProviders.email) {
     if (email) {
       const [gebruiker] = await firstValueFrom(this.fireStore.retrieveGebruikerByEmail(email).pipe(take(1)));
 
@@ -389,26 +345,37 @@ export class AuthService {
         let position = undefined;
         let permissionResult = undefined;
 
-        permissionResult = await Geolocation.checkPermissions();
-        attempt.system.platform !== 'web' || permissionResult.location !== 'granted' ? permissionResult = await Geolocation.requestPermissions() :permissionResult = { location: 'granted' };
-
-        if (permissionResult.location === 'granted') {
+        if (attempt.system.platform === 'web') {
+          console.warn('requestPermissions is not supported on this platform.');
           position = await Geolocation.getCurrentPosition();
           const { latitude, longitude } = position.coords;
           attempt.location.latitude = latitude.toString();
           attempt.location.longitude = longitude.toString();
+        } else {
+          permissionResult = await Geolocation.checkPermissions();
+
+          if (permissionResult.location !== 'granted') {
+            permissionResult = await Geolocation.requestPermissions();
+          }
+
+          if (permissionResult.location === 'granted') {
+            position = await Geolocation.getCurrentPosition();
+            const { latitude, longitude } = position.coords;
+            attempt.location.latitude = latitude.toString();
+            attempt.location.longitude = longitude.toString();
+          }
         }
       } catch (error) {
         console.error('Error getting geolocation:', error);
       }
 
+
       await this.fireStore.addAttemp(attempt);
     }
-  }
+  };
 
   async getIpAdress(): Promise<string> {
-    const url = "https://geolocation-db.com/json/";
-    const response = await firstValueFrom(this.http.get<IpAdress>(url));
+    const response = await firstValueFrom(this.http.get<IpAdress>(environment.ipservice));
     return response.IPv4;
-  }
+  };
 }

@@ -13,37 +13,54 @@ Het project is gebouwd met Angular en Ionic. Om de applicatie uit te voeren, moe
 
 ## Functies
 
-- Maak een lijst met uw favoriete kandidaten
-- Bekijk en deel hints over de kandidaten
-- Bekijk video's van verschillende kanalen die verband houden met de show
+- Applicatie:
+    - Installeer op Android
+    - Installeer als PWA op IOS https://project-de-mol.web.app
+    - Gebruik als webapp op https://project-de-mol.web.app
 
-## Tekstuele beschrijving - 17.04.2023
+- Profiel:
+    - Beheer uw weergave naam
+    - Beheer uw profiel foto
 
-Goedenavond Jeff, 
+- Logins
+    - Bekijk waar en wanneer u bent ingelogt op dde applicatie
+    - Bekijk met welk systeem u bent ingelogt
+    - Beheer uw paswoord
+
+- Top 10
+    - Publieke top 10, hoe denken anderen over de kandidaten
+    - Maak uw eigen top 10
+
+- Kandidaten
+    - Bekijk alle kandidaten
+    - Deel hints over de kandidaten
+    - Voeg opmerkingen toe aan gedeelde hints
+
+- Youtube
+    - Bekijk video's van verschillende kanalen die verband houden met de show
+
+## Gebruikte plugins
+
+- @capacitor/camera (versie 4.1.5): Hiermee kunnen foto's worden gemaakt met behulp van de camera van het apparaat.
+
+- @capacitor/device (versie 5.0.2): Deze plugin geeft informatie over het apparaat waarop de app wordt uitgevoerd, zoals het besturingssysteem, het model en de taalinstellingen.
+
+- @capacitor/geolocation (versie 5.0.2): Hiermee kan de app de huidige locatie van het apparaat ophalen met behulp van de GPS- of netwerkgegevens.
+
+- @capacitor/splash-screen (versie 4.2.0): Deze plugin toont een splashscreen tijdens het opstarten van de app.
+
+- capacitor-openstreetmap (versie 0.1.0): Deze plugin toont een map wanneer de gebruiker de app gebruikt op een native platform.
+
+## Gebruikte services
+
+- Youtube Api: 'https://www.googleapis.com/youtube/v3',
+- Ip adress: 'https://geolocation-db.com/json/',
+- Adres gegevens: 'https://geocode.maps.co/reverse',
+- Authenticatie: firebase authentication
+- Storage: firebase storage
+- Leaflet: map tool bij gebruik van de webapplicatie
 
 
-Zoals afgesproken hierbij de beschrijving van mijn project. 
-Het project is geïnspireerd door het televisieprogramma "de mol" en zou de zoektocht interactiever moeten maken. 
-
-Zo zal elke kandidaat een eigen (onbeheerde) profiel pagina krijgen. 
-Deze profielpagina is publiek beschikbaar. 
-Elke geregistreerde user zal zijn/haar profiel kunnen beheren (waar men ook een top 10 van de kandidaten kan bijhouden doormiddel van een eenvoudige drag & drop array) & tips kunnen delen op het profiel van de kandidaten. 
-Tips kunnen gedeeld worden binnen publiek of private. 
-
-Private tips fungeren als een soort notitie boek zodat je als gebruiker niets vergeet. 
-Publieke tips maken de zoektocht interactief. Zo kunnen andere gebruikers je tips een rating geven (doormiddel van een thumbs - up of thumbs - down) en/of hier een commentaar bij plaatsen. 
-
-Een extra toevoeging is een YouTube pagina (doormiddel van YouTube API) waarbij je filmpjes vanaf verschillende kanalen terugvindt enkel en alleen over het programma. Dit is waardevol voor de echte fans 🙂
-
-Op dit moment is het mogelijk om je als gebruiker te registreren via Facebook en/of google (ik gebruikte de auth service van de komende les en paste deze aan waar nodig.) 
- 
-
-Extra toevoegingen die ik nog inplan: 
-android en IOS-ondersteuning (op dit moment is het echt nog webbased)
-Groepen (wordt lid van groepen en deel je info publiek/in groep of private)
-Realtime publieke top 10 - consolidatie gebaseerd op de top 10 vanuit de gebruikers profielen  
-
-En voor dat je het weet is het alweer begin juni! 
 
 ## Credits
 

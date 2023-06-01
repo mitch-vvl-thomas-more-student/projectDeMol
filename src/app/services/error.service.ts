@@ -16,5 +16,5 @@ export class ErrorService {
     });
 
     await alert.present();
-  }
+  };
 }

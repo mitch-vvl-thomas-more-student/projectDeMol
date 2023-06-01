@@ -16,6 +16,9 @@
       <ion-textarea (ionChange)="onHintChange($event)" 
       placeholder="Plaats hier je tip over {{ kandidaat.voornaam }}"
       required auto-grow autofocus></ion-textarea>
+      <ion-text color="danger" *ngIf="disable && typed" class="ion-padding-start">
+        <small>Je hint moet minstens 25 karakters lang zijn.</small>
+      </ion-text>
     </ion-item>
     <ion-item>
       <ion-label>Deel deze hint publiek</ion-label>
@@ -27,8 +30,8 @@
 <ion-footer>
   <ion-toolbar>
     <ion-buttons slot="end">
-      <ion-button (click)="closeModal()">Annuleren</ion-button>
-      <ion-button (click)="onSubmit()" [disabled]="disable">Toevoegen</ion-button>
+      <ion-button fill="solid" (click)="closeModal()" color="secondary">Annuleren</ion-button>
+      <ion-button fill="solid" (click)="onSubmit()" [disabled]="disable" color="tertiary">Toevoegen</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-footer>

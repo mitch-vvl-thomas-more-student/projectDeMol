@@ -1,6 +1,5 @@
-import { Id } from '../../../interfaces/youtubeApiResponse';
-import { Component, OnInit } from '@angular/core';
-import { Subscription, forkJoin } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { BackendApiService } from 'src/app/services/backend-api.service';
 import Kandidaat from 'src/app/types/Kandidaat';
 import { Platform } from '@ionic/angular';
@@ -12,35 +11,33 @@ import { Router } from '@angular/router';
   templateUrl: './top10.page.html',
   styleUrls: ['./top10.page.scss'],
 })
-export class Top10Page implements OnInit {
+export class Top10Page implements OnInit, OnDestroy {
 
   avgPosition: string[] = []; // Array van verdachtenids gemiddelde positie bij de gebruikers
-  #sub: Subscription;
-  #gSub: Subscription;
+  #kandidatenSub: Subscription;
+  #gebruikersSub: Subscription;
   kandidaten: Kandidaat[];
   kandidaat: Kandidaat;
 
   constructor(private dataService: BackendApiService, private platform: Platform, private router: Router) { }
   ngOnDestroy() {
-    if (this.#sub) {
-      this.#sub.unsubscribe();
+    if (this.#kandidatenSub) {
+      this.#kandidatenSub.unsubscribe();
     }
-    if (this.#gSub) {
-      this.#gSub.unsubscribe();
+    if (this.#gebruikersSub) {
+      this.#gebruikersSub.unsubscribe();
     }
-  }
+  };
 
   ngOnInit() {
-    this.#sub = this.dataService.retrieveKandidaats().subscribe((res) => {
-      this.kandidaten = res;
-    });
-    this.#gSub = this.dataService.retrieveGebruikers().subscribe((res) => {
-      const nameData = this.#calculateNameData(res)
+    this.#kandidatenSub = this.dataService.retrieveKandidaats().subscribe((kandidaten) => this.kandidaten = kandidaten);
+    this.#gebruikersSub = this.dataService.retrieveGebruikers().subscribe((gebruikers) => {
+      const nameData = this.#calculateNameData(gebruikers)
       this.avgPosition = this.#calculateAvgPosition(nameData);
       this.#sortKandidatenByAvgPosition();
     });
     this.isLargeScreen();
-  }
+  };
 
   #calculateNameData(result: any[]): { [name: string]: any } {
     const nameData: { [name: string]: any } = {};
@@ -60,7 +57,7 @@ export class Top10Page implements OnInit {
     });
 
     return nameData;
-  }
+  };
 
   #calculateAvgPosition(nameData: { [name: string]: any }): string[] {
     const avgPositions = Object.keys(nameData).map((name) => {
@@ -71,7 +68,7 @@ export class Top10Page implements OnInit {
     });
     avgPositions.sort((a, b) => a.averagePosition - b.averagePosition);
     return avgPositions.map((entry) => entry.name);
-  }
+  };
 
   #sortKandidatenByAvgPosition() {
     const sortedKandidaten: Kandidaat[] = [];
@@ -84,9 +81,9 @@ export class Top10Page implements OnInit {
     }
 
     this.kandidaten = sortedKandidaten;
-  }
+  };
 
   isLargeScreen(): boolean {
     return this.platform.width() >= 992; // Aanpassen aan de gewenste breekpuntbreedte voor grote schermen
-  }
+  };
 }

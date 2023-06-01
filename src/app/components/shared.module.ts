@@ -3,8 +3,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
-
-import { PhoneVerificationComponent } from './phone-verification/phone-verification.component';
 import { KandidaatCardComponent } from './kandidaat-card/kandidaat-card.component';
 import { HintModalComponent } from './hint-modal/hint-modal.component';
 import { ReorderComponent } from './reorder/reorder.component';
@@ -14,10 +12,11 @@ import { RegisterComponent } from './register/register.component';
 import { LoginAttemptsComponent } from './login-attempts/login-attempts.component';
 import { PopoverContentComponent } from './popover/popover.component';
 import { MapComponent } from './map/map.component';
+import { HintOpmerkingComponent } from './hint-opmerking/hint-opmerking.component';
+import { ProfielFormComponent } from '../profiel-form/profiel-form.component';
 
 @NgModule({
   declarations: [
-    PhoneVerificationComponent,
     KandidaatCardComponent,
     HintModalComponent,
     ReorderComponent,
@@ -27,9 +26,10 @@ import { MapComponent } from './map/map.component';
     LoginAttemptsComponent,
     PopoverContentComponent,
     MapComponent,
+    HintOpmerkingComponent,
+    ProfielFormComponent
   ],
   exports: [
-    PhoneVerificationComponent,
     KandidaatCardComponent,
     HintModalComponent,
     ReorderComponent,
@@ -39,6 +39,8 @@ import { MapComponent } from './map/map.component';
     LoginAttemptsComponent,
     PopoverContentComponent, 
     MapComponent,
+    HintOpmerkingComponent,
+    ProfielFormComponent
     ],
   imports: [
     FormsModule,

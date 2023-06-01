@@ -10,6 +10,8 @@ export const environment = {
   production: true,
   youTubeApiKey: 'AIzaSyDcs3jF2Tt5jfeJRd8aErDA_xxBjEK7T2M',
   youTubeBaseUrl: 'https://www.googleapis.com/youtube/v3',
+  ipservice : 'https://geolocation-db.com/json/',
+  geolocation: 'https://geocode.maps.co/reverse',
   firebaseConfig: {
     apiKey: "AIzaSyDBy0j9eWiEQcA3eci2owj5f9yHIi3FMC4",
     authDomain: "project-de-mol.firebaseapp.com",
