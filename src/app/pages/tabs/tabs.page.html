@@ -1,6 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="dark">
     <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/kandidaten" icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-img slot="start" src="../../../assets/img/demol.jpg" alt="logo de mol" id="logo"></ion-img>
@@ -49,7 +52,7 @@
     </ion-header>
     <ion-content>
       <ion-list>
-        <ion-item [ngClass]="{'active-menu-button': isMenuButtonActive('home')}" (click)="router.navigate(['tabs','home'])">
+        <ion-item (click)="router.navigate(['tabs','home'])">
           <ion-icon name="person-circle-outline" slot="end" color="tertiary"></ion-icon>
           Mijn profiel
         </ion-item>

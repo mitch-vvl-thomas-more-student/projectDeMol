@@ -60,8 +60,6 @@ Het project is gebouwd met Angular en Ionic. Om de applicatie uit te voeren, moe
 - Storage: firebase storage
 - Leaflet: map tool bij gebruik van de webapplicatie
 
-
-
 ## Credits
 
 Het project is ontwikkeld door Mitch Van Vlierberghe als schoolproject voor Thomas More.

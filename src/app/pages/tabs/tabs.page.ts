@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import {  Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -8,14 +8,13 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './tabs.page.html',
   styleUrls: ['./tabs.page.scss'],
 })
-export class TabsPage implements OnInit {
+export class TabsPage implements OnInit, OnDestroy {
 
   loginSub: Subscription;
   isLoggedIn: boolean = false;
   constructor(
     public authService: AuthService,
-    public router: Router,
-    public activatedRoute: ActivatedRoute) {
+    public router: Router) {
   }
 
   async ngOnInit() {
@@ -24,9 +23,5 @@ export class TabsPage implements OnInit {
 
   ngOnDestroy() {
     this.loginSub.unsubscribe();
-  };
-
-  isMenuButtonActive(routePath: string): boolean {
-    return this.activatedRoute.snapshot.url.join('/') === 'tabs/' + routePath;
   };
 }

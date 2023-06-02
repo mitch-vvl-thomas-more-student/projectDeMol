@@ -13,7 +13,7 @@ import { LoginAttemptsComponent } from './login-attempts/login-attempts.componen
 import { PopoverContentComponent } from './popover/popover.component';
 import { MapComponent } from './map/map.component';
 import { HintOpmerkingComponent } from './hint-opmerking/hint-opmerking.component';
-import { ProfielFormComponent } from '../profiel-form/profiel-form.component';
+import { ProfielFormComponent } from './profiel-form/profiel-form.component';
 
 @NgModule({
   declarations: [

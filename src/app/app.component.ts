@@ -1,6 +1,6 @@
 import Gebruiker from 'src/app/types/Gebruiker';
 import Kandidaat from 'src/app/types/Kandidaat';
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { BackendApiService } from './services/backend-api.service';
 import { GlobalsService } from './services/globals.service';
@@ -13,13 +13,13 @@ import { Subscription } from 'rxjs';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
   #currentUserSub: Subscription;
   #kandidaatsSub: Subscription;
 
   constructor(private dataService: BackendApiService,
     private authService: AuthService,
-    private globalService: GlobalsService,
+    private globalService: GlobalsService
   ) { SplashScreen.hide(); }
 
   ngOnInit() {
@@ -32,7 +32,7 @@ export class AppComponent {
 
     this.#kandidaatsSub = this.dataService.retrieveKandidaats()
       .subscribe((res: Kandidaat[]) => this.globalService.setKandidaten(res));
-  }
+  };
 
   ngOnDestroy() {
     if (this.#currentUserSub) {
@@ -42,6 +42,5 @@ export class AppComponent {
     if (this.#kandidaatsSub) {
       this.#kandidaatsSub.unsubscribe();
     }
-  }
-
+  };
 }
